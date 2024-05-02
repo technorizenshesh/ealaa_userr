@@ -1,0 +1,59 @@
+class MyImages{
+  static const baseUrl = 'assets/images/';
+  static const Splash = 'assets/images/eleven_way_logo.png';
+  static const Logo = 'assets/images/eleven_way_logo.png';
+  // static const Splash = 'assets/images/Logo.png';
+  // static const Logo = 'assets/images/Logo-1.png';
+  static const Success = 'assets/images/Icon- Successful.png';
+  static const cards = 'assets/images/cards.png';
+  static const visa = 'assets/images/Icon- VIsa.png';
+  static const discount = 'assets/images/Icon- Cash.png';
+  static const rightarrow = 'assets/images/right.png';
+  static const userPro = 'assets/images/Ellipse 1.png';
+  static const search = 'assets/images/Search.png';
+  static const filtter = 'assets/images/Filtter.png';
+  static const HomeImg = 'assets/images/Messenger-rafiki 1.png';
+  static const add = 'assets/images/Add.png';
+  static const google = 'assets/images/google.png';
+  static const iphone = 'assets/images/Group 9685@2x.png';
+  static const email = 'assets/images/Email.png';
+  static const Check = 'assets/images/Check List (1).png';
+  static const lock = 'assets/images/Password@2x.png';
+  static const mobile = 'assets/images/Mobile Number@2x.png';
+  static const hide = 'assets/images/Hide-Password@2x.png';
+  static const home = 'assets/images/Home-Active.png';
+  static const order = 'assets/images/Order.png';
+  static const searchOrder = 'assets/images/searchIcon.png';
+  static const wish = 'assets/images/WishListIcon.png';
+  static const bag = 'assets/images/bagIconOutline.png';
+  static const Tracking = 'assets/images/Tracking3x.png';
+
+  static const profile = 'assets/images/Profile.png';
+  static const slider = 'assets/images/slider.png';
+  static const user = 'assets/images/User image.png';
+  static const edit = 'assets/images/Vector (2).png';
+  static const MyAccount = 'assets/images/My Account.png';
+  static const error = 'assets/images/error.png';
+  static const arrow = 'assets/images/arrow.png';
+  static const logout = 'assets/images/Log out.png';
+  static const Touchid = 'assets/images/Touch ID.png';
+  static const Privaciy = 'assets/images/Privaciy Notice.png';
+  static const About = 'assets/images/About App.png';
+  static const Review = 'assets/images/Review.png';
+  static const border = 'assets/images/border.png';
+  static const mapimg = 'assets/images/mapimg.png';
+  static const pin = 'assets/images/map-pin.png';
+  static const Contact = 'assets/images/Contact.png';
+  static const bike = 'assets/images/Bike.png';
+  static const bg = 'assets/images/bg.png';
+  static const topbg = 'assets/images/topbg.png';
+  static const popup = 'assets/images/popup.png';
+  static const tracking1 = 'assets/images/1.1.png';
+  static const tracking2 = 'assets/images/2.2.png';
+  static const tracking3 = 'assets/images/3.3.png';
+  static const tracking1active = 'assets/images/1 2.png';
+  static const tracking2active = 'assets/images/2 22.png';
+  static const tracking3active = 'assets/images/3 2.png';
+
+}
+

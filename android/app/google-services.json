@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "88812132661",
+    "project_id": "elaadriver",
+    "storage_bucket": "elaadriver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88812132661:android:9199047197dcea32c0147c",
+        "android_client_info": {
+          "package_name": "app.ealaa_driver.com.ealaa_driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxzZKZAdsMyxPCB-Pp6La_KaphpEwiOEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88812132661:android:d78d8b49889753b9c0147c",
+        "android_client_info": {
+          "package_name": "app.ealaa_user.com.ealaa_user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxzZKZAdsMyxPCB-Pp6La_KaphpEwiOEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
