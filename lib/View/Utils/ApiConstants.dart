@@ -35,6 +35,7 @@ final insert_chat = baseUrl+"insert_chat";
 final get_nearby_drivers = baseUrl+"get_nearby_drivers";
 final update_notification_onoff = baseUrl+"update_notification_onoff";
 final getDriverLatLong = baseUrl+"getlatlon";
+final otp_expire = "otp_expire";
 
 //store
 final get_category = 'get_category';

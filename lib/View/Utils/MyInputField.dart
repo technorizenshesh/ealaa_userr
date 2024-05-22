@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../import_ealaa_user.dart';
 import 'MyColors.dart';
@@ -422,6 +423,7 @@ class CustomTextFieldwithoutshadow extends StatelessWidget {
   final double? paddingsuffix;
   final TextInputType keyBoardType;
   final bool readonly;
+  final Function()? onTap;
   final Function()? onTapsuffix;
   final double? width;
 
@@ -448,7 +450,7 @@ class CustomTextFieldwithoutshadow extends StatelessWidget {
     required this.labelText,
     this.keyBoardType = TextInputType.text,
     this.readonly = false,
-    this.onTapsuffix, this.width,
+    this.onTapsuffix, this.width, this.onTap,
   }) : super(key: key);
 
   @override
@@ -458,6 +460,7 @@ class CustomTextFieldwithoutshadow extends StatelessWidget {
       // SizedBox(height: 8,),
      Container(width: width,
      child:  TextFormField(
+       onTap: onTap,
        style: TextStyle(
          color: Colors.black,
          fontSize: fontsize,
@@ -475,7 +478,9 @@ class CustomTextFieldwithoutshadow extends StatelessWidget {
          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: MyColors.primaryColor),
              borderRadius: BorderRadius
              .circular(10)),
-         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffF7F8F8)),borderRadius: BorderRadius
+         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: 
+         Colors.grey.withOpacity(0.2)),
+             borderRadius: BorderRadius
              .circular(10)),
          border: OutlineInputBorder(borderSide: BorderSide(color: Color(0xffF7F8F8)),
              borderRadius:
@@ -513,6 +518,174 @@ class CustomTextFieldwithoutshadow extends StatelessWidget {
        ),
      ));
 
+  }
+}
+
+
+
+class CommonWidgets {
+  static Widget commonTextFieldForLoginSignUP(
+      {double? elevation,
+        String? hintText,
+        String? labelText,
+        String? errorText,
+        String? title,
+        TextStyle? titleStyle,
+        EdgeInsetsGeometry? contentPadding,
+        TextEditingController? controller,
+        int? maxLines,
+        double? cursorHeight,
+        bool wantBorder = false,
+        ValueChanged<String>? onChanged,
+        FormFieldValidator<String>? validator,
+        Color? fillColor,
+        Color? initialBorderColor,
+        double? initialBorderWidth,
+        TextInputType? keyboardType,
+        double? borderRadius,
+        double? maxHeight,
+        TextStyle? hintStyle,
+        TextStyle? style,
+        TextStyle? labelStyle,
+        TextStyle? errorStyle,
+        List<TextInputFormatter>? inputFormatters,
+        TextCapitalization textCapitalization = TextCapitalization.none,
+        bool autofocus = false,
+        bool readOnly = false,
+        bool hintTextColor = false,
+        Widget? suffixIcon,
+        Widget? prefixIcon,
+        AutovalidateMode? autoValidateMode,
+        int? maxLength,
+        GestureTapCallback? onTap,
+        bool obscureText = false,
+        FocusNode? focusNode,
+        bool? filled,
+        bool isCard = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "$title",
+          style: GoogleFonts.poppins(
+              color: isCard ? MyColors.primaryColor : Colors.grey,
+              fontSize: 15,
+              fontWeight: FontWeight.w500),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: isCard ? MyColors.primaryColor : Colors.grey, width: 2),
+            borderRadius: BorderRadius.circular(borderRadius ?? 40),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                prefixIcon != null
+                    ? Row(children: [
+                  prefixIcon,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    child: Container(
+                      width: 1.4,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: isCard ? MyColors.primaryColor : Colors.grey,
+                      ),
+                    ),
+                  ),
+                ])
+                    : const SizedBox(),
+                Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            // CommonMethods.textViewLinearGradient(
+                            //     text: title, value: isCard),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 24,
+                          child: TextFormField(
+                            focusNode: focusNode,
+                            obscureText: obscureText,
+                            onTap: onTap,
+                            maxLength: maxLength,
+                            cursorHeight: cursorHeight,
+                            cursorColor: MyColors.primaryColor,
+                            autovalidateMode: autoValidateMode,
+                            controller: controller,
+                            onChanged: onChanged ??
+                                    (value) {
+                                  value = value.trim();
+                                  if (value.isEmpty ||
+                                      value.replaceAll(" ", "").isEmpty) {
+                                    controller?.text = "";
+                                  }
+                                },
+                            validator: validator,
+                            keyboardType:
+                            keyboardType ?? TextInputType.streetAddress,
+                            readOnly: readOnly,
+                            autofocus: autofocus,
+                            inputFormatters: inputFormatters,
+                            textCapitalization: textCapitalization,
+                            style: GoogleFonts.poppins(),
+                            // style: style ??
+                            //     Theme.of(Get.context!)
+                            //         .textTheme
+                            //         .headlineMedium
+                            //         ?.copyWith(fontSize: 14.px),
+                            decoration: InputDecoration(
+                              errorText: errorText,
+                              counterText: '',
+                              // errorStyle: errorStyle ??
+                              //     Theme.of(Get.context!)
+                              //         .textTheme
+                              //         .titleMedium
+                              //         ?.copyWith(
+                              //         color: Theme.of(Get.context!)
+                              //             .colorScheme
+                              //             .error),
+                              suffixIcon: suffixIcon,
+                              //    prefixIcon: prefixIcon,
+                              hintText: hintText,
+                              labelText: labelText,
+                              labelStyle: labelStyle,
+                              fillColor: fillColor ?? MyColors.primaryColor,
+                              filled: filled ?? false,
+                              contentPadding:
+                              contentPadding ?? EdgeInsets.only(bottom: 10),
+                              // hintStyle: hintStyle ??
+                              //     Theme.of(Get.context!).textTheme.titleMedium,
+                              disabledBorder: InputBorder.none,
+                              border: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

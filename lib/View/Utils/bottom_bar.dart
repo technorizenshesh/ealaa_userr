@@ -1,17 +1,16 @@
 import 'dart:io';
-import 'package:ealaa_userr/View/Screens/ChooseVehicleScreen.dart';
-import 'package:ealaa_userr/View/Screens/HomeMap.dart';
+
 import 'package:ealaa_userr/View/Screens/Tracking.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/material.dart';
 
 import '../Screens/Myorder.dart';
-import '../Screens/UserHomeScreen.dart';
 import '../Screens/profile.dart';
 import 'CustomSnackBar.dart';
 
 class Bottom_bar extends StatefulWidget {
-  const Bottom_bar({ required Key? key,}) : super(key: key);
+  const Bottom_bar({
+    required Key? key,
+  }) : super(key: key);
 
   @override
   Bottom_barState createState() => Bottom_barState();
@@ -37,7 +36,7 @@ class Bottom_barState extends State<Bottom_bar> {
   Future<bool> _onWillPop() async {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       showSnackbar(context, "Press again to exit");
       return Future.value(false);
@@ -72,7 +71,7 @@ class Bottom_barState extends State<Bottom_bar> {
             BottomNavigationBarItem(
                 icon: ImageIcon(
                   AssetImage(
-                 MyImages.order,
+                    MyImages.order,
                   ),
                   size: 22,
                 ),
@@ -96,7 +95,6 @@ class Bottom_barState extends State<Bottom_bar> {
                 ),
                 label: 'Profile',
                 backgroundColor: Color(0xff000000)),
-
           ],
           currentIndex: _currentindex,
           unselectedItemColor: MyColors.secondarycolor,

@@ -16,6 +16,7 @@ import '../Utils/GlobalData.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import '../Utils/webService.dart';
+
 class ShipmentDetailDriverScreen extends StatefulWidget {
   const ShipmentDetailDriverScreen({Key? key}) : super(key: key);
 
@@ -30,7 +31,7 @@ class _ShipmentDetailDriverScreenState
   String currentTime = "";
 
   final imgPicker = ImagePicker();
-   File? productPicture;
+  File? productPicture;
 
   TextEditingController sendername = TextEditingController();
   TextEditingController reicevername = TextEditingController();
@@ -58,14 +59,16 @@ class _ShipmentDetailDriverScreenState
   List<String> sizes = ['cm', 'm'];
   List<CountryResult> countryList = [];
   List<CityResult> cityList = [];
+
 //  List<VehicleCategoryResult> vehicleTypes = [];
-  String pickLat='';
-  String pickLon='';
-  String dropLat='';
-  String dropLon='';
-  Map<String, dynamic> shipmentData={};
+  String pickLat = '';
+  String pickLon = '';
+  String dropLat = '';
+  String dropLon = '';
+  Map<String, dynamic> shipmentData = {};
 
   ShipmentDetailDriverResult? _shipmentDetailResult;
+
   getContriesList() async {
     var res = await Webservices.getMap(get_countries);
     print("status from api ${res}");
@@ -93,6 +96,7 @@ class _ShipmentDetailDriverScreenState
       showSnackbar(context, resdata.message);
     }
   }
+
   //
   // getVehiclesList() async
   // {
@@ -122,7 +126,7 @@ class _ShipmentDetailDriverScreenState
     currentDate();
     getContriesList();
     getCitiesList();
-   // getVehiclesList();
+    // getVehiclesList();
     // TODO: implement initState
     super.initState();
   }
@@ -132,8 +136,7 @@ class _ShipmentDetailDriverScreenState
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body:
-        Container(
+        body: Container(
       height: height,
       child: Stack(
         children: <Widget>[
@@ -208,12 +211,12 @@ class _ShipmentDetailDriverScreenState
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     children: [
-                      sizeBox_mq(context, height: 0.03,width: width),
+                      sizeBox_mq(context, height: 0.03, width: width),
                       MainHeadingText(
                         text: "Shipment Details",
                         fontSize: 20,
                       ),
-                      sizeBox_mq(context, height: 0.03,width: width),
+                      sizeBox_mq(context, height: 0.03, width: width),
                       GestureDetector(
                           onTap: () {
                             _image_camera_dialog(context);
@@ -221,6 +224,13 @@ class _ShipmentDetailDriverScreenState
                           child: productPicture == null
                               ? Center(child: uploadProductContainer())
                               : Center(child: displayImage())),
+                      // sizeBox_mq(context, width: 1, height: 0.02),
+                      // CommonWidgets.commonTextFieldForLoginSignUP(
+                      //
+                      //   title: "Email",
+                      //   controller: sendername,
+                      //   hintText: "Please enter Email Id",
+                      // ),
                       sizeBox_mq(context, width: 1, height: 0.02),
                       CustomTextFieldwithoutshadow(
                         controller: sendername,
@@ -239,22 +249,28 @@ class _ShipmentDetailDriverScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                         Expanded(child:  CustomTextFieldwithoutshadow(
-                           width: width * 0.4,
-                           controller: weight,
-                           hintText: "Weight",
-                           labelText: "Name",
-                           keyBoardType: TextInputType.number,
-                           bgColor: Color(0xffF7F8F8),
-                         ),) ,
-                          SizedBox(width: 20,),
+                          Expanded(
+                            child: CustomTextFieldwithoutshadow(
+                              width: width * 0.4,
+                              controller: weight,
+                              hintText: "Weight",
+                              labelText: "Name",
+                              keyBoardType: TextInputType.number,
+                              bgColor: Color(0xffF7F8F8),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Container(
                             height: 50,
                             width: width * 0.4,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: Color(0xffF7F8F8),
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.2))),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                 value: weightValue,
@@ -293,22 +309,28 @@ class _ShipmentDetailDriverScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                      Expanded(child:     CustomTextFieldwithoutshadow(
-                        width: width * 0.4,
-                        controller: length,
-                        hintText: "Length",
-                        labelText: "Name",
-                        keyBoardType: TextInputType.number,
-                        bgColor: Color(0xffF7F8F8),
-                      ),) ,
-                          SizedBox(width: 20,),
+                          Expanded(
+                            child: CustomTextFieldwithoutshadow(
+                              width: width * 0.4,
+                              controller: length,
+                              hintText: "Length",
+                              labelText: "Name",
+                              keyBoardType: TextInputType.number,
+                              bgColor: Color(0xffF7F8F8),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Container(
                             height: 50,
                             width: width * 0.4,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: Color(0xffF7F8F8),
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.2))),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                 value: sizeValue,
@@ -347,23 +369,28 @@ class _ShipmentDetailDriverScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                        Expanded(child:
-                        CustomTextFieldwithoutshadow(
-                          width: width * 0.4,
-                          controller: widthh,
-                          hintText: "Width",
-                          labelText: "Name",
-                          keyBoardType: TextInputType.number,
-                          bgColor: Color(0xffF7F8F8),
-                        ),) ,
-                          SizedBox(width: 20,),
+                          Expanded(
+                            child: CustomTextFieldwithoutshadow(
+                              width: width * 0.4,
+                              controller: widthh,
+                              hintText: "Width",
+                              labelText: "Name",
+                              keyBoardType: TextInputType.number,
+                              bgColor: Color(0xffF7F8F8),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Container(
                             height: 50,
                             width: width * 0.4,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: Color(0xffF7F8F8),
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.2))),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                 value: sizeValue,
@@ -402,22 +429,28 @@ class _ShipmentDetailDriverScreenState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: CustomTextFieldwithoutshadow(
-                            width: width * 0.4,
-                            controller: heightt,
-                            hintText: "Height",
-                            labelText: "Name",
-                            keyBoardType: TextInputType.number,
-                            bgColor: Color(0xffF7F8F8),
-                          ),),
-                          SizedBox(width: 20,),
+                          Expanded(
+                            child: CustomTextFieldwithoutshadow(
+                              width: width * 0.4,
+                              controller: heightt,
+                              hintText: "Height",
+                              labelText: "Name",
+                              keyBoardType: TextInputType.number,
+                              bgColor: Color(0xffF7F8F8),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Container(
                             height: 50,
                             width: width * 0.4,
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: Color(0xffF7F8F8),
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.2))),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton(
                                 value: sizeValue,
@@ -466,15 +499,15 @@ class _ShipmentDetailDriverScreenState
                         suffixIcon: 'assets/images/arrow.png',
                         paddingsuffix: 17,
                         onTapsuffix: () async {
-                          Map<String,String>data= await Navigator.push(
+                          Map<String, String> data = await Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                       ChoosePickipLocationMap()));
                           print("pickloc.........${data['picklat']}");
                           pickloc.text = data['address']!;
-                          pickLat= data['lat']!;
-                          pickLon= data['lon']!;
+                          pickLat = data['lat']!;
+                          pickLon = data['lon']!;
                           setState(() {});
                         },
                       ),
@@ -488,14 +521,15 @@ class _ShipmentDetailDriverScreenState
                         suffixIcon: 'assets/images/arrow.png',
                         paddingsuffix: 17,
                         onTapsuffix: () async {
-                          Map<String,String>data = await Navigator.push(
+                          Map<String, String> data = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ChoosePickipLocationMap()));
+                                  builder: (context) =>
+                                      ChoosePickipLocationMap()));
                           print("droplat.........${{data['droplat']}}");
                           droploc.text = data['address']!;
-                          dropLat= data['lat']!;
-                          dropLon= data['lon']!;
+                          dropLat = data['lat']!;
+                          dropLon = data['lon']!;
                         },
                       ),
                       sizeBox_mq(context, width: 1, height: 0.02),
@@ -568,12 +602,13 @@ class _ShipmentDetailDriverScreenState
                             } else if (recieverphone.text == "") {
                               showSnackbar(
                                   context, "Enter Reciever Phone number");
-                            }
-                            else {
+                            } else {
                               setShipmentData();
-                              push(context: context,screen:
-                              ChooseVehicleScreen(shipment:shipmentData));
-                            //  addDriverShipmentDetails();
+                              push(
+                                  context: context,
+                                  screen: ChooseVehicleScreen(
+                                      shipment: shipmentData));
+                              //  addDriverShipmentDetails();
                             }
                           }),
                       sizeBox_mq(context, width: 1, height: 0.02),
@@ -587,6 +622,7 @@ class _ShipmentDetailDriverScreenState
       ),
     ));
   }
+
   getCountryList() {
     return Center(
       child: Container(
@@ -594,7 +630,9 @@ class _ShipmentDetailDriverScreenState
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-            color: Color(0xffF7F8F8), borderRadius: BorderRadius.circular(8)),
+            color: Color(0xffF7F8F8),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey.withOpacity(0.2))),
         child: DropdownButtonHideUnderline(
           child: DropdownButton(
             value: countryValue,
@@ -622,7 +660,6 @@ class _ShipmentDetailDriverScreenState
             onChanged: (newValue) {
               setState(() {
                 countryValue = newValue!.toString();
-
               });
             },
           ),
@@ -638,12 +675,14 @@ class _ShipmentDetailDriverScreenState
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-            color: Color(0xffF7F8F8), borderRadius: BorderRadius.circular(8)),
+            color: Color(0xffF7F8F8),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey.withOpacity(0.2))),
         child: DropdownButtonHideUnderline(
           child: DropdownButton(
             value: cityValue,
             icon: const Icon(Icons.keyboard_arrow_down),
-            hint:  Text(
+            hint: Text(
               'Choose City',
               style: TextStyle(
                   color: Colors.grey,
@@ -766,30 +805,25 @@ class _ShipmentDetailDriverScreenState
   }
 
   void openCamera() async {
-    final imgCamera = await imgPicker.pickImage(
-        source: ImageSource.camera);
-    if(imgCamera!=null){
+    final imgCamera = await imgPicker.pickImage(source: ImageSource.camera);
+    if (imgCamera != null) {
       productPicture = await compressImage(File(imgCamera.path));
       print('store image upload by camera $productPicture');
-      setState(() {
-      });
-    }
-    else{
+      setState(() {});
+    } else {
       print("no image is selected");
     }
   }
 
   void openGallery() async {
     var imgGallery = await imgPicker.pickImage(
-        source: ImageSource.gallery,
+      source: ImageSource.gallery,
     );
-    if(imgGallery!=null){
+    if (imgGallery != null) {
       productPicture = await compressImage(File(imgGallery.path));
       print('store image upload by gallery $productPicture');
-      setState(() {
-      });
-    }
-    else{
+      setState(() {});
+    } else {
       print("no image is selected");
     }
   }
@@ -844,7 +878,8 @@ class _ShipmentDetailDriverScreenState
       ),
     );
   }
-  void setShipmentData(){
+
+  void setShipmentData() {
     shipmentData = {
       'shipment_details_users_id': userId,
       'shipment_details_sender_name': sendername.text,
@@ -866,12 +901,11 @@ class _ShipmentDetailDriverScreenState
       'shipment_details_receiver_postal_code': postalcode.text,
       'shipment_details_receiver_house_no': housenumber.text,
       'vehicle_id': categoryValue,
-      'shipment_pick_lat':pickLat,
-      'shipment_pick_lon':pickLon,
-      'shipment_drop_lan':dropLat,
-      'shipment_drop_lon':dropLon,
+      'shipment_pick_lat': pickLat,
+      'shipment_pick_lon': pickLon,
+      'shipment_drop_lan': dropLat,
+      'shipment_drop_lon': dropLon,
       'shipment_details_photo': productPicture,
-
     };
   }
 }

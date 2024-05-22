@@ -18,6 +18,45 @@ class SignupOtp extends StatefulWidget {
 }
 
 class _SignupOtpState extends State<SignupOtp> {
+  int timerSeconds = 60; // Initial timer duration
+  late Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (timerSeconds > 0) {
+          timerSeconds--;
+        } else {
+          timer.cancel();
+          expireOtp(); // Call expireOtp function when timer reaches 0
+
+          // Handle OTP expiry here
+        }
+      });
+    });
+  }
+
+  expireOtp()async{
+    var res = await Webservices.getMap(
+        "$baseUrl$otp_expire?user_id=$userId&type=user");
+    print("status from apii ${res}");
+    final resdata = GeneralModel.fromJson(res);
+    if (resdata.status == '1') {
+    } else {}
+  }
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+
   verifyOtp(String otp) async {
     Map<String, dynamic> data = {
       "user_id": userId,
@@ -44,9 +83,10 @@ class _SignupOtpState extends State<SignupOtp> {
     print("status from api ${res}");
     final resdata = GeneralModel.fromJson(res);
     if (resdata.status == '1') {
+      timerSeconds = 60;
+      startTimer();
       showSnackbar(context, resdata.message!);
     } else {
-      showSnackbar(context, resdata.message!);
     }
   }
   @override
@@ -55,33 +95,61 @@ class _SignupOtpState extends State<SignupOtp> {
     final width= MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child:
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: height*0.05,),
-            Center(
-                   child:
-                Image.asset("assets/images/CheckMailImage.png",height: 200,)
-
-            ),
-            SizedBox(height: height*0.01,),
-            Center(child: MainHeadingText(text: 'Check your mail',fontSize:22 ,)),
-            SizedBox(height: height*0.01,),
-            Center(child: ParagraphText(text: "Please put the 4 digits sent to you")),
-            SizedBox(height: height*0.05,),
-            _otp_field(),
-            SizedBox(height: height*0.05,),
-            Center(child: TextButton(onPressed: () {
-              resendOtp();
-            }, child: Text("Resend OTP",style: TextStyle(color:
-            MyColors
-                .primaryColor,fontWeight: FontWeight.bold), ),)
-              ,),
-          ],),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child:
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: height*0.05,),
+              Center(
+                     child:
+                  Image.asset("assets/images/CheckMailImage.png",height: 200,)
+        
+              ),
+              SizedBox(height: height*0.01,),
+              Center(child: MainHeadingText(text: 'Check your Mail/Mobile',
+                fontSize:22 ,)),
+              SizedBox(height: height*0.01,),
+              Center(child: ParagraphText(text: "Please put the 4 digits sent to you")),
+              SizedBox(height: height*0.05,),
+              _otp_field(),
+              SizedBox(height: height*0.05,),
+              Center(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if(timerSeconds==0){
+                          resendOtp();
+                        }
+                      },
+                      child: Text(
+                        " Resend OTP",
+                        style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: timerSeconds==0?MyColors
+                                .primaryColor:Colors.grey),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.001,
+                    ),
+                    timerSeconds==0?Container():Text(
+                      '00:${timerSeconds.toString().padLeft(2, '0')}',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              )
+            ],),
+        ),
       ),
                bottomNavigationBar:
          Container(height:150,child:       Column(

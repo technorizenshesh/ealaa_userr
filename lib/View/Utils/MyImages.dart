@@ -1,4 +1,4 @@
-class MyImages{
+class MyImages {
   static const baseUrl = 'assets/images/';
   static const Splash = 'assets/images/eleven_way_logo.png';
   static const Logo = 'assets/images/eleven_way_logo.png';
@@ -54,6 +54,17 @@ class MyImages{
   static const tracking1active = 'assets/images/1 2.png';
   static const tracking2active = 'assets/images/2 22.png';
   static const tracking3active = 'assets/images/3 2.png';
-
+  static const icAdd = 'assets/icons/ic_add.png';
+  static const icProfile = 'assets/icons/ic_profile.png';
+  static const icAds = 'assets/icons/ic_ads.png';
+  static const icChat = 'assets/icons/ic_chat.png';
+  static const icUnlike = 'assets/icons/ic_unlike.png';
+  static const icFilter1 = 'assets/icons/ic_filter1.png';
+  static const icFilter2 = 'assets/icons/ic_filter2.png';
+  static const icEdit = 'assets/icons/ic_edit.png';
+  static const icImogy = 'assets/icons/ic_imogy.png';
+  static const icAd = 'assets/icons/ic_ad.png';
+  static const icLike = 'assets/icons/ic_like.png';
+  static const icSearch = 'assets/icons/ic_search.png';
+  static const icRedHeart = 'assets/icons/ic_red_heart.png';
 }
-
