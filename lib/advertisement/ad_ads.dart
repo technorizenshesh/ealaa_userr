@@ -2,6 +2,13 @@ import 'package:ealaa_userr/advertisement/ad_notification.dart';
 import 'package:ealaa_userr/advertisement/ad_product_detail.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../Model/advertisement_model/get_advertisement_category_model.dart';
+import '../View/Utils/ApiConstants.dart';
+import '../View/Utils/CustomSnackBar.dart';
+import '../View/Utils/GlobalData.dart';
+import '../View/Utils/webService.dart';
 
 class AdAds extends StatefulWidget {
   const AdAds({super.key});
@@ -41,11 +48,13 @@ class _AdAdsState extends State<AdAds> {
   int drawerIndex = 0;
   String notificationCount = "";
 
+  List<GetAdvertisementCategoryResult> getAdvertisementCategoryResult = [];
+
   clickOnItem(String image) {
-    Navigator.push(
+    /* Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AdProductDetail(image: image)),
-    );
+    );*/
   }
 
   clickOnNotification() {
@@ -55,9 +64,25 @@ class _AdAdsState extends State<AdAds> {
     );
   }
 
+  getAdvertisementPostsApi() async {
+    showProgressBar = true;
+    var res = await Webservices.getMap(
+        "$baseUrl$get_all_advertisement_posts?user_id=${userId}");
+    print("status from api ${res}");
+    final resdata = GetAdvertisementCategoryModel.fromJson(res);
+    print(resdata);
+    if (resdata.result != null && resdata.status == '1') {
+      getAdvertisementCategoryResult = resdata.result!;
+      setState(() {});
+    } else {
+      showSnackbar(context, resdata.message ?? '');
+    }
+    showProgressBar = false;
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
+    getAdvertisementPostsApi();
     super.initState();
   }
 
@@ -66,7 +91,8 @@ class _AdAdsState extends State<AdAds> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      key: _key, // Assign the key to Scaffold.
+      key: _key,
+      // Assign the key to Scaffold.
       appBar: AppBar(
         backgroundColor: Colors.orange,
         automaticallyImplyLeading: false,
@@ -101,7 +127,7 @@ class _AdAdsState extends State<AdAds> {
                     child: Stack(
                       children: <Widget>[
                         const Icon(
-                          Icons.notifications,
+                          Icons.notifications_none_rounded,
                           size: 32,
                           color: Colors.white,
                         ), // Your icon here
@@ -229,6 +255,7 @@ class _AdAdsState extends State<AdAds> {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -239,6 +266,29 @@ class _AdAdsState extends State<AdAds> {
         ),
       ),
     );
+  }
+
+  String formatDateTimeToTimeAgo(String? dateTime) {
+    if (dateTime == null) return '';
+
+    DateTime parsedDateTime = DateTime.parse(dateTime);
+    Duration difference = DateTime.now().difference(parsedDateTime);
+
+    if (difference.inDays > 1) {
+      return '${difference.inDays} days ago';
+    } else if (difference.inDays == 1) {
+      return '1 day ago';
+    } else if (difference.inHours > 1) {
+      return '${difference.inHours} hours ago';
+    } else if (difference.inHours == 1) {
+      return '1 hour ago';
+    } else if (difference.inMinutes > 1) {
+      return '${difference.inMinutes} minutes ago';
+    } else if (difference.inMinutes == 1) {
+      return '1 minute ago';
+    } else {
+      return 'just now';
+    }
   }
 
   /// Show Popular Furniture  ...
@@ -262,97 +312,173 @@ class _AdAdsState extends State<AdAds> {
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
-            itemCount: furnitureList.length,
+            itemCount: getAdvertisementCategoryResult.length,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
-              return Card(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
-                elevation: 2,
-                clipBehavior: Clip.hardEdge,
-                margin:
-                    const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
-                child: Container(
-                  height: 230,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdProductDetail(
+                          id: getAdvertisementCategoryResult[index].id ?? ''),
+                    ),
+                  );
+                },
+                child: Card(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.zero,
+                  elevation: 2,
                   clipBehavior: Clip.hardEdge,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Stack(
-                        children: [
-                          Image.asset(
-                            furnitureList[index]['image'] ?? '',
-                            height: 150,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                          ),
-                          Positioned(
-                            top: 5,
-                            right: 5,
-                            child: Image.asset(
-                              MyImages.icUnlike,
-                              height: 30,
-                              width: 30,
-                              fit: BoxFit.fill,
-                            ),
-                          )
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 2, right: 3, bottom: 10, top: 5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  margin: const EdgeInsets.only(
+                      left: 5, right: 5, top: 5, bottom: 5),
+                  child: Container(
+                    height: 230,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    margin: EdgeInsets.zero,
+                    padding: EdgeInsets.zero,
+                    clipBehavior: Clip.hardEdge,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Stack(
+                          alignment: Alignment.topRight,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    furnitureList[index]['name'] ?? '',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: Colors.orange),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    clickOnItem(
-                                        furnitureList[index]['image'] ?? '');
-                                  },
-                                  child: const SizedBox(
-                                    height: 25,
-                                    width: 25,
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 20,
-                                      color: Colors.black54,
+                            ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(25),
+                                  topLeft: Radius.circular(25)),
+                              child: CachedNetworkImage(
+                                imageUrl: getAdvertisementCategoryResult[index]
+                                        .image ??
+                                    '',
+                                height: 150,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Center(
+                                    child: Shimmer.fromColors(
+                                  baseColor:
+                                      MyColors.onSecondary.withOpacity(0.4),
+                                  highlightColor:
+                                      Theme.of(context).colorScheme.onSecondary,
+                                  child: Container(
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      color:
+                                          MyColors.onSecondary.withOpacity(0.4),
                                     ),
                                   ),
-                                )
-                              ],
+                                )),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                             ),
-                            Text(
-                              furnitureList[index]['description'] ?? '',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12,
-                                  color: Colors.black54),
-                              maxLines: 2,
+                            InkWell(
+                              onTap: () async {
+                                showProgressBar = true;
+                                await Webservices.getMap(
+                                    "$baseUrl$advertisement_post_fav?advertisement_post_id=${(getAdvertisementCategoryResult[index].id != null && getAdvertisementCategoryResult[index].id!.isNotEmpty) ? getAdvertisementCategoryResult[index].id! : ''}&user_id=${userId}");
+                                var res = await Webservices.getMap(
+                                    "$baseUrl$get_all_advertisement_posts?user_id=${userId}");
+                                print("status from api ${res}");
+                                final resdata =
+                                    GetAdvertisementCategoryModel.fromJson(res);
+                                print(resdata);
+                                if (resdata.result != null &&
+                                    resdata.status == '1') {
+                                  getAdvertisementCategoryResult =
+                                      resdata.result!;
+                                  setState(() {});
+                                } else {
+                                  showSnackbar(context, resdata.message ?? '');
+                                }
+                                showProgressBar = false;
+                              },
+                              borderRadius: BorderRadius.circular(4),
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                margin: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(4)),
+                                child: Icon(
+                                    getAdvertisementCategoryResult[index]
+                                                    .advertisementPostFav !=
+                                                null &&
+                                            getAdvertisementCategoryResult[
+                                                        index]
+                                                    .advertisementPostFav ==
+                                                'true'
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: Colors.red),
+                              ),
                             )
                           ],
                         ),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                getAdvertisementCategoryResult[index].bedroom ??
+                                    '',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Colors.orange),
+                              ),
+                              Text(
+                                'AED- ${getAdvertisementCategoryResult[index].totalClosingFee ?? ''}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      getAdvertisementCategoryResult[index]
+                                              .describeProperty ??
+                                          '',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 12,
+                                          color: Colors.black54),
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    formatDateTimeToTimeAgo(
+                                        getAdvertisementCategoryResult[index]
+                                                .dateTime ??
+                                            ''),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                        color: Colors.black54),
+                                    maxLines: 2,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );

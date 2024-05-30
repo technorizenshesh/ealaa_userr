@@ -1,5 +1,4 @@
 import 'package:ealaa_userr/advertisement/ad_notification.dart';
-import 'package:ealaa_userr/advertisement/ad_product_detail.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
@@ -43,10 +42,10 @@ class _AdMySaveSearchedState extends State<AdMySaveSearchedView> {
   ];
 
   clickOnItem(String image) {
-    Navigator.push(
+    /* Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AdProductDetail(image: image)),
-    );
+    );*/
   }
 
   clickOnNotification() {
@@ -149,7 +148,14 @@ class _AdMySaveSearchedState extends State<AdMySaveSearchedView> {
                     const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
                 child: GestureDetector(
                   onTap: () {
-                    clickOnItem(rentalList[index]['image'] ?? '');
+                    /*Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdProductDetail(
+                              id: getAdvertisementCategoryResult[index]
+                                  .id ??
+                                  '')),
+                    );*/
                   },
                   child: Container(
                     decoration: const BoxDecoration(

@@ -149,56 +149,52 @@ class CommonWidget {
         baseColor: Colors.grey[300]!,
         highlightColor: Colors.white,
         enabled: enabled,
-        child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: itemCount,
-            padding: EdgeInsets.zero,
-            itemBuilder: (BuildContext context, int index) {
-              return shimmerWidget;
-            }));
+        child: SizedBox(
+          height: height,
+          width: width,
+        ));
   }
 
-  // static void showMyToastMessage(String message) {
-  //   Fluttertoast.showToast(
-  //       msg: message,
-  //       toastLength: Toast.LENGTH_SHORT,
-  //       gravity: ToastGravity.BOTTOM,
-  //       timeInSecForIosWeb: 1,
-  //       textColor: primaryColor,
-  //       backgroundColor: primary3Color,
-  //       fontSize: 16.0);
-  // }
-  //
-  // static Widget customProgressBar(
-  //     {required bool inAsyncCall,
-  //     double? width,
-  //     Widget? child,
-  //     double? height}) {
-  //   return Container(
-  //     height: height ?? double.infinity,
-  //     width: width ?? double.infinity,
-  //     alignment: Alignment.center,
-  //     decoration: BoxDecoration(
-  //       color: inAsyncCall ? Colors.grey.withOpacity(0.5) : primary3Color,
-  //     ),
-  //     child: inAsyncCall
-  //         ? Stack(
-  //             alignment: Alignment.center,
-  //             children: [
-  //               const CircularProgressIndicator(
-  //                 color: primary3Color,
-  //               ),
-  //               appIcons(
-  //                   assetName: IconConstants.icLogo,
-  //                   width: 25,
-  //                   height: 25,
-  //                   fit: BoxFit.fill)
-  //             ],
-  //           )
-  //         : child ?? const SizedBox(),
-  //   );
-  // }
+// static void showMyToastMessage(String message) {
+//   Fluttertoast.showToast(
+//       msg: message,
+//       toastLength: Toast.LENGTH_SHORT,
+//       gravity: ToastGravity.BOTTOM,
+//       timeInSecForIosWeb: 1,
+//       textColor: primaryColor,
+//       backgroundColor: primary3Color,
+//       fontSize: 16.0);
+// }
+//
+// static Widget customProgressBar(
+//     {required bool inAsyncCall,
+//     double? width,
+//     Widget? child,
+//     double? height}) {
+//   return Container(
+//     height: height ?? double.infinity,
+//     width: width ?? double.infinity,
+//     alignment: Alignment.center,
+//     decoration: BoxDecoration(
+//       color: inAsyncCall ? Colors.grey.withOpacity(0.5) : primary3Color,
+//     ),
+//     child: inAsyncCall
+//         ? Stack(
+//             alignment: Alignment.center,
+//             children: [
+//               const CircularProgressIndicator(
+//                 color: primary3Color,
+//               ),
+//               appIcons(
+//                   assetName: IconConstants.icLogo,
+//                   width: 25,
+//                   height: 25,
+//                   fit: BoxFit.fill)
+//             ],
+//           )
+//         : child ?? const SizedBox(),
+//   );
+// }
 }
 
 enum ErrorAnimationType { shake, clear }

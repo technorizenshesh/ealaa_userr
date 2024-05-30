@@ -3,12 +3,13 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+
 import 'CustomSnackBar.dart';
 
 class Webservices {
   static Future<http.Response> getData(String url) async {
     http.Response response =
-    http.Response('{"message":"failure","status":0}', 404);
+        http.Response('{"message":"failure","status":0}', 404);
     log('called $url');
     try {
       response = await http.get(
@@ -48,41 +49,39 @@ class Webservices {
   //
   //   return jsonResponse;
   // }
-  static Future<Map<String, dynamic>> postData({required String apiUrl,
-    required Map<String, dynamic> body,
-    bool showSuccessMessage = false,
-    required BuildContext context}) async {
+  static Future<Map<String, dynamic>> postData(
+      {required String apiUrl,
+      required Map<String, dynamic> body,
+      bool showSuccessMessage = false,
+      required BuildContext context}) async {
     http.Response response =
-    http.Response('{"message":"failure","status":0}', 404);
+        http.Response('{"message":"failure","status":0}', 404);
     try {
-     // log('the request for $apiUrl is $body');
+      // log('the request for $apiUrl is $body');
       response = await http.post(Uri.parse(apiUrl), body: body);
       print("rererer.......$response");
-     // log('123456789ssss-----333--------${response.body}');
+      // log('123456789ssss-----333--------${response.body}');
 
       if (response.statusCode == 200) {
         print('api response-------------${response.body}');
         var jsonResponse = convert.jsonDecode(response.body);
         if (jsonResponse['status'].toString() == '1') {
           if (showSuccessMessage)
-             showSnackbar(context, jsonResponse['message']);
-            return jsonResponse;
+            showSnackbar(context, jsonResponse['message']);
+          return jsonResponse;
         } else {
-           showSnackbar(context, jsonResponse['message']);
+          showSnackbar(context, jsonResponse['message']);
         }
         return jsonResponse;
-      }
-      else if(response.statusCode == 500){
+      } else if (response.statusCode == 500) {
         print('api response-------------${response.body}');
       }
     } catch (e) {
-      showSnackbar(context, e.toString()
-      );
+      showSnackbar(context, e.toString());
       log('Error in $apiUrl : ------ $e');
     }
     print(
-        'Error in api failed of url $apiUrl with response code ${response
-            .statusCode} and body ${response.body}');
+        'Error in api failed of url $apiUrl with response code ${response.statusCode} and body ${response.body}');
     log(response.body);
     return {"status": 0, "message": "api failed"};
   }
@@ -120,7 +119,7 @@ class Webservices {
       } else {
         response = await http.post(Uri.parse(url), body: tempRequest);
       }
-      if (response.statusCode == 200  || response.statusCode == 201 ) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         var jsonResponse = convert.jsonDecode(response.body);
         if (jsonResponse['status'].toString() == '1') {
           // log('the respognse for url: $url is ${jsonResponse}');
@@ -146,6 +145,7 @@ class Webservices {
 
     return {};
   }
+
   static Future<Map<String, dynamic>> getMethod(String url,
       {Map<String, dynamic>? request, bool allData = false}) async {
     Map<String, dynamic> tempRequest = {};
@@ -192,23 +192,22 @@ class Webservices {
 
   static Future<Map<String, dynamic>> getList(String url) async {
     var response = await getData(url);
-    if (response.statusCode == 200  || response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       var jsonResponse = convert.jsonDecode(response.body);
       if (jsonResponse['status'].toString() == '1') {
         log('the response for url: $url is ${jsonResponse}');
-    //    return jsonResponse['result'] ?? [];
+        //    return jsonResponse['result'] ?? [];
         return jsonResponse;
       } else {
         log('Error in response for url $url -----${response.body}');
         return jsonResponse;
-
       }
     }
     return {"status": 0, "message": "api failed"};
   }
 
-  static Future<List> getListFromRequestParameters(String url,
-      Map<String, dynamic> request) async {
+  static Future<List> getListFromRequestParameters(
+      String url, Map<String, dynamic> request) async {
     Map<String, dynamic> tempRequest = {};
     request.forEach((key, value) {
       if (value != null) {
@@ -286,14 +285,14 @@ class Webservices {
       print(e);
       try {
         var response = await http.post(url, body: body);
-        if (response.statusCode == 200  || response.statusCode == 201 ) {
+        if (response.statusCode == 200 || response.statusCode == 201) {
           var jsonResponse = convert.jsonDecode(response.body);
           return jsonResponse;
         }
       } catch (error) {
         print('inside double catch block $error');
       }
-      return {'result':null,'status': "0", 'message': "fail"};
+      return {'result': null, 'status': "0", 'message': "fail"};
       // return null;
     }
   }
@@ -325,8 +324,8 @@ class Webservices {
 //   }
 // }
 
-/// make booking api console
-/// Error in api failed of url https://www.bluediamondresearch.com/WEB01/Teleheath/Api/User_api/makeBooking with response code 500 and
+  /// make booking api console
+  /// Error in api failed of url https://www.bluediamondresearch.com/WEB01/Teleheath/Api/User_api/makeBooking with response code 500 and
 // <div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
 //
 // <h4>An uncaught Exception was encountered</h4>

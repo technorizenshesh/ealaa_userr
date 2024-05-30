@@ -1,5 +1,4 @@
 import 'package:ealaa_userr/advertisement/ad_notification.dart';
-import 'package:ealaa_userr/advertisement/ad_product_detail.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
@@ -45,10 +44,10 @@ class _AdMyFavoritesState extends State<AdMyFavorites> {
   ];
 
   clickOnItem(String image) {
-    Navigator.push(
+    /*Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AdProductDetail(image: image)),
-    );
+    );*/
   }
 
   clickOnNotification() {
