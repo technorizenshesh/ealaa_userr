@@ -1,4 +1,5 @@
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CommonWidget {
@@ -198,3 +199,64 @@ class CommonWidget {
 }
 
 enum ErrorAnimationType { shake, clear }
+
+
+commonTextFormField(
+    {required String hintText,
+      int? maxLines = 1,
+      GestureTapCallback? onTap,
+      bool readOnly = false,
+      double? width,
+      bool suffixIcon = false,
+
+      TextEditingController? controller}) {
+  return Container(
+    width: width,
+    child: TextFormField(
+      maxLines: maxLines,
+      readOnly: readOnly,
+      onTap: onTap,
+      controller: controller,
+      cursorColor: Colors.orange,
+      decoration: InputDecoration(
+        suffixIcon: suffixIcon
+            ? const Icon(CupertinoIcons.arrowtriangle_down_circle,
+            color: Colors.orange)
+            : null,
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 16,
+          color: Colors.black54,
+        ),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+          borderSide: BorderSide(
+            color: Colors.grey,
+            width: 1,
+          ),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+          borderSide: BorderSide(
+            color: Colors.orange,
+            width: 1,
+          ),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+          borderSide: BorderSide(
+            color: Colors.grey,
+            width: 1,
+          ),
+        ),
+      ),
+    ),
+  );
+}

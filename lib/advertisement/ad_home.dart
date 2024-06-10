@@ -39,48 +39,7 @@ class _AdHomeState extends State<AdHome> {
     {'name': "Sale Property", 'image': "assets/icons/ic_category3.png"},
   ];
 
-  List<Map<String, String>> rentalList = [
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_house1.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_home2.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_house1.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_home2.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_house1.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_home2.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_house1.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_home2.png"
-    },
-  ];
+
   List<Map<String, String>> carList = [
     {
       'name': "AED- 33,000",
@@ -179,7 +138,7 @@ class _AdHomeState extends State<AdHome> {
         "$baseUrl$get_all_advertisement_posts?user_id=${userId}");
     print("status from api ${res}");
     final resdata = GetAdvertisementCategoryModel.fromJson(res);
-    print(resdata);
+    print(res);
     if (resdata.result != null && resdata.status == '1') {
       getAdvertisementPostsCategoryResult = resdata.result!;
       setState(() {});
@@ -355,7 +314,7 @@ class _AdHomeState extends State<AdHome> {
                     ),
                   ),
                 ),
-              showPopularRental(),
+              showPopularPosts(),
               /*const ListTile(
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 5, vertical: 0),
@@ -508,7 +467,7 @@ class _AdHomeState extends State<AdHome> {
   }
 
   /// Show Popular Rental  ...
-  Widget showPopularRental() {
+  Widget showPopularPosts() {
     return showProgressBar
         ? CommonWidget.commonShimmer(
             itemCount: 4,
@@ -528,7 +487,7 @@ class _AdHomeState extends State<AdHome> {
                 childAspectRatio: 100,
                 maxCrossAxisExtent: 140,
                 mainAxisExtent: 170,
-                mainAxisSpacing: 4),
+                mainAxisSpacing: 20,crossAxisSpacing: 10),
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: getAdvertisementPostsCategoryResult.length,
@@ -647,9 +606,7 @@ class _AdHomeState extends State<AdHome> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                getAdvertisementPostsCategoryResult[index]
-                                        .bedroom ??
-                                    'Product',
+                                getAdvertisementPostsCategoryResult[index].describeProperty??"dsd",
                                 maxLines: 1,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -660,210 +617,6 @@ class _AdHomeState extends State<AdHome> {
                                 getAdvertisementPostsCategoryResult[index]
                                         .describeProperty ??
                                     '',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12,
-                                    color: Colors.black54),
-                                maxLines: 2,
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-  }
-
-  /// Show Popular Cars  ...
-  Widget showPopularCars() {
-    return showProgressBar
-        ? CommonWidget.commonShimmer(
-            itemCount: 4,
-            shimmerWidget: Container(
-              height: 100,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              margin:
-                  const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 2),
-              clipBehavior: Clip.hardEdge,
-            ))
-        : ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            itemCount: carList.length,
-            itemBuilder: (context, int index) {
-              //  GetClubsResult item = controller.getClubsModel!.result![index];
-              return Card(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                elevation: 2,
-                clipBehavior: Clip.hardEdge,
-                margin:
-                    const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
-                child: GestureDetector(
-                  onTap: () {
-                    clickOnItem(carList[index]['image'] ?? '');
-                  },
-                  child: Container(
-                    height: 160,
-                    width: 110,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                    margin: EdgeInsets.zero,
-                    clipBehavior: Clip.hardEdge,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            Image.asset(
-                              carList[index]['image'] ?? '',
-                              height: 85,
-                              width: 110,
-                              fit: BoxFit.fill,
-                            ),
-                            Positioned(
-                              top: 5,
-                              right: 2,
-                              child: Image.asset(
-                                MyImages.icUnlike,
-                                height: 30,
-                                width: 30,
-                                fit: BoxFit.fill,
-                              ),
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 2, right: 3, bottom: 10, top: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                carList[index]['name'] ?? '',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                    color: Colors.orange),
-                              ),
-                              Text(
-                                carList[index]['description'] ?? '',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 12,
-                                    color: Colors.black54),
-                                maxLines: 2,
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-  }
-
-  /// Show Popular Furniture  ...
-  Widget showPopularFurniture() {
-    return showProgressBar
-        ? CommonWidget.commonShimmer(
-            itemCount: 4,
-            shimmerWidget: Container(
-              height: 100,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              margin:
-                  const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 2),
-              clipBehavior: Clip.hardEdge,
-            ))
-        : ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            itemCount: furnitureList.length,
-            itemBuilder: (context, int index) {
-              //  GetClubsResult item = controller.getClubsModel!.result![index];
-              return Card(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                elevation: 2,
-                clipBehavior: Clip.hardEdge,
-                margin:
-                    const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
-                child: GestureDetector(
-                  onTap: () {
-                    clickOnItem(furnitureList[index]['image'] ?? '');
-                  },
-                  child: Container(
-                    height: 160,
-                    width: 110,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                    margin: EdgeInsets.zero,
-                    clipBehavior: Clip.hardEdge,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            Image.asset(
-                              furnitureList[index]['image'] ?? '',
-                              height: 85,
-                              width: 110,
-                              fit: BoxFit.fill,
-                            ),
-                            Positioned(
-                              top: 5,
-                              right: 2,
-                              child: Image.asset(
-                                MyImages.icUnlike,
-                                height: 30,
-                                width: 30,
-                                fit: BoxFit.fill,
-                              ),
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 2, right: 3, bottom: 10, top: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                furnitureList[index]['name'] ?? '',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                    color: Colors.orange),
-                              ),
-                              Text(
-                                furnitureList[index]['description'] ?? '',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12,

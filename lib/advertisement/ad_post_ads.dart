@@ -12,6 +12,7 @@ import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CommonMethods.dart';
 import '../View/Utils/GlobalData.dart';
 import '../View/Utils/webService.dart';
+import '../common/common_widgets.dart';
 
 class AdPostAds extends StatefulWidget {
   const AdPostAds({super.key});
@@ -351,61 +352,6 @@ class _AdMyAdsState extends State<AdPostAds> {
               ),
               const SizedBox(height: 10),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  commonTextFormField(
-      {required String hintText,
-      int? maxLines = 1,
-      GestureTapCallback? onTap,
-      bool readOnly = false,
-      bool suffixIcon = false,
-      TextEditingController? controller}) {
-    return TextFormField(
-      maxLines: maxLines,
-      readOnly: readOnly,
-      onTap: onTap,
-      controller: controller,
-      cursorColor: Colors.orange,
-      decoration: InputDecoration(
-        suffixIcon: suffixIcon
-            ? const Icon(CupertinoIcons.arrowtriangle_down_circle,
-                color: Colors.orange)
-            : null,
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          fontWeight: FontWeight.normal,
-          fontSize: 16,
-          color: Colors.black54,
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-          borderSide: BorderSide(
-            color: Colors.grey,
-            width: 1,
-          ),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-          borderSide: BorderSide(
-            color: Colors.orange,
-            width: 1,
-          ),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-          borderSide: BorderSide(
-            color: Colors.grey,
-            width: 1,
           ),
         ),
       ),

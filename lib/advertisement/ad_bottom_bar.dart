@@ -5,6 +5,8 @@ import 'package:ealaa_userr/advertisement/ad_post_ads.dart';
 import 'package:ealaa_userr/advertisement/ad_profile.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
+import 'ad_selectCity.dart';
+
 class AdBottomBar extends StatefulWidget {
   const AdBottomBar({super.key});
 
@@ -24,7 +26,8 @@ class AdBottomBarState extends State<AdBottomBar> {
   final pages = [
     const AdHome(),
     const AdAds(),
-    const AdPostAds(),
+    const AdSelectCity(),
+    //const AdPostAds(),
     const AdChats(),
     const AdProfile(),
   ];

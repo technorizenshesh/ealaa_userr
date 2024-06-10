@@ -9,7 +9,8 @@ class AppColors {
 
   static const blueColor = Color(0xFF0577E0);
   static const lightGrey = Color(0xFFB4B4B4);
-  static const kwhiteColor = Colors.white;
+  static const grey = Color(0xff444540);
+   static const kwhiteColor = Colors.white;
 
   static const whiteColor = Colors.white;
   static const kAmberColor = Colors.amber;

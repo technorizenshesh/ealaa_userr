@@ -42,7 +42,6 @@ class _AdAdsState extends State<AdProductDetail> {
     }
     showProgressBar = false;
   }
-
   @override
   void initState() {
     getAdvertisementDetailsApi();
