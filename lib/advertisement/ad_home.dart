@@ -1,12 +1,15 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/advertisement/ad_notification.dart';
 import 'package:ealaa_userr/advertisement/ad_product_detail.dart';
 import 'package:ealaa_userr/advertisement/ad_sub_categories.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../View/Utils/ApiConstants.dart';
@@ -161,6 +164,7 @@ class _AdHomeState extends State<AdHome> {
       appBar: AppBar(
         toolbarHeight: 70,
         automaticallyImplyLeading: false,
+        scrolledUnderElevation: 0,
         title: Container(
           height: 50,
           decoration: BoxDecoration(
@@ -246,43 +250,87 @@ class _AdHomeState extends State<AdHome> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              if (getAdvertisementCategoryResult.isNotEmpty)
-                ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                  title: const Text(
-                    'Categories',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange),
-                  ),
-                  trailing: InkWell(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    onTap: () async {
-                      await Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const AdViewAllCategories();
-                      }));
-                      getAdvertisementPostsApi();
-                    },
-                    child: const Text(
-                      'View All',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black54,
-                          decoration: TextDecoration.underline),
+              CarouselSlider.builder(
+                options: CarouselOptions(
+                  height: 150,
+                  //height: MediaQuery.of(context).size.height / 6,
+                  aspectRatio: 10.5 / 9,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  viewportFraction: 1,
+                  enlargeCenterPage: true,
+                  enableInfiniteScroll: false,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
+                  onPageChanged: (index, reason) =>
+                      setState(() => activeIndex = index),
+                ),
+                itemCount: bannerList.length,
+                itemBuilder: (context, int index, int realIndex) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.network(
+                        bannerList[index].image,
+                        fit: BoxFit.fill,
+                      ),
                     ),
+                  );
+                },
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.01,
+              ),
+              Center(
+                child: AnimatedSmoothIndicator(
+                  activeIndex: activeIndex,
+                  count: bannerList.length,
+                  effect: const ExpandingDotsEffect(
+                    dotHeight: 6,
+                    dotWidth: 6,
+                    activeDotColor: MyColors.primaryColor,
+                    dotColor: Color(0xffD9D9D9),
                   ),
                 ),
+              ),
+              SizedBox(height: 15,),
+              // if (getAdvertisementCategoryResult.isNotEmpty)
+              //   ListTile(
+              //     contentPadding:
+              //         const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+              //     title: const Text(
+              //       'Categories',
+              //       style: TextStyle(
+              //           fontSize: 16,
+              //           fontWeight: FontWeight.bold,
+              //           color: Colors.orange),
+              //     ),
+              //     trailing: InkWell(
+              //       borderRadius: const BorderRadius.all(Radius.circular(8)),
+              //       onTap: () async {
+              //         await Navigator.push(context,
+              //             MaterialPageRoute(builder: (context) {
+              //           return const AdViewAllCategories();
+              //         }));
+              //         getAdvertisementPostsApi();
+              //       },
+              //       child: const Text(
+              //         'View All',
+              //         style: TextStyle(
+              //             fontSize: 14,
+              //             fontWeight: FontWeight.normal,
+              //             color: Colors.black54,
+              //             decoration: TextDecoration.underline),
+              //       ),
+              //     ),
+              //   ),
               if (getAdvertisementCategoryResult.isNotEmpty)
                 SizedBox(
-                  height: 110,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: showCategory(),
-                  ),
+                  height: MediaQuery.of(context).size.height*0.8,
+                //  height: 110,
+                  child: showCategory(),
                 ),
               if (getAdvertisementPostsCategoryResult.isNotEmpty)
                 ListTile(
@@ -390,80 +438,165 @@ class _AdHomeState extends State<AdHome> {
                   const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 2),
               clipBehavior: Clip.hardEdge,
             ))
-        : ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            shrinkWrap: true,
-            //padding: EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            itemCount: getAdvertisementCategoryResult.length,
-            itemBuilder: (context, int index) {
-              //  GetClubsResult item = controller.getClubsModel!.result![index];
-              return GestureDetector(
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AdSubCategories(
-                        title: getAdvertisementCategoryResult[index].name ?? '',
-                        advertisement_category_id:
-                            getAdvertisementCategoryResult[index].id ?? '',
-                      ),
-                    ),
-                  );
-                  getAdvertisementPostsApi();
-                },
-                child: Container(
-                  height: 110,
-                  width: 110,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      border: Border.all(
-                          color: Colors.orangeAccent.withOpacity(0.7),
-                          width: 2)),
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  clipBehavior: Clip.hardEdge,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              getAdvertisementCategoryResult[index].image ?? '',
-                          height: 60,
-                          fit: BoxFit.fill,
-                          placeholder: (context, url) => Center(
-                              child: Shimmer.fromColors(
-                            baseColor: MyColors.onSecondary.withOpacity(0.4),
+        :
+
+    GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,mainAxisExtent: 100),
+      itemCount: getAdvertisementCategoryResult.length,
+      itemBuilder: (context, int index) {
+        //  GetClubsResult item = controller.getClubsModel!.result![index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AdSubCategories(
+                  title: getAdvertisementCategoryResult[index].name ??
+                      '',
+                  advertisement_category_id:
+                  getAdvertisementCategoryResult[index].id ?? '',
+                ),
+              ),
+            );
+          },
+          child: Container(
+            height: 50,
+            width: 100,
+            decoration: BoxDecoration(
+                borderRadius:
+                const BorderRadius.all(Radius.circular(15)),
+            ),
+            margin: const EdgeInsets.only(
+                left: 5, right: 5, top: 5, bottom: 5),
+            // padding: const EdgeInsets.only(
+            //     left: 3, right: 3, top: 5, bottom: 5),
+            clipBehavior: Clip.hardEdge,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 200, // Set the width of the image here
+                  height: 60,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl:
+                      getAdvertisementCategoryResult[index].image ??
+                          '',
+                      height: 60,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                          child: Shimmer.fromColors(
+                            baseColor:
+                            MyColors.onSecondary.withOpacity(0.4),
                             highlightColor:
-                                Theme.of(context).colorScheme.onSecondary,
+                            Theme.of(context).colorScheme.onSecondary,
                             child: Container(
                               height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
-                                color: MyColors.onSecondary.withOpacity(0.4),
+                                color:
+                                MyColors.onSecondary.withOpacity(0.4),
                               ),
                             ),
                           )),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
-                      ),
-                      Text(
-                        getAdvertisementCategoryResult[index].name ?? '',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 13,
-                            color: Colors.black54),
-                      )
-                    ],
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.error),
+                    ),
                   ),
                 ),
-              );
-            },
-          );
+                SizedBox(height: 5,),
+                Text(
+                  getAdvertisementCategoryResult[index].name ?? '',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                      color: Colors.black54),
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    // ListView.builder(
+    //         physics: const BouncingScrollPhysics(),
+    //         shrinkWrap: true,
+    //         //padding: EdgeInsets.zero,
+    //         scrollDirection: Axis.horizontal,
+    //         itemCount: getAdvertisementCategoryResult.length,
+    //         itemBuilder: (context, int index) {
+    //           //  GetClubsResult item = controller.getClubsModel!.result![index];
+    //           return GestureDetector(
+    //             onTap: () async {
+    //               await Navigator.push(
+    //                 context,
+    //                 MaterialPageRoute(
+    //                   builder: (context) => AdSubCategories(
+    //                     title: getAdvertisementCategoryResult[index].name ?? '',
+    //                     advertisement_category_id:
+    //                         getAdvertisementCategoryResult[index].id ?? '',
+    //                   ),
+    //                 ),
+    //               );
+    //               getAdvertisementPostsApi();
+    //             },
+    //             child: Container(
+    //               height: 110,
+    //               width: 110,
+    //               decoration: BoxDecoration(
+    //                   color: Colors.white,
+    //                   borderRadius: const BorderRadius.all(Radius.circular(15)),
+    //                   border: Border.all(
+    //                       color: Colors.orangeAccent.withOpacity(0.7),
+    //                       width: 2)),
+    //               margin: const EdgeInsets.symmetric(horizontal: 4),
+    //               clipBehavior: Clip.hardEdge,
+    //               child: Column(
+    //                 crossAxisAlignment: CrossAxisAlignment.center,
+    //                 mainAxisAlignment: MainAxisAlignment.center,
+    //                 children: [
+    //                   ClipRRect(
+    //                     borderRadius: BorderRadius.circular(10),
+    //                     child: CachedNetworkImage(
+    //                       imageUrl:
+    //                           getAdvertisementCategoryResult[index].image ?? '',
+    //                       height: 60,
+    //                       fit: BoxFit.fill,
+    //                       placeholder: (context, url) => Center(
+    //                           child: Shimmer.fromColors(
+    //                         baseColor: MyColors.onSecondary.withOpacity(0.4),
+    //                         highlightColor:
+    //                             Theme.of(context).colorScheme.onSecondary,
+    //                         child: Container(
+    //                           height: 60,
+    //                           decoration: BoxDecoration(
+    //                             borderRadius: BorderRadius.circular(16),
+    //                             color: MyColors.onSecondary.withOpacity(0.4),
+    //                           ),
+    //                         ),
+    //                       )),
+    //                       errorWidget: (context, url, error) =>
+    //                           const Icon(Icons.error),
+    //                     ),
+    //                   ),
+    //                   Text(
+    //                     getAdvertisementCategoryResult[index].name ?? '',
+    //                     style: const TextStyle(
+    //                         fontWeight: FontWeight.normal,
+    //                         fontSize: 13,
+    //                         color: Colors.black54),
+    //                   )
+    //                 ],
+    //               ),
+    //             ),
+    //           );
+    //         },
+    //       );
   }
 
   /// Show Popular Rental  ...
