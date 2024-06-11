@@ -1,10 +1,10 @@
-import 'dart:io';
 
 import 'package:ealaa_userr/View/Utils/bottom_bar.dart';
-
 import '../../Model/BannerModel.dart';
 import '../../Model/ProfileModel.dart';
+import '../../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../../import_ealaa_user.dart';
+import 'package:ealaa_userr/Model/advertisement_model/BannerModel.dart';
 
 var userToken;
 var userId;
@@ -36,3 +36,9 @@ int cancelNotification=0;
 // bool isPermissionGranted = await requestPermission();
 
 int currentindex = 0;
+
+
+//Ads Module
+
+List<AdsBannerResult> adsBannerList = [];
+List<GetAdvertisementCategoryResult> advertisementCategoryList = [];

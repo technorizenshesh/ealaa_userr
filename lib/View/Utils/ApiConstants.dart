@@ -57,7 +57,9 @@ final get_user_order_details = baseUrl + "get_user_order_details";
 final get_store_payment = baseUrl + "get_store_payment";
 
 //advertisement
+const get_advertise_banner = 'get_advertise_banner';
 const get_all_advertisement_posts = 'get_all_advertisement_posts';
+const get_advertisement_category_post = 'get_advertisement_category_post';
 const advertisement_post_fav = 'advertisement_post_fav';
 const get_advertisement_details = 'get_advertisement_details';
 const get_advertisement_posts_category = 'get_advertisement_posts_category';
