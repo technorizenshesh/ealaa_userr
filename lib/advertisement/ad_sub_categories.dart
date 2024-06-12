@@ -30,6 +30,7 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
   List<SubcategoryResult> subcategoryList = [];
   SubcategoryResult? selectedSubcategory;
   List<GetAdvertisementCategoryResult> getAdvertisementPostsCategoryResult = [];
+  String postCount = "0";
 
   getAdSubcategory() async {
     var res = await Webservices.getMap(
@@ -40,7 +41,8 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
       subcategoryList = resdata.result!;
-      selectedSubcategory = subcategoryList[0];
+      postCount = resdata.count ?? "0";
+      //  selectedSubcategory = subcategoryList[0];
       setState(() {});
     } else {
       showSnackbar(context, resdata.message ?? '');
@@ -101,22 +103,22 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
               child: RoundButton(
                 borderRadius: 8,
-                title: "Next",
+                title: "${postCount} ${widget.title}",
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostByCategory(
-                            advertisement_category_id:
-                                widget.advertisement_category_id,
-                            selectedSubcategory: selectedSubcategory!),
-                      ));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => PostByCategory(
+                  //           advertisement_category_id:
+                  //               widget.advertisement_category_id,
+                  //           selectedSubcategory: selectedSubcategory!),
+                  //     ));
                 },
               ),
             ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
             child: showProgressBar
                 ? Center(
                     child: CircularProgressIndicator(
@@ -125,29 +127,163 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
                   )
                 : subcategoryList.isEmpty
                     ? Image.asset("assets/images/NoDataFound.png")
-                    : Column(
-                        children: [
-                          for (int i = 0; i < subcategoryList.length; i++)
-                            RadioListTile(
-                                activeColor: Colors.orange,
-                                title: Text(
-                                  subcategoryList[i].subCategoryName!,
-                                  style: TextStyle(
-                                      color: selectedSubcategory!
-                                                  .subCategoryName ==
-                                              subcategoryList[i].subCategoryName
-                                          ? Colors.orange
-                                          : Colors.black),
+                    : Container(
+                        height: MediaQuery.of(context).size.height - 170,
+                        child: GridView.builder(
+                          // physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2, mainAxisExtent: 130),
+                          itemCount: subcategoryList.length,
+                          itemBuilder: (context, int index) {
+                            //  GetClubsResult item = controller.getClubsModel!.result![index];
+                            return GestureDetector(
+                              onTap: () {
+                                if (subcategoryList[index].selected == null ||
+                                    subcategoryList[index].selected != '1') {
+                                  subcategoryList[index].selected = '1';
+                                  postCount = (int.parse(postCount)+int.parse(subcategoryList[index].subcount!)).toString();
+                                  setState(() {});
+
+                                } else {
+                                  subcategoryList[index].selected = null;
+                                  postCount = (int.parse(postCount)-int.parse(subcategoryList[index].subcount!)).toString();
+                                  setState(() {});
+                                }
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => AdSubCategories(
+                                //       title: subcategoryList[index].subCategoryName?? '',
+                                //       advertisement_category_id:
+                                //       advertisementCategoryList[index].id ?? '',
+                                //     ),
+                                //   ),
+                                // );
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    left: BorderSide(
+                                        color: Colors.grey, width: .25),
+                                    right: BorderSide(
+                                        color: Colors.grey, width: .25),
+                                    bottom: BorderSide(
+                                        color: Colors.grey, width: .5),
+                                  ),
+                                  // color: Colors.red,
                                 ),
-                                value: subcategoryList[i],
-                                groupValue: selectedSubcategory,
-                                onChanged: (SubcategoryResult? value) {
-                                  setState(() {
-                                    selectedSubcategory = value;
-                                  });
-                                })
-                        ],
+                                child: Stack(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width:
+                                              200, // Set the width of the image here
+                                          height: 80,
+                                          child: ClipRRect(
+                                            //  borderRadius: BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              imageUrl: subcategoryList[index]
+                                                      .image ??
+                                                  '',
+                                              height: subcategoryList[index]
+                                                              .selected !=
+                                                          null ||
+                                                      subcategoryList[index]
+                                                              .selected ==
+                                                          '1'
+                                                  ? 40
+                                                  : 60,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  Center(
+                                                      child: Shimmer.fromColors(
+                                                baseColor: MyColors.onSecondary
+                                                    .withOpacity(0.4),
+                                                highlightColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .onSecondary,
+                                                child: Container(
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    // borderRadius: BorderRadius.circular(16),
+                                                    color: MyColors.onSecondary
+                                                        .withOpacity(0.3),
+                                                  ),
+                                                ),
+                                              )),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          subcategoryList[index]
+                                                  .subCategoryName ??
+                                              '',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                              color: Colors.black),
+                                          maxLines: 1,
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ],
+                                    ),
+                                    if (subcategoryList[index].selected !=
+                                            null ||
+                                        subcategoryList[index].selected == '1')
+                                      Positioned(
+                                          child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            5, 5, 0, 0),
+                                        child: SvgPicture.asset(
+                                          "assets/images/CheckBox.svg",
+                                          height: 20,
+                                        ),
+                                      ))
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       )
+            // Column(
+            //             children: [
+            //               for (int i = 0; i < subcategoryList.length; i++)
+            //                 RadioListTile(
+            //                     activeColor: Colors.orange,
+            //                     title: Text(
+            //                       subcategoryList[i].subCategoryName!,
+            //                       style: TextStyle(
+            //                           color: selectedSubcategory!
+            //                                       .subCategoryName ==
+            //                                   subcategoryList[i].subCategoryName
+            //                               ? Colors.orange
+            //                               : Colors.black),
+            //                     ),
+            //                     value: subcategoryList[i],
+            //                     groupValue: selectedSubcategory,
+            //                     onChanged: (SubcategoryResult? value) {
+            //                       setState(() {
+            //                         selectedSubcategory = value;
+            //                       });
+            //                     })
+            //             ],
+            //           )
             // showProgressBar
             //     ? CommonWidget.commonShimmer(
             //         itemCount: 4,

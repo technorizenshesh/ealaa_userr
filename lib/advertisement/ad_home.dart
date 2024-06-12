@@ -97,8 +97,8 @@ class _AdHomeState extends State<AdHome> {
 
   getAllPostByCategoryApi() async {
     showProgressBar = true;
-    var res = await Webservices.getMap(
-        "$baseUrl$get_advertisement_category_post");
+    var res =
+        await Webservices.getMap("$baseUrl$get_advertisement_category_post");
     print("status from api ${res}");
     final resdata = AllCategoryPostModel.fromJson(res);
     print(res);
@@ -128,7 +128,6 @@ class _AdHomeState extends State<AdHome> {
   //   showProgressBar = false;
   // }
 
-
   @override
   void initState() {
     if (adsBannerList == [] || adsBannerList.isEmpty) {
@@ -139,7 +138,7 @@ class _AdHomeState extends State<AdHome> {
     }
 
     getAllPostByCategoryApi();
-  //  getAdvertisementPostsApi();
+    //  getAdvertisementPostsApi();
     super.initState();
   }
 
@@ -369,8 +368,9 @@ class _AdHomeState extends State<AdHome> {
               //       ),
               //     ),
               //   ),
-              PostByCategoryList.isEmpty||PostByCategoryList==[]?SizedBox():
-              showCategoriesPost()
+              PostByCategoryList.isEmpty || PostByCategoryList == []
+                  ? SizedBox()
+                  : showCategoriesPost()
               // showPopularPosts(),
               /*const ListTile(
                 contentPadding:
@@ -450,22 +450,31 @@ class _AdHomeState extends State<AdHome> {
         : GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, mainAxisExtent: 100,mainAxisSpacing: 5),
+                crossAxisCount: 2, mainAxisExtent: 100, mainAxisSpacing: 5),
             itemCount: advertisementCategoryList.length,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AdSubCategories(
-                        title: advertisementCategoryList[index].name ?? '',
-                        advertisement_category_id:
-                            advertisementCategoryList[index].id ?? '',
+                  if (advertisementCategoryList[index].id == "1" ||
+                      advertisementCategoryList[index].id == "2"||
+                      advertisementCategoryList[index].id=="5"||
+                      advertisementCategoryList[index].id=="6"||
+                      advertisementCategoryList[index].id=="7"||
+                      advertisementCategoryList[index].id=="8"||
+                      advertisementCategoryList[index].id=="10"){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdSubCategories(
+                          title: advertisementCategoryList[index].name ?? '',
+                          advertisement_category_id:
+                          advertisementCategoryList[index].id ?? '',
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
+
                 },
                 child: Container(
                   height: 50,
@@ -609,112 +618,132 @@ class _AdHomeState extends State<AdHome> {
   Widget showCategoriesPost() {
     return Column(
       children: [
-        for(int i=0;i<PostByCategoryList.length;i++)
-          PostByCategoryList[i].count=="0"?SizedBox():
-          Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                children: [
-                  Text(
-                    "Browse ${PostByCategoryList[i].count}",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    "${PostByCategoryList[i].name}",
-                    style: TextStyle(
-                        color: MyColors.primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  SvgPicture.asset(
-                    "assets/images/Navs.svg",
-                    height: 16,
-                  )
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  for (int j = 0; j < PostByCategoryList[i].postData!.length; j++)
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: AppColors.grey.withOpacity(0.3)),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      margin: EdgeInsets.only(right: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        for (int i = 0; i < PostByCategoryList.length; i++)
+          PostByCategoryList[i].count == "0"
+              ? SizedBox()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Row(
                         children: [
+                          Text(
+                            "Browse ${PostByCategoryList[i].count}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
                           SizedBox(
-                            width: 200, // Set the width of the image here
-                            height: 100,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(topRight: Radius.circular(10),topLeft: Radius.circular(10)),
-                              child: CachedNetworkImage(
-                                imageUrl: PostByCategoryList[i].postData![j].image ?? '',
-                                height: 60,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Center(
-                                    child: Shimmer.fromColors(
-                                  baseColor: MyColors.onSecondary.withOpacity(0.4),
-                                  highlightColor:
-                                      Theme.of(context).colorScheme.onSecondary,
-                                  child: Container(
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      color: MyColors.onSecondary.withOpacity(0.4),
-                                    ),
-                                  ),
-                                )),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
-                            ),
+                            width: 5,
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                            child: Text(
-                              "Nissan Rogue SL 2017",
-                              style: TextStyle(fontSize: 14),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          Text(
+                            "${PostByCategoryList[i].name}",
+                            style: TextStyle(
+                                color: MyColors.primaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              "${PostByCategoryList[i].postData![j].price} OMR",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          SizedBox(
+                            width: 5,
                           ),
+                          SvgPicture.asset(
+                            "assets/images/Navs.svg",
+                            height: 16,
+                          )
                         ],
                       ),
                     ),
-                ],
-              ),
-            ),
-            SizedBox(height: 25,)
-          ],
-        ),],
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (int j = 0;
+                              j < PostByCategoryList[i].postData!.length;
+                              j++)
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: AppColors.grey.withOpacity(0.3)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              margin: EdgeInsets.only(right: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        200, // Set the width of the image here
+                                    height: 100,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(10),
+                                          topLeft: Radius.circular(10)),
+                                      child: CachedNetworkImage(
+                                        imageUrl: PostByCategoryList[i]
+                                                .postData![j]
+                                                .image ??
+                                            '',
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) => Center(
+                                            child: Shimmer.fromColors(
+                                          baseColor: MyColors.onSecondary
+                                              .withOpacity(0.4),
+                                          highlightColor: Theme.of(context)
+                                              .colorScheme
+                                              .onSecondary,
+                                          child: Container(
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              color: MyColors.onSecondary
+                                                  .withOpacity(0.4),
+                                            ),
+                                          ),
+                                        )),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child: Text(
+                                      "Nissan Rogue SL 2017",
+                                      style: TextStyle(fontSize: 14),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Text(
+                                      "${PostByCategoryList[i].postData![j].price} OMR",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    )
+                  ],
+                ),
+      ],
     );
   }
 
