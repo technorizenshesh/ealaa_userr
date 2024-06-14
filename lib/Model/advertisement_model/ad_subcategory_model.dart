@@ -1,9 +1,10 @@
 class GetSubcategoryModel {
   List<SubcategoryResult>? result;
   String? count;
+  String selectedCount = '0';
   String? message;
   String? status;
-  int? totalCount;
+
 
   GetSubcategoryModel({this.result, this.message, this.status});
 
@@ -46,7 +47,7 @@ class SubcategoryResult {
         this.subCategoryName,
         this.image,
         this.dateTime,
-        this.subcount});
+        this.subcount,});
 
   SubcategoryResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];

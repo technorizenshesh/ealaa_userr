@@ -25,27 +25,27 @@ class AdSubCategories extends StatefulWidget {
 }
 
 class _AdSubCategoriesState extends State<AdSubCategories> {
-  TextEditingController search = TextEditingController();
   bool showProgressBar = true;
   List<SubcategoryResult> subcategoryList = [];
   SubcategoryResult? selectedSubcategory;
   List<GetAdvertisementCategoryResult> getAdvertisementPostsCategoryResult = [];
-  String postCount = "0";
+
+  GetSubcategoryModel? resdata;
 
   getAdSubcategory() async {
     var res = await Webservices.getMap(
         "$baseUrl$get_advertisement_sub_category?category_id=${widget.advertisement_category_id}");
     print("status from api ${res}");
     showProgressBar = false;
-    final resdata = GetSubcategoryModel.fromJson(res);
+    resdata = GetSubcategoryModel.fromJson(res);
     print(resdata);
-    if (resdata.result != null && resdata.status == '1') {
-      subcategoryList = resdata.result!;
-      postCount = resdata.count ?? "0";
+    if (resdata!=null && resdata!.result != null && resdata!.status == '1') {
+      subcategoryList = resdata!.result!;
+
       //  selectedSubcategory = subcategoryList[0];
       setState(() {});
     } else {
-      showSnackbar(context, resdata.message ?? '');
+      showSnackbar(context, resdata?.message ?? '');
     }
   }
 
@@ -103,7 +103,7 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
               child: RoundButton(
                 borderRadius: 8,
-                title: "${postCount} ${widget.title}",
+                title: "${resdata?.selectedCount!='0'? resdata?.selectedCount: resdata?.count ?? '0'} ${widget.title}",
                 onTap: () {
                   // Navigator.push(
                   //     context,
@@ -142,12 +142,17 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
                                 if (subcategoryList[index].selected == null ||
                                     subcategoryList[index].selected != '1') {
                                   subcategoryList[index].selected = '1';
-                                  postCount = (int.parse(postCount)+int.parse(subcategoryList[index].subcount!)).toString();
+                                  resdata?.selectedCount = (int.parse(resdata?.selectedCount ?? '0') +
+                                          int.parse(
+                                              subcategoryList[index].subcount!))
+                                      .toString();
                                   setState(() {});
-
                                 } else {
                                   subcategoryList[index].selected = null;
-                                  postCount = (int.parse(postCount)-int.parse(subcategoryList[index].subcount!)).toString();
+                                  resdata?.selectedCount = (int.parse(resdata?.selectedCount ?? '0') -
+                                          int.parse(
+                                              subcategoryList[index].subcount!))
+                                      .toString();
                                   setState(() {});
                                 }
                                 // Navigator.push(
@@ -193,14 +198,7 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
                                               imageUrl: subcategoryList[index]
                                                       .image ??
                                                   '',
-                                              height: subcategoryList[index]
-                                                              .selected !=
-                                                          null ||
-                                                      subcategoryList[index]
-                                                              .selected ==
-                                                          '1'
-                                                  ? 40
-                                                  : 60,
+                                              height: 60,
                                               fit: BoxFit.cover,
                                               placeholder: (context, url) =>
                                                   Center(

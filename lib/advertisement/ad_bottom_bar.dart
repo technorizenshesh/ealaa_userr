@@ -1,3 +1,4 @@
+import 'package:ealaa_userr/advertisement/AddPost/List_anything_free.dart';
 import 'package:ealaa_userr/advertisement/ad_ads.dart';
 import 'package:ealaa_userr/advertisement/ad_chats.dart';
 import 'package:ealaa_userr/advertisement/ad_home.dart';
@@ -26,7 +27,7 @@ class AdBottomBarState extends State<AdBottomBar> {
   final pages = [
     const AdHome(),
     const AdAds(),
-    const AdSelectCity(),
+    const ListAnythingFree(),
     //const AdPostAds(),
     const AdChats(),
     const AdProfile(),
