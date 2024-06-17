@@ -55,7 +55,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text(
-            'List anything for FREE!', // Your badge count here
+            'List anything for FREE!',
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,

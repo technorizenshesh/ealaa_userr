@@ -1,3 +1,4 @@
+import 'package:ealaa_userr/advertisement/AddPost/Vehicles/VehiclesMake.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -93,16 +94,12 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                           //  GetClubsResult item = controller.getClubsModel!.result![index];
                           return GestureDetector(
                             onTap: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => AdSubCategories(
-                              //       title: subcategoryList[index].subCategoryName?? '',
-                              //       advertisement_category_id:
-                              //       advertisementCategoryList[index].id ?? '',
-                              //     ),
-                              //   ),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VehiclesMake(advertisement_category_id: widget.advertisement_category_id,),
+                                ),
+                              );
                             },
                             child: Container(
                               height: 50,

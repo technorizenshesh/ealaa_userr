@@ -79,7 +79,7 @@ const add_advertisement_Motorbike_posts = baseUrl+'add_advertisement_Motorbike_p
 const add_advertisement_TrucksHeavyVehicles_posts = baseUrl+'add_advertisement_TrucksHeavyVehicles_posts';
 const add_advertisement_Cars_posts = baseUrl+'add_advertisement_Cars_posts';
 const add_advertisement_Classified_Cycling_posts = baseUrl+'add_advertisement_Classified_Cycling_posts';
-
+const get_maker_model = baseUrl+'get_maker_model';
 
 
 
