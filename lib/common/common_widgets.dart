@@ -219,6 +219,7 @@ commonTextFormField(
       controller: controller,
       cursorColor: Colors.orange,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 0),
         suffixIcon: suffixIcon
             ? const Icon(CupertinoIcons.arrowtriangle_down_circle,
             color: Colors.orange)

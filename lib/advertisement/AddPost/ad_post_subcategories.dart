@@ -1,3 +1,7 @@
+import 'package:ealaa_userr/advertisement/AddPost/Animals/Add_AnimalsAd.dart';
+import 'package:ealaa_userr/advertisement/AddPost/Electronics/Add_ElectronicsAd.dart';
+import 'package:ealaa_userr/advertisement/AddPost/PhoneNumbers/Add_PhonenumbersAd.dart';
+import 'package:ealaa_userr/advertisement/AddPost/RealState/Add_RealStateAd.dart';
 import 'package:ealaa_userr/advertisement/AddPost/Vehicles/VehiclesMake.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
@@ -83,23 +87,77 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                   ? Image.asset("assets/images/NoDataFound.png")
                   : Container(
                       height: MediaQuery.of(context).size.height,
-                      child:
-                      GridView.builder(
-                     //    physics: NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3, mainAxisExtent: 130),
+                      child: GridView.builder(
+                        //    physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, mainAxisExtent: 130),
                         itemCount: subcategoryList.length,
                         itemBuilder: (context, int index) {
                           //  GetClubsResult item = controller.getClubsModel!.result![index];
                           return GestureDetector(
                             onTap: () {
+                              widget.advertisement_category_id=="1"||widget.advertisement_category_id=="2"?
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => VehiclesMake(advertisement_category_id: widget.advertisement_category_id,),
+                                  builder: (context) => VehiclesMake(
+                                    advertisement_category_id:
+                                        widget.advertisement_category_id,
+                                    advertisement_sub_category_id:
+                                        subcategoryList[index].id!,
+                                  ),
                                 ),
-                              );
+                              ):
+                              widget.advertisement_category_id=="5"||widget.advertisement_category_id=="6"?
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddRealStateAd(
+                                    advertisement_category_id:
+                                    widget.advertisement_category_id,
+                                    advertisement_sub_category_id:
+                                    subcategoryList[index].id!,
+                                  ),
+                                ),
+                              ):
+                              widget.advertisement_category_id=="7"||widget.advertisement_category_id=="8"?
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddElectronicsAd(
+                                    advertisement_category_id:
+                                    widget.advertisement_category_id,
+                                    advertisement_sub_category_id:
+                                    subcategoryList[index].id!,
+                                  ),
+                                ),
+                              ):
+                              widget.advertisement_category_id=="9"?
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Add_PhoneNumbersAd(
+                                    advertisement_category_id:
+                                    widget.advertisement_category_id,
+                                    advertisement_sub_category_id:
+                                    subcategoryList[index].id!,
+                                  ),
+                                ),
+                              ):
+                              widget.advertisement_category_id=="10"?
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Add_AnimalsAd(
+                                    advertisement_category_id:
+                                    widget.advertisement_category_id,
+                                    advertisement_sub_category_id:
+                                    subcategoryList[index].id!,
+                                  ),
+                                ),
+                              ):
+                                  Container()
+                              ;
                             },
                             child: Container(
                               height: 50,
@@ -110,8 +168,8 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                                       color: Colors.grey, width: .25),
                                   right: BorderSide(
                                       color: Colors.grey, width: .25),
-                                  bottom: BorderSide(
-                                      color: Colors.grey, width: .5),
+                                  bottom:
+                                      BorderSide(color: Colors.grey, width: .5),
                                 ),
                               ),
                               child: Column(
@@ -126,8 +184,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                                       //  borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
                                         imageUrl:
-                                            subcategoryList[index].image ??
-                                                '',
+                                            subcategoryList[index].image ?? '',
                                         height: 60,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) => Center(
@@ -170,8 +227,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                           );
                         },
                       ),
-                    )
-          ),
+                    )),
     );
   }
 }

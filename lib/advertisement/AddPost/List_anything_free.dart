@@ -95,7 +95,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, mainAxisExtent: 100, mainAxisSpacing: 5),
-            itemCount: advertisementCategoryList.length,
+            itemCount: advertisementCategoryList.length-2 ,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
               return GestureDetector(
@@ -111,13 +111,19 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Ad_Post_Subcategories(
-                          title: index == 0 || index == 1
+                          title: advertisementCategoryList[index].id == "1" ||
+                                  advertisementCategoryList[index].id == "2"
                               ? 'Body'
-                              : index == 4 || index == 5
+                              : advertisementCategoryList[index].id == "5" ||
+                                      advertisementCategoryList[index].id == "6"
                                   ? 'Property Type'
-                                  : index == 6 || index == 7
+                                  : advertisementCategoryList[index].id ==
+                                              "7" ||
+                                          advertisementCategoryList[index].id ==
+                                              "8"
                                       ? 'Select Type'
-                                      : index == 9
+                                      : advertisementCategoryList[index].id ==
+                                              "10"
                                           ? 'Animal Type'
                                           : "",
                           advertisement_category_id:
@@ -125,25 +131,23 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                         ),
                       ),
                     );
-                  }
-                  else if(advertisementCategoryList[index].id == "3"){
+                  } else if (advertisementCategoryList[index].id == "3") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => SparePart(
                           advertisement_category_id:
-                          advertisementCategoryList[index].id ?? '',
+                              advertisementCategoryList[index].id ?? '',
                         ),
                       ),
                     );
-                  }
-                  else if(advertisementCategoryList[index].id == "4"){
+                  } else if (advertisementCategoryList[index].id == "4") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => TransferType(
                           advertisement_category_id:
-                          advertisementCategoryList[index].id ?? '',
+                              advertisementCategoryList[index].id ?? '',
                         ),
                       ),
                     );

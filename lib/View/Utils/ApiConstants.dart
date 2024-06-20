@@ -80,6 +80,12 @@ const add_advertisement_TrucksHeavyVehicles_posts = baseUrl+'add_advertisement_T
 const add_advertisement_Cars_posts = baseUrl+'add_advertisement_Cars_posts';
 const add_advertisement_Classified_Cycling_posts = baseUrl+'add_advertisement_Classified_Cycling_posts';
 const get_maker_model = baseUrl+'get_maker_model';
+const upload_vehicle_buy = baseUrl+'upload_vehicle_buy';
+const get_real_state = baseUrl+'get_real_state';
+const get_electronics = baseUrl+'get_electronics';
+const get_animals = baseUrl+'get_animals';
+
+
 
 
 
