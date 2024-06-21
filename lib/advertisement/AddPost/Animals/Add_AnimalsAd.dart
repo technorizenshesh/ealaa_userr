@@ -4,10 +4,12 @@ import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../Model/GeneralModel.dart';
 import '../../../Model/advertisement_model/AnimalTypeModel.dart';
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CommonMethods.dart';
 import '../../../View/Utils/CustomSnackBar.dart';
+import '../../../View/Utils/GlobalData.dart';
 import '../../../View/Utils/webService.dart';
 import '../../../common/common_widgets.dart';
 import '../../ad_bottom_bar.dart';
@@ -61,7 +63,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
   final imgPicker = ImagePicker();
   File? productPicture;
   TextEditingController price = TextEditingController();
-  TextEditingController landArea = TextEditingController();
+  TextEditingController titlee = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
 
@@ -105,54 +107,44 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
     }
   }
 
-  // PostVehicleAd() async {
-  //   Map<String, dynamic> data = {
-  //     'category_id': "widget.advertisement_category_id",
-  //     'vehicle_ads_sub_category': "widget.advertisement_sub_category_id",
-  //     'vehicle_ads_detail_user_id': userId,
-  //     'vehicle_ads_detail_maker_id': selectedMake?.id ?? "",
-  //     'vehicle_ads_detail_model_id': selectedModel?.id ?? "",
-  //     'vehicle_ads_detail_model_trim_id': selectedTrim?.id ?? "",
-  //     'vehicle_ads_detail_year': selectedYear.toString(),
-  //     'vehicle_ads_detail_condition': selectedCondition,
-  //     'vehicle_ads_detail_engine_size': selectedEngine,
-  //     'vehicle_ads_detail_doors': selectedDoor.toString(),
-  //     'vehicle_ads_detail_exterior_color': selectedExteriorColor,
-  //     'vehicle_ads_detail_interior_color': selectedInteriorColor,
-  //     'vehicle_ads_detail_cylinders': selectedCylinder.toString(),
-  //     'vehicle_ads_detail_fuel': selectedFuel,
-  //     'vehicle_ads_detail_transmission': selectedTransmission,
-  //     'vehicle_ads_detail_drive_train': selectedDriverTrain,
-  //     'vehicle_ads_detail_plate': selectedPlate,
-  //     'vehicle_ads_detail_origin': selectedOrigin,
-  //     'vehicle_ads_detail_governate': selectedGovernate,
-  //     'vehicle_ads_detail_state': selectedState,
-  //     'vehicle_ads_additional_detail_price': price.text.toString(),
-  //     'vehicle_ads_additional_detail_distance_travelled':
-  //         landArea.text.toString(),
-  //     'vehicle_ads_additional_detail_phone': phone.text.toString(),
-  //     'vehicle_ads_additional_detail_description': description.text.toString(),
-  //   };
-  //   Map<String, dynamic> files = {'vehicle_ads_upload_image': productPicture};
-  //   print("request ------------------$data   $files");
-  //   loader = true;
-  //   setState(() {});
-  //   var res = await Webservices.postDataWithImageFunction(
-  //       body: data, files: files, context: context, apiUrl: upload_vehicle_buy);
-  //   loader = false;
-  //   setState(() {});
-  //   final resdata = GeneralModel.fromJson(res);
-  //   if (res['status'] == "1") {
-  //     showSnackbar(context, resdata.message!);
-  //     Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => AdBottomBar(),
-  //         ));
-  //   } else {
-  //     showSnackbar(context, resdata.message!);
-  //   }
-  // }
+  PostAnimalAd() async {
+    Map<String, dynamic> data = {
+      'category_id': widget.advertisement_category_id,
+      'sub_category_id': widget.advertisement_sub_category_id,
+      'animals_ads_user_id': userId,
+      'animals_ads_type': selectedType?.typeId ?? "",
+      'animals_ads_gender': selectedGender?.genderId ?? "",
+      'animals_ads_age': selectedAge?.ageId?? "",
+      'animals_ads_breed_origin': selectedBreed?.breedId??"",
+      'animals_ads_governorate': selectedGovernrate?.governorateId??"",
+      'animals_ads_state': selectedState?.stateId??"",
+      'animals_ads_city:re': selectedCity?.cityId??"",
+      'animals_ads_price': price.text.toString(),
+      'animals_ads_distance_title': titlee.text.toString(),
+      'animals_ads_phone':phone.text.toString(),
+      'animals_ads_description':description.text.toString()
+
+    };
+    Map<String, dynamic> files = {'animals_ads_image': productPicture};
+    print("request ------------------$data   $files");
+    loader = true;
+    setState(() {});
+    var res = await Webservices.postDataWithImageFunction(
+        body: data, files: files, context: context, apiUrl: upload_animals_sell);
+    loader = false;
+    setState(() {});
+    final resdata = GeneralModel.fromJson(res);
+    if (res['status'] == "1") {
+      showSnackbar(context, resdata.message!);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdBottomBar(),
+          ));
+    } else {
+      showSnackbar(context, resdata.message!);
+    }
+  }
 
   @override
   void initState() {
@@ -520,7 +512,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
           title: 'Complete the final step',
           onTap: () {
             if (productPicture != null) {
-              _currentStepIndex = 10;
+              _currentStepIndex = 9;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
               setState(() {});
@@ -552,13 +544,13 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Text(
-                    "Land Area",
+                    "Title",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                 ),
                 commonTextFormField(
-                  controller: landArea,
-                  hintText: 'Enter Land Area',
+                  controller: titlee,
+                  hintText: 'Enter Title',
                 ),
                 SizedBox(
                   height: 10,
@@ -618,8 +610,8 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
-              if (landArea.text.isEmpty) {
-                showSnackbar(context, "Enter land area");
+              if (titlee.text.isEmpty) {
+                showSnackbar(context, "Enter Title");
               } else if (price.text.isEmpty) {
                 showSnackbar(context, "Enter price");
               } else if (phone.text.isEmpty) {
@@ -627,12 +619,8 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else {
-                //  PostVehicleAd();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AdBottomBar(),
-                    ));
+                PostAnimalAd();
+
               }
             },
           ),

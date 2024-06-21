@@ -101,6 +101,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => VehiclesMake(
+                                    adType: widget.advertisement_category_id=="1"?"sell":"rent",
                                     advertisement_category_id:
                                         widget.advertisement_category_id,
                                     advertisement_sub_category_id:
@@ -113,6 +114,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AddRealStateAd(
+                                    adType: widget.advertisement_category_id=="5"?"sell":"rent",
                                     advertisement_category_id:
                                     widget.advertisement_category_id,
                                     advertisement_sub_category_id:
@@ -131,19 +133,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                                     subcategoryList[index].id!,
                                   ),
                                 ),
-                              ):
-                              widget.advertisement_category_id=="9"?
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Add_PhoneNumbersAd(
-                                    advertisement_category_id:
-                                    widget.advertisement_category_id,
-                                    advertisement_sub_category_id:
-                                    subcategoryList[index].id!,
-                                  ),
-                                ),
-                              ):
+                              ) :
                               widget.advertisement_category_id=="10"?
                               Navigator.push(
                                 context,

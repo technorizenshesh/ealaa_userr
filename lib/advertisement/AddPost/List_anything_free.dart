@@ -10,6 +10,7 @@ import '../../View/Utils/GlobalData.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
 import '../ad_sub_categories.dart';
+import 'PhoneNumbers/Add_PhonenumbersAd.dart';
 import 'ad_post_subcategories.dart';
 
 class ListAnythingFree extends StatefulWidget {
@@ -122,6 +123,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                                           advertisementCategoryList[index].id ==
                                               "8"
                                       ? 'Select Type'
+
                                       : advertisementCategoryList[index].id ==
                                               "10"
                                           ? 'Animal Type'
@@ -131,7 +133,8 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                         ),
                       ),
                     );
-                  } else if (advertisementCategoryList[index].id == "3") {
+                  }
+                  else if (advertisementCategoryList[index].id == "3") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -151,6 +154,17 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                         ),
                       ),
                     );
+                  }
+                  else if
+                  (advertisementCategoryList[index].id=="9")   {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Add_PhoneNumbersAd(
+                          advertisement_category_id:
+                          advertisementCategoryList[index].id!,
+                        ),
+                      ));
                   }
                 },
                 child: Container(

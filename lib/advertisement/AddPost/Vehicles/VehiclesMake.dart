@@ -17,10 +17,15 @@ import '../../../View/Utils/webService.dart';
 import '../../../common/common_widgets.dart';
 
 class VehiclesMake extends StatefulWidget {
+  final String adType;
   final String advertisement_category_id;
   final String advertisement_sub_category_id;
 
-  const VehiclesMake({super.key, required this.advertisement_category_id, required this.advertisement_sub_category_id});
+  const VehiclesMake(
+      {super.key,
+      required this.adType,
+      required this.advertisement_category_id,
+      required this.advertisement_sub_category_id});
 
   @override
   State<VehiclesMake> createState() => _VehiclesMakeState();
@@ -137,56 +142,58 @@ class _VehiclesMakeState extends State<VehiclesMake> {
   }
 
   PostVehicleAd() async {
-
-      Map<String, dynamic> data = {
-        'category_id': widget.advertisement_category_id,
-        'vehicle_ads_sub_category': widget.advertisement_sub_category_id,
-        'vehicle_ads_detail_user_id': userId,
-        'vehicle_ads_detail_maker_id': selectedMake?.id??"",
-        'vehicle_ads_detail_model_id': selectedModel?.id??"",
-        'vehicle_ads_detail_model_trim_id':selectedTrim?.id??"",
-        'vehicle_ads_detail_year': selectedYear.toString(),
-        'vehicle_ads_detail_condition': selectedCondition,
-        'vehicle_ads_detail_engine_size': selectedEngine,
-        'vehicle_ads_detail_doors': selectedDoor.toString(),
-        'vehicle_ads_detail_exterior_color': selectedExteriorColor,
-        'vehicle_ads_detail_interior_color': selectedInteriorColor,
-        'vehicle_ads_detail_cylinders': selectedCylinder.toString(),
-        'vehicle_ads_detail_fuel': selectedFuel,
-        'vehicle_ads_detail_transmission': selectedTransmission,
-        'vehicle_ads_detail_drive_train': selectedDriverTrain,
-        'vehicle_ads_detail_plate':selectedPlate,
-        'vehicle_ads_detail_origin':selectedOrigin,
-        'vehicle_ads_detail_governate':selectedGovernate,
-        'vehicle_ads_detail_state':selectedState,
-        'vehicle_ads_additional_detail_price':price.text.toString(),
-        'vehicle_ads_additional_detail_distance_travelled':distance.text.toString(),
-        'vehicle_ads_additional_detail_phone':phone.text.toString(),
-        'vehicle_ads_additional_detail_description':description.text.toString(),
-      };
-      Map<String, dynamic> files = {'vehicle_ads_upload_image': productPicture};
-      print("request ------------------$data   $files");
-      loader = true;
-      setState(() {});
-      var res = await Webservices.postDataWithImageFunction(
-          body: data,
-          files: files,
-          context: context,
-          apiUrl: upload_vehicle_buy);
-      loader = false;
-      setState(() {});
-      final resdata = GeneralModel.fromJson(res);
-      if (res['status'] == "1") {
-        showSnackbar(context, resdata.message!);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AdBottomBar(),
-            ));
-      } else {
-        showSnackbar(context, resdata.message!);
-      }
+    Map<String, dynamic> data = {
+      'category_id': widget.advertisement_category_id,
+      'vehicle_ads_sub_category': widget.advertisement_sub_category_id,
+      'vehicle_ads_detail_user_id': userId,
+      'vehicle_ads_detail_maker_id': selectedMake?.id ?? "",
+      'vehicle_ads_detail_model_id': selectedModel?.id ?? "",
+      'vehicle_ads_detail_model_trim_id': selectedTrim?.id ?? "",
+      'vehicle_ads_detail_year': selectedYear.toString(),
+      'vehicle_ads_detail_condition': selectedCondition,
+      'vehicle_ads_detail_engine_size': selectedEngine,
+      'vehicle_ads_detail_doors': selectedDoor.toString(),
+      'vehicle_ads_detail_exterior_color': selectedExteriorColor,
+      'vehicle_ads_detail_interior_color': selectedInteriorColor,
+      'vehicle_ads_detail_cylinders': selectedCylinder.toString(),
+      'vehicle_ads_detail_fuel': selectedFuel,
+      'vehicle_ads_detail_transmission': selectedTransmission,
+      'vehicle_ads_detail_drive_train': selectedDriverTrain,
+      'vehicle_ads_detail_plate': selectedPlate,
+      'vehicle_ads_detail_origin': selectedOrigin,
+      'vehicle_ads_detail_governate': selectedGovernate,
+      'vehicle_ads_detail_state': selectedState,
+      'vehicle_ads_additional_detail_price': price.text.toString(),
+      'vehicle_ads_additional_detail_distance_travelled':
+          distance.text.toString(),
+      'vehicle_ads_additional_detail_phone': phone.text.toString(),
+      'vehicle_ads_additional_detail_description': description.text.toString(),
+    };
+    Map<String, dynamic> files = {'vehicle_ads_upload_image': productPicture};
+    print("request ------------------$data   $files");
+    loader = true;
+    setState(() {});
+    var res = await Webservices.postDataWithImageFunction(
+        body: data,
+        files: files,
+        context: context,
+        apiUrl:
+            widget.adType == 'sell' ? upload_vehicle_sell : upload_vehicle_buy);
+    loader = false;
+    setState(() {});
+    final resdata = GeneralModel.fromJson(res);
+    if (res['status'] == "1") {
+      showSnackbar(context, resdata.message!);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdBottomBar(),
+          ));
+    } else {
+      showSnackbar(context, resdata.message!);
+    }
   }
+
   @override
   void initState() {
     getMakes();
@@ -1044,7 +1051,6 @@ class _VehiclesMakeState extends State<VehiclesMake> {
                 showSnackbar(context, "Enter phone number");
               } else {
                 PostVehicleAd();
-
               }
             },
           ),
