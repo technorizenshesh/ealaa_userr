@@ -2,6 +2,9 @@ import 'package:ealaa_userr/advertisement/chat_message_detail.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
+import '../View/Screens/ChatRoom.dart';
+import 'ad_chat_room.dart';
+
 class AdChats extends StatefulWidget {
   const AdChats({super.key});
 
@@ -37,10 +40,11 @@ class _AdAdsState extends State<AdChats> {
   ];
 
   clickOnItem() {
-    Navigator.push(
+   /* Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const AdChatMessageDetail()),
-    );
+    );*/
+      push(context: context, screen: AdChatRoom(id: '10000'));
   }
 
   @override
@@ -163,18 +167,16 @@ class _AdAdsState extends State<AdChats> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                chatUserList[index]['image'] ?? '',
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.fill,
-                              ),
+                          Expanded(
+                            flex: 1,
+                            child: Image.asset(
+                              chatUserList[index]['image'] ?? '',
+                              height: 60,
+                              width: 60,
+                              fit: BoxFit.fill,
                             ),
                           ),
+                          SizedBox(width: 20),
                           Expanded(
                             flex: 5,
                             child: Column(
