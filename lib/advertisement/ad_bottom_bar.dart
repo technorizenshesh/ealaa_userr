@@ -1,9 +1,12 @@
+import 'package:ealaa_userr/advertisement/AddPost/List_anything_free.dart';
 import 'package:ealaa_userr/advertisement/ad_ads.dart';
 import 'package:ealaa_userr/advertisement/ad_chats.dart';
 import 'package:ealaa_userr/advertisement/ad_home.dart';
 import 'package:ealaa_userr/advertisement/ad_post_ads.dart';
 import 'package:ealaa_userr/advertisement/ad_profile.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+
+import 'ad_selectCity.dart';
 
 class AdBottomBar extends StatefulWidget {
   const AdBottomBar({super.key});
@@ -24,7 +27,8 @@ class AdBottomBarState extends State<AdBottomBar> {
   final pages = [
     const AdHome(),
     const AdAds(),
-    const AdPostAds(),
+    const ListAnythingFree(),
+    //const AdPostAds(),
     const AdChats(),
     const AdProfile(),
   ];

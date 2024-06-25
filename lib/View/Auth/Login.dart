@@ -28,6 +28,7 @@ class _LoginState extends State<Login> {
     setState(() {
       loader = true;
     });
+    print("data.....$data");
     var res = await Webservices.postData(
         apiUrl: "$baseUrl$login", body: data, context: context);
     setState(() {

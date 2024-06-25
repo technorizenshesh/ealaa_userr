@@ -47,9 +47,7 @@ class _AdAdsState extends State<AdAds> {
   ];
   int drawerIndex = 0;
   String notificationCount = "";
-
   List<GetAdvertisementCategoryResult> getAdvertisementCategoryResult = [];
-
   clickOnItem(String image) {
     /* Navigator.push(
       context,
@@ -92,7 +90,6 @@ class _AdAdsState extends State<AdAds> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       key: _key,
-      // Assign the key to Scaffold.
       appBar: AppBar(
         backgroundColor: Colors.orange,
         automaticallyImplyLeading: false,

@@ -10,15 +10,7 @@ const check_whatsapp_otp = 'check_whatsapp_otp';
 const signup_whatsapp_resend = 'signup_whatsapp_resend';
 const update_password = 'update_password';
 const get_companies_list = 'get_companies_list';
-const get_all_advertisement_posts = 'get_all_advertisement_posts';
-const advertisement_post_fav = 'advertisement_post_fav';
-const get_advertisement_details = 'get_advertisement_details';
-const get_advertisement_posts_category = 'get_advertisement_posts_category';
-const get_advertisement_posts = 'get_advertisement_posts';
-const get_landlord = 'get_landlord';
-const get_occupancy_status = 'get_occupancy_status';
-const get_retail = 'get_retail';
-const get_advertisement_category = 'get_advertisement_category';
+
 const get_drivers_list = 'get_drivers_list';
 const get_banner = 'get_banner';
 const updateProfile = baseUrl + 'update_user_profile_new';
@@ -31,7 +23,6 @@ final shipment_booking = 'shipment_booking';
 final get_city = baseUrlDriver + 'get_city';
 final get_countries = baseUrlDriver + 'get_countries';
 final get_vehicle_category = baseUrlDriver + 'get_vehicle_category';
-final add_advertisement_posts = baseUrl + 'add_advertisement_posts';
 final get_shipment_driver = 'get_shipment_driver';
 final get_shipment_list = baseUrl + 'get_shipment_list';
 final add_driver_approve = baseUrl + 'add_driver_approve';
@@ -64,3 +55,45 @@ final get_address = baseUrl + "get_address";
 final place_order = baseUrl + "place_order";
 final get_user_order_details = baseUrl + "get_user_order_details";
 final get_store_payment = baseUrl + "get_store_payment";
+
+//advertisement
+const get_advertise_banner = 'get_advertise_banner';
+const get_all_advertisement_posts = 'get_all_advertisement_posts';
+const get_advertisement_category_post = 'get_advertisement_category_post';
+const advertisement_post_fav = 'advertisement_post_fav';
+const get_advertisement_details = 'get_advertisement_details';
+const get_advertisement_posts_category = 'get_advertisement_posts_category';
+const get_advertisement_posts = 'get_advertisement_posts';
+const get_landlord = 'get_landlord';
+const get_occupancy_status = 'get_occupancy_status';
+const get_retail = 'get_retail';
+const get_advertisement_category = 'get_advertisement_category';
+const get_advertisement_sub_category = 'get_advertisement_sub_category';
+//const add_advertisement_posts = baseUrl+'add_advertisement_posts';
+const add_advertisement_CommercialPlot_posts = baseUrl+'add_advertisement_CommercialPlot_posts';
+const add_advertisement_CommercialVilla_posts = baseUrl+'add_advertisement_CommercialVilla_posts';
+const add_advertisement_MotorsPlates_posts = baseUrl+'add_advertisement_MotorsPlates_posts';
+const add_advertisement_Motors_Auto_Accessories_posts = baseUrl+'add_advertisement_Motors_Auto_Accessories_posts';
+const add_advertisement_Motors_BoatsYachts_posts = baseUrl+'add_advertisement_Motors_BoatsYachts_posts';
+const add_advertisement_Motorbike_posts = baseUrl+'add_advertisement_Motorbike_posts';
+const add_advertisement_TrucksHeavyVehicles_posts = baseUrl+'add_advertisement_TrucksHeavyVehicles_posts';
+const add_advertisement_Cars_posts = baseUrl+'add_advertisement_Cars_posts';
+const add_advertisement_Classified_Cycling_posts = baseUrl+'add_advertisement_Classified_Cycling_posts';
+const get_maker_model = baseUrl+'get_maker_model';
+const upload_vehicle_buy = baseUrl+'upload_vehicle_buy';
+const upload_vehicle_sell = baseUrl+'upload_vehicle_sell';
+const get_real_state = baseUrl+'get_real_state';
+const upload_real_state_buy = baseUrl+'upload_real_state_buy';
+const upload_real_state_sell = baseUrl+'upload_real_state_sell';
+const get_electronics = baseUrl+'get_electronics';
+const get_animals = baseUrl+'get_animals';
+const upload_animals_sell = baseUrl+'upload_animals_sell';
+const get_phone_number = baseUrl+'get_phone_number';
+const upload_phone_number_sell = baseUrl+'upload_phone_number_sell';
+const get_vehicles_parts_accessories_wanted = baseUrl+'get_vehicles_parts_accessories_wanted';
+
+
+
+
+
+
