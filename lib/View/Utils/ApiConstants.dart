@@ -90,6 +90,7 @@ const get_animals = baseUrl+'get_animals';
 const upload_animals_sell = baseUrl+'upload_animals_sell';
 const get_phone_number = baseUrl+'get_phone_number';
 const upload_phone_number_sell = baseUrl+'upload_phone_number_sell';
+const get_vehicles_parts_accessories_wanted = baseUrl+'get_vehicles_parts_accessories_wanted';
 
 
 
