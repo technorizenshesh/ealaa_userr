@@ -144,7 +144,8 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                         ),
                       ),
                     );
-                  } else if (advertisementCategoryList[index].id == "4") {
+                  }
+                  else if (advertisementCategoryList[index].id == "4") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(

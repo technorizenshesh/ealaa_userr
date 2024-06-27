@@ -28,311 +28,419 @@ class AllCategoryPostModel {
 }
 
 class AllCategoryPostResult {
-  String? id;
+  List<PostListDetails>? postListDetails;
   String? name;
-  String? count;
-  List<PostData>? postData;
+  int? count;
 
-  AllCategoryPostResult({this.id, this.name, this.count, this.postData});
+  AllCategoryPostResult({this.postListDetails, this.name, this.count});
 
   AllCategoryPostResult.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    count = json['count'];
-    if (json['post_data'] != null) {
-      postData = <PostData>[];
-      json['post_data'].forEach((v) {
-        postData!.add(new PostData.fromJson(v));
+    if (json['post_list_details'] != null) {
+      postListDetails = <PostListDetails>[];
+      json['post_list_details'].forEach((v) {
+        postListDetails!.add(new PostListDetails.fromJson(v));
       });
     }
+    name = json['name'];
+    count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    if (this.postListDetails != null) {
+      data['post_list_details'] =
+          this.postListDetails!.map((v) => v.toJson()).toList();
+    }
     data['name'] = this.name;
     data['count'] = this.count;
-    if (this.postData != null) {
-      data['post_data'] = this.postData!.map((v) => v.toJson()).toList();
+    return data;
+  }
+}
+
+class PostListDetails {
+  String? adsId;
+  String? adsType;
+  String? adsCategoryId;
+  String? adsSubCategoryId;
+  String? adsDetailsId;
+  String? adsCreatedAt;
+  String? adsUpdatedAt;
+  Null? adsDeletedAt;
+  String? adsAdminStatus;
+  String? adsImage;
+  String? adsName;
+  String? adsPrice;
+  AdsDetails? adsDetails;
+
+  PostListDetails(
+      {this.adsId,
+        this.adsType,
+        this.adsCategoryId,
+        this.adsSubCategoryId,
+        this.adsDetailsId,
+        this.adsCreatedAt,
+        this.adsUpdatedAt,
+        this.adsDeletedAt,
+        this.adsAdminStatus,
+        this.adsImage,
+        this.adsName,
+        this.adsPrice,
+        this.adsDetails});
+
+  PostListDetails.fromJson(Map<String, dynamic> json) {
+    adsId = json['ads_id'];
+    adsType = json['ads_type'];
+    adsCategoryId = json['ads_category_id'];
+    adsSubCategoryId = json['ads_sub_category_id'];
+    adsDetailsId = json['ads_details_id'];
+    adsCreatedAt = json['ads_created_at'];
+    adsUpdatedAt = json['ads_updated_at'];
+    adsDeletedAt = json['ads_deleted_at'];
+    adsAdminStatus = json['ads_admin_status'];
+    adsImage = json['ads_image'];
+    adsName = json['ads_name'];
+    adsPrice = json['ads_price'];
+    adsDetails = json['ads_details'] != null
+        ? new AdsDetails.fromJson(json['ads_details'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ads_id'] = this.adsId;
+    data['ads_type'] = this.adsType;
+    data['ads_category_id'] = this.adsCategoryId;
+    data['ads_sub_category_id'] = this.adsSubCategoryId;
+    data['ads_details_id'] = this.adsDetailsId;
+    data['ads_created_at'] = this.adsCreatedAt;
+    data['ads_updated_at'] = this.adsUpdatedAt;
+    data['ads_deleted_at'] = this.adsDeletedAt;
+    data['ads_admin_status'] = this.adsAdminStatus;
+    data['ads_image'] = this.adsImage;
+    data['ads_name'] = this.adsName;
+    data['ads_price'] = this.adsPrice;
+    if (this.adsDetails != null) {
+      data['ads_details'] = this.adsDetails!.toJson();
     }
     return data;
   }
 }
 
+class AdsDetails {
+  String? vehicleAdsDetailId;
+  String? vehicleAdsDetailUserId;
+  String? vehicleAdsDetailMakerId;
+  String? vehicleAdsDetailModelId;
+  String? vehicleAdsDetailModelTrimId;
+  String? vehicleAdsDetailYear;
+  String? vehicleAdsDetailCondition;
+  String? vehicleAdsDetailEngineSize;
+  String? vehicleAdsDetailDoors;
+  String? vehicleAdsDetailExteriorColor;
+  String? vehicleAdsDetailInteriorColor;
+  String? vehicleAdsDetailCylinders;
+  String? vehicleAdsDetailFuel;
+  String? vehicleAdsDetailTransmission;
+  String? vehicleAdsDetailDriveTrain;
+  String? vehicleAdsDetailSeats;
+  String? vehicleAdsDetailPlate;
+  String? vehicleAdsDetailOrigin;
+  String? vehicleAdsDetailGovernate;
+  String? vehicleAdsDetailState;
+  String? vehicleAdsUploadImage;
+  String? vehicleAdsAdditionalDetailPrice;
+  String? vehicleAdsAdditionalDetailDistanceTravelled;
+  String? vehicleAdsAdditionalDetailPhone;
+  String? vehicleAdsAdditionalDetailDescription;
+  String? vehicleAdsDetailAdsPostId;
+  String? adsImage;
+  String? adsName;
+  String? adsPrice;
+  String? realStateAdsDetailId;
+  String? realStateAdsDetailUserId;
+  String? realStateAdsDetailUseId;
+  String? realStateAdsDetailWallId;
+  String? realStateAdsDetailLandtypeId;
+  String? realStateAdsDetailPositionId;
+  String? realStateAdsDetailParkingId;
+  String? realStateAdsDetailStateId;
+  String? realStateAdsDetailGovernateId;
+  String? realStateAdsUploadImage;
+  String? realStateAdsAdditionalDetailPrice;
+  String? realStateAdsAdditionalDetailLandArea;
+  String? realStateAdsAdditionalDetailPhone;
+  String? realStateAdsAdditionalDetailDescription;
+  String? realStateAdsDetailCityId;
+  String? realStateAdsDetailAdsPostId;
+  String? animalsAdsId;
+  String? animalsAdsUserId;
+  String? animalsAdsType;
+  String? animalsAdsGender;
+  String? animalsAdsAge;
+  String? animalsAdsBreedOrigin;
+  String? animalsAdsGovernorate;
+  String? animalsAdsState;
+  String? animalsAdsCity;
+  String? animalsAdsImage;
+  String? animalsAdsPostId;
+  String? animalsAdsPrice;
+  String? animalsAdsDistanceTitle;
+  String? animalsAdsPhone;
+  String? animalsAdsDescription;
+  String? phoneNumberAdsId;
+  String? phoneNumberAdsUserId;
+  String? phoneNumberAdsOperators;
+  String? phoneNumberAdsGovernorate;
+  String? phoneNumberAdsState;
+  String? phoneNumberAdsCity;
+  String? phoneNumberAdsDescription;
+  String? phoneNumberAdsImage;
+  String? phoneNumberAdsPostId;
+  String? phoneNumberAdsPhone;
+  String? phoneNumberAdsPrice;
 
-class PostData {
-  String? id;
-  String? userId;
-  String? cityId;
-  String? price;
-  String? size;
-  String? categoryId;
-  String? subCategoryId;
-  String? bedroom;
-  String? bathroom;
-  String? acType;
-  String? electricityInclusive;
-  String? swimmingPool;
-  String? gym;
-  String? dateTime;
-  String? referenceNumber;
-  String? furnished;
-  String? playArea;
-  String? numberOfFloors;
-  String? maintenanceIncluded;
-  String? extraFeatures;
-  String? description;
-  String? tourUrl;
-  String? youtubeUrl;
-  String? address;
-  String? shortsDescription;
-  String? image;
-  String? mobile;
-  String? plateType;
-  String? plateSource;
-  String? plateCode;
-  String? plateDesign;
-  String? plateNumber;
-  String? autoAccessoriesType;
-  String? age;
-  String? condition;
-  String? underWarranty;
-  String? hIN;
-  String? boatYachtType;
-  String? make;
-  String? length;
-  String? color;
-  String? serviceHistory;
-  String? noofseats;
-  String? motorbikeType;
-  String? motorbikeMake;
-  String? motorbikeModel;
-  String? motorbikeCondition;
-  String? regionalSpecs;
-  String? kilometer;
-  String? engineCapacity;
-  String? numberofcylinders;
-  String? fuelType;
-  String? horsePower;
-  String? rimsize;
-  String? vIN;
-  String? truckType;
-  String? truckMake;
-  String? modelYear;
-  String? transmissionType;
-  String? numberofDoors;
-  String? vehiclemakes;
-  String? vehicleModel;
-  String? vehicleCondition;
-  String? bodyType;
-  String? driveType;
-  String? brand;
+  AdsDetails(
+      {this.vehicleAdsDetailId,
+        this.vehicleAdsDetailUserId,
+        this.vehicleAdsDetailMakerId,
+        this.vehicleAdsDetailModelId,
+        this.vehicleAdsDetailModelTrimId,
+        this.vehicleAdsDetailYear,
+        this.vehicleAdsDetailCondition,
+        this.vehicleAdsDetailEngineSize,
+        this.vehicleAdsDetailDoors,
+        this.vehicleAdsDetailExteriorColor,
+        this.vehicleAdsDetailInteriorColor,
+        this.vehicleAdsDetailCylinders,
+        this.vehicleAdsDetailFuel,
+        this.vehicleAdsDetailTransmission,
+        this.vehicleAdsDetailDriveTrain,
+        this.vehicleAdsDetailSeats,
+        this.vehicleAdsDetailPlate,
+        this.vehicleAdsDetailOrigin,
+        this.vehicleAdsDetailGovernate,
+        this.vehicleAdsDetailState,
+        this.vehicleAdsUploadImage,
+        this.vehicleAdsAdditionalDetailPrice,
+        this.vehicleAdsAdditionalDetailDistanceTravelled,
+        this.vehicleAdsAdditionalDetailPhone,
+        this.vehicleAdsAdditionalDetailDescription,
+        this.vehicleAdsDetailAdsPostId,
+        this.adsImage,
+        this.adsName,
+        this.adsPrice,
+        this.realStateAdsDetailId,
+        this.realStateAdsDetailUserId,
+        this.realStateAdsDetailUseId,
+        this.realStateAdsDetailWallId,
+        this.realStateAdsDetailLandtypeId,
+        this.realStateAdsDetailPositionId,
+        this.realStateAdsDetailParkingId,
+        this.realStateAdsDetailStateId,
+        this.realStateAdsDetailGovernateId,
+        this.realStateAdsUploadImage,
+        this.realStateAdsAdditionalDetailPrice,
+        this.realStateAdsAdditionalDetailLandArea,
+        this.realStateAdsAdditionalDetailPhone,
+        this.realStateAdsAdditionalDetailDescription,
+        this.realStateAdsDetailCityId,
+        this.realStateAdsDetailAdsPostId,
+        this.animalsAdsId,
+        this.animalsAdsUserId,
+        this.animalsAdsType,
+        this.animalsAdsGender,
+        this.animalsAdsAge,
+        this.animalsAdsBreedOrigin,
+        this.animalsAdsGovernorate,
+        this.animalsAdsState,
+        this.animalsAdsCity,
+        this.animalsAdsImage,
+        this.animalsAdsPostId,
+        this.animalsAdsPrice,
+        this.animalsAdsDistanceTitle,
+        this.animalsAdsPhone,
+        this.animalsAdsDescription,
+        this.phoneNumberAdsId,
+        this.phoneNumberAdsUserId,
+        this.phoneNumberAdsOperators,
+        this.phoneNumberAdsGovernorate,
+        this.phoneNumberAdsState,
+        this.phoneNumberAdsCity,
+        this.phoneNumberAdsDescription,
+        this.phoneNumberAdsImage,
+        this.phoneNumberAdsPostId,
+        this.phoneNumberAdsPhone,
+        this.phoneNumberAdsPrice});
 
-  PostData(
-      {this.id,
-        this.userId,
-        this.cityId,
-        this.price,
-        this.size,
-        this.categoryId,
-        this.subCategoryId,
-        this.bedroom,
-        this.bathroom,
-        this.acType,
-        this.electricityInclusive,
-        this.swimmingPool,
-        this.gym,
-        this.dateTime,
-        this.referenceNumber,
-        this.furnished,
-        this.playArea,
-        this.numberOfFloors,
-        this.maintenanceIncluded,
-        this.extraFeatures,
-        this.description,
-        this.tourUrl,
-        this.youtubeUrl,
-        this.address,
-        this.shortsDescription,
-        this.image,
-        this.mobile,
-        this.plateType,
-        this.plateSource,
-        this.plateCode,
-        this.plateDesign,
-        this.plateNumber,
-        this.autoAccessoriesType,
-        this.age,
-        this.condition,
-        this.underWarranty,
-        this.hIN,
-        this.boatYachtType,
-        this.make,
-        this.length,
-        this.color,
-        this.serviceHistory,
-        this.noofseats,
-        this.motorbikeType,
-        this.motorbikeMake,
-        this.motorbikeModel,
-        this.motorbikeCondition,
-        this.regionalSpecs,
-        this.kilometer,
-        this.engineCapacity,
-        this.numberofcylinders,
-        this.fuelType,
-        this.horsePower,
-        this.rimsize,
-        this.vIN,
-        this.truckType,
-        this.truckMake,
-        this.modelYear,
-        this.transmissionType,
-        this.numberofDoors,
-        this.vehiclemakes,
-        this.vehicleModel,
-        this.vehicleCondition,
-        this.bodyType,
-        this.driveType,
-        this.brand});
-
-  PostData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    cityId = json['city_id'];
-    price = json['price'];
-    size = json['size'];
-    categoryId = json['category_id'];
-    subCategoryId = json['sub_category_id'];
-    bedroom = json['bedroom'];
-    bathroom = json['bathroom'];
-    acType = json['ac_type'];
-    electricityInclusive = json['electricity_inclusive'];
-    swimmingPool = json['swimming_pool'];
-    gym = json['gym'];
-    dateTime = json['date_time'];
-    referenceNumber = json['reference_number'];
-    furnished = json['furnished'];
-    playArea = json['play_area'];
-    numberOfFloors = json['number_of_floors'];
-    maintenanceIncluded = json['maintenance_included'];
-    extraFeatures = json['extra_features'];
-    description = json['description'];
-    tourUrl = json['tour_url'];
-    youtubeUrl = json['youtube_url'];
-    address = json['address'];
-    shortsDescription = json['shorts_description'];
-    image = json['image'];
-    mobile = json['mobile'];
-    plateType = json['plate_type'];
-    plateSource = json['plate_source'];
-    plateCode = json['plate_code'];
-    plateDesign = json['plate_design'];
-    plateNumber = json['plate_number'];
-    autoAccessoriesType = json['auto_accessories_type'];
-    age = json['age'];
-    condition = json['condition'];
-    underWarranty = json['under_warranty'];
-    hIN = json['HIN'];
-    boatYachtType = json['BoatYachtType'];
-    make = json['Make'];
-    length = json['Length'];
-    color = json['color'];
-    serviceHistory = json['ServiceHistory'];
-    noofseats = json['Noofseats'];
-    motorbikeType = json['MotorbikeType'];
-    motorbikeMake = json['MotorbikeMake'];
-    motorbikeModel = json['MotorbikeModel'];
-    motorbikeCondition = json['MotorbikeCondition'];
-    regionalSpecs = json['RegionalSpecs'];
-    kilometer = json['Kilometer'];
-    engineCapacity = json['EngineCapacity'];
-    numberofcylinders = json['Numberofcylinders'];
-    fuelType = json['FuelType'];
-    horsePower = json['HorsePower'];
-    rimsize = json['Rimsize'];
-    vIN = json['VIN'];
-    truckType = json['TruckType'];
-    truckMake = json['TruckMake'];
-    modelYear = json['ModelYear'];
-    transmissionType = json['TransmissionType'];
-    numberofDoors = json['NumberofDoors'];
-    vehiclemakes = json['Vehiclemakes'];
-    vehicleModel = json['VehicleModel'];
-    vehicleCondition = json['VehicleCondition'];
-    bodyType = json['BodyType'];
-    driveType = json['DriveType'];
-    brand = json['brand'];
+  AdsDetails.fromJson(Map<String, dynamic> json) {
+    vehicleAdsDetailId = json['vehicle_ads_detail_id'];
+    vehicleAdsDetailUserId = json['vehicle_ads_detail_user_id'];
+    vehicleAdsDetailMakerId = json['vehicle_ads_detail_maker_id'];
+    vehicleAdsDetailModelId = json['vehicle_ads_detail_model_id'];
+    vehicleAdsDetailModelTrimId = json['vehicle_ads_detail_model_trim_id'];
+    vehicleAdsDetailYear = json['vehicle_ads_detail_year'];
+    vehicleAdsDetailCondition = json['vehicle_ads_detail_condition'];
+    vehicleAdsDetailEngineSize = json['vehicle_ads_detail_engine_size'];
+    vehicleAdsDetailDoors = json['vehicle_ads_detail_doors'];
+    vehicleAdsDetailExteriorColor = json['vehicle_ads_detail_exterior_color'];
+    vehicleAdsDetailInteriorColor = json['vehicle_ads_detail_interior_color'];
+    vehicleAdsDetailCylinders = json['vehicle_ads_detail_cylinders'];
+    vehicleAdsDetailFuel = json['vehicle_ads_detail_fuel'];
+    vehicleAdsDetailTransmission = json['vehicle_ads_detail_transmission'];
+    vehicleAdsDetailDriveTrain = json['vehicle_ads_detail_drive_train'];
+    vehicleAdsDetailSeats = json['vehicle_ads_detail_seats'];
+    vehicleAdsDetailPlate = json['vehicle_ads_detail_plate'];
+    vehicleAdsDetailOrigin = json['vehicle_ads_detail_origin'];
+    vehicleAdsDetailGovernate = json['vehicle_ads_detail_governate'];
+    vehicleAdsDetailState = json['vehicle_ads_detail_state'];
+    vehicleAdsUploadImage = json['vehicle_ads_upload_image'];
+    vehicleAdsAdditionalDetailPrice =
+    json['vehicle_ads_additional_detail_price'];
+    vehicleAdsAdditionalDetailDistanceTravelled =
+    json['vehicle_ads_additional_detail_distance_travelled'];
+    vehicleAdsAdditionalDetailPhone =
+    json['vehicle_ads_additional_detail_phone'];
+    vehicleAdsAdditionalDetailDescription =
+    json['vehicle_ads_additional_detail_description'];
+    vehicleAdsDetailAdsPostId = json['vehicle_ads_detail_ads_post_id'];
+    adsImage = json['ads_image'];
+    adsName = json['ads_name'];
+    adsPrice = json['ads_price'];
+    realStateAdsDetailId = json['real_state_ads_detail_id'];
+    realStateAdsDetailUserId = json['real_state_ads_detail_user_id'];
+    realStateAdsDetailUseId = json['real_state_ads_detail_use_id'];
+    realStateAdsDetailWallId = json['real_state_ads_detail_wall_id'];
+    realStateAdsDetailLandtypeId = json['real_state_ads_detail_landtype_id'];
+    realStateAdsDetailPositionId = json['real_state_ads_detail_position_id'];
+    realStateAdsDetailParkingId = json['real_state_ads_detail_parking_id'];
+    realStateAdsDetailStateId = json['real_state_ads_detail_state_id'];
+    realStateAdsDetailGovernateId = json['real_state_ads_detail_governate_id'];
+    realStateAdsUploadImage = json['real_state_ads_upload_image'];
+    realStateAdsAdditionalDetailPrice =
+    json['real_state_ads_additional_detail_price'];
+    realStateAdsAdditionalDetailLandArea =
+    json['real_state_ads_additional_detail_land_area'];
+    realStateAdsAdditionalDetailPhone =
+    json['real_state_ads_additional_detail_phone'];
+    realStateAdsAdditionalDetailDescription =
+    json['real_state_ads_additional_detail_description'];
+    realStateAdsDetailCityId = json['real_state_ads_detail_city_id'];
+    realStateAdsDetailAdsPostId = json['real_state_ads_detail_ads_post_id'];
+    animalsAdsId = json['animals_ads_id'];
+    animalsAdsUserId = json['animals_ads_user_id'];
+    animalsAdsType = json['animals_ads_type'];
+    animalsAdsGender = json['animals_ads_gender'];
+    animalsAdsAge = json['animals_ads_age'];
+    animalsAdsBreedOrigin = json['animals_ads_breed_origin'];
+    animalsAdsGovernorate = json['animals_ads_governorate'];
+    animalsAdsState = json['animals_ads_state'];
+    animalsAdsCity = json['animals_ads_city'];
+    animalsAdsImage = json['animals_ads_image'];
+    animalsAdsPostId = json['animals_ads_post_id'];
+    animalsAdsPrice = json['animals_ads_price'];
+    animalsAdsDistanceTitle = json['animals_ads_distance_title'];
+    animalsAdsPhone = json['animals_ads_phone'];
+    animalsAdsDescription = json['animals_ads_description'];
+    phoneNumberAdsId = json['phone_number_ads_id'];
+    phoneNumberAdsUserId = json['phone_number_ads_user_id'];
+    phoneNumberAdsOperators = json['phone_number_ads_operators'];
+    phoneNumberAdsGovernorate = json['phone_number_ads_governorate'];
+    phoneNumberAdsState = json['phone_number_ads_state'];
+    phoneNumberAdsCity = json['phone_number_ads_city'];
+    phoneNumberAdsDescription = json['phone_number_ads_description'];
+    phoneNumberAdsImage = json['phone_number_ads_image'];
+    phoneNumberAdsPostId = json['phone_number_ads_post_id'];
+    phoneNumberAdsPhone = json['phone_number_ads_phone'];
+    phoneNumberAdsPrice = json['phone_number_ads_price'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['city_id'] = this.cityId;
-    data['price'] = this.price;
-    data['size'] = this.size;
-    data['category_id'] = this.categoryId;
-    data['sub_category_id'] = this.subCategoryId;
-    data['bedroom'] = this.bedroom;
-    data['bathroom'] = this.bathroom;
-    data['ac_type'] = this.acType;
-    data['electricity_inclusive'] = this.electricityInclusive;
-    data['swimming_pool'] = this.swimmingPool;
-    data['gym'] = this.gym;
-    data['date_time'] = this.dateTime;
-    data['reference_number'] = this.referenceNumber;
-    data['furnished'] = this.furnished;
-    data['play_area'] = this.playArea;
-    data['number_of_floors'] = this.numberOfFloors;
-    data['maintenance_included'] = this.maintenanceIncluded;
-    data['extra_features'] = this.extraFeatures;
-    data['description'] = this.description;
-    data['tour_url'] = this.tourUrl;
-    data['youtube_url'] = this.youtubeUrl;
-    data['address'] = this.address;
-    data['shorts_description'] = this.shortsDescription;
-    data['image'] = this.image;
-    data['mobile'] = this.mobile;
-    data['plate_type'] = this.plateType;
-    data['plate_source'] = this.plateSource;
-    data['plate_code'] = this.plateCode;
-    data['plate_design'] = this.plateDesign;
-    data['plate_number'] = this.plateNumber;
-    data['auto_accessories_type'] = this.autoAccessoriesType;
-    data['age'] = this.age;
-    data['condition'] = this.condition;
-    data['under_warranty'] = this.underWarranty;
-    data['HIN'] = this.hIN;
-    data['BoatYachtType'] = this.boatYachtType;
-    data['Make'] = this.make;
-    data['Length'] = this.length;
-    data['color'] = this.color;
-    data['ServiceHistory'] = this.serviceHistory;
-    data['Noofseats'] = this.noofseats;
-    data['MotorbikeType'] = this.motorbikeType;
-    data['MotorbikeMake'] = this.motorbikeMake;
-    data['MotorbikeModel'] = this.motorbikeModel;
-    data['MotorbikeCondition'] = this.motorbikeCondition;
-    data['RegionalSpecs'] = this.regionalSpecs;
-    data['Kilometer'] = this.kilometer;
-    data['EngineCapacity'] = this.engineCapacity;
-    data['Numberofcylinders'] = this.numberofcylinders;
-    data['FuelType'] = this.fuelType;
-    data['HorsePower'] = this.horsePower;
-    data['Rimsize'] = this.rimsize;
-    data['VIN'] = this.vIN;
-    data['TruckType'] = this.truckType;
-    data['TruckMake'] = this.truckMake;
-    data['ModelYear'] = this.modelYear;
-    data['TransmissionType'] = this.transmissionType;
-    data['NumberofDoors'] = this.numberofDoors;
-    data['Vehiclemakes'] = this.vehiclemakes;
-    data['VehicleModel'] = this.vehicleModel;
-    data['VehicleCondition'] = this.vehicleCondition;
-    data['BodyType'] = this.bodyType;
-    data['DriveType'] = this.driveType;
-    data['brand'] = this.brand;
+    data['vehicle_ads_detail_id'] = this.vehicleAdsDetailId;
+    data['vehicle_ads_detail_user_id'] = this.vehicleAdsDetailUserId;
+    data['vehicle_ads_detail_maker_id'] = this.vehicleAdsDetailMakerId;
+    data['vehicle_ads_detail_model_id'] = this.vehicleAdsDetailModelId;
+    data['vehicle_ads_detail_model_trim_id'] = this.vehicleAdsDetailModelTrimId;
+    data['vehicle_ads_detail_year'] = this.vehicleAdsDetailYear;
+    data['vehicle_ads_detail_condition'] = this.vehicleAdsDetailCondition;
+    data['vehicle_ads_detail_engine_size'] = this.vehicleAdsDetailEngineSize;
+    data['vehicle_ads_detail_doors'] = this.vehicleAdsDetailDoors;
+    data['vehicle_ads_detail_exterior_color'] =
+        this.vehicleAdsDetailExteriorColor;
+    data['vehicle_ads_detail_interior_color'] =
+        this.vehicleAdsDetailInteriorColor;
+    data['vehicle_ads_detail_cylinders'] = this.vehicleAdsDetailCylinders;
+    data['vehicle_ads_detail_fuel'] = this.vehicleAdsDetailFuel;
+    data['vehicle_ads_detail_transmission'] = this.vehicleAdsDetailTransmission;
+    data['vehicle_ads_detail_drive_train'] = this.vehicleAdsDetailDriveTrain;
+    data['vehicle_ads_detail_seats'] = this.vehicleAdsDetailSeats;
+    data['vehicle_ads_detail_plate'] = this.vehicleAdsDetailPlate;
+    data['vehicle_ads_detail_origin'] = this.vehicleAdsDetailOrigin;
+    data['vehicle_ads_detail_governate'] = this.vehicleAdsDetailGovernate;
+    data['vehicle_ads_detail_state'] = this.vehicleAdsDetailState;
+    data['vehicle_ads_upload_image'] = this.vehicleAdsUploadImage;
+    data['vehicle_ads_additional_detail_price'] =
+        this.vehicleAdsAdditionalDetailPrice;
+    data['vehicle_ads_additional_detail_distance_travelled'] =
+        this.vehicleAdsAdditionalDetailDistanceTravelled;
+    data['vehicle_ads_additional_detail_phone'] =
+        this.vehicleAdsAdditionalDetailPhone;
+    data['vehicle_ads_additional_detail_description'] =
+        this.vehicleAdsAdditionalDetailDescription;
+    data['vehicle_ads_detail_ads_post_id'] = this.vehicleAdsDetailAdsPostId;
+    data['ads_image'] = this.adsImage;
+    data['ads_name'] = this.adsName;
+    data['ads_price'] = this.adsPrice;
+    data['real_state_ads_detail_id'] = this.realStateAdsDetailId;
+    data['real_state_ads_detail_user_id'] = this.realStateAdsDetailUserId;
+    data['real_state_ads_detail_use_id'] = this.realStateAdsDetailUseId;
+    data['real_state_ads_detail_wall_id'] = this.realStateAdsDetailWallId;
+    data['real_state_ads_detail_landtype_id'] =
+        this.realStateAdsDetailLandtypeId;
+    data['real_state_ads_detail_position_id'] =
+        this.realStateAdsDetailPositionId;
+    data['real_state_ads_detail_parking_id'] = this.realStateAdsDetailParkingId;
+    data['real_state_ads_detail_state_id'] = this.realStateAdsDetailStateId;
+    data['real_state_ads_detail_governate_id'] =
+        this.realStateAdsDetailGovernateId;
+    data['real_state_ads_upload_image'] = this.realStateAdsUploadImage;
+    data['real_state_ads_additional_detail_price'] =
+        this.realStateAdsAdditionalDetailPrice;
+    data['real_state_ads_additional_detail_land_area'] =
+        this.realStateAdsAdditionalDetailLandArea;
+    data['real_state_ads_additional_detail_phone'] =
+        this.realStateAdsAdditionalDetailPhone;
+    data['real_state_ads_additional_detail_description'] =
+        this.realStateAdsAdditionalDetailDescription;
+    data['real_state_ads_detail_city_id'] = this.realStateAdsDetailCityId;
+    data['real_state_ads_detail_ads_post_id'] =
+        this.realStateAdsDetailAdsPostId;
+    data['animals_ads_id'] = this.animalsAdsId;
+    data['animals_ads_user_id'] = this.animalsAdsUserId;
+    data['animals_ads_type'] = this.animalsAdsType;
+    data['animals_ads_gender'] = this.animalsAdsGender;
+    data['animals_ads_age'] = this.animalsAdsAge;
+    data['animals_ads_breed_origin'] = this.animalsAdsBreedOrigin;
+    data['animals_ads_governorate'] = this.animalsAdsGovernorate;
+    data['animals_ads_state'] = this.animalsAdsState;
+    data['animals_ads_city'] = this.animalsAdsCity;
+    data['animals_ads_image'] = this.animalsAdsImage;
+    data['animals_ads_post_id'] = this.animalsAdsPostId;
+    data['animals_ads_price'] = this.animalsAdsPrice;
+    data['animals_ads_distance_title'] = this.animalsAdsDistanceTitle;
+    data['animals_ads_phone'] = this.animalsAdsPhone;
+    data['animals_ads_description'] = this.animalsAdsDescription;
+    data['phone_number_ads_id'] = this.phoneNumberAdsId;
+    data['phone_number_ads_user_id'] = this.phoneNumberAdsUserId;
+    data['phone_number_ads_operators'] = this.phoneNumberAdsOperators;
+    data['phone_number_ads_governorate'] = this.phoneNumberAdsGovernorate;
+    data['phone_number_ads_state'] = this.phoneNumberAdsState;
+    data['phone_number_ads_city'] = this.phoneNumberAdsCity;
+    data['phone_number_ads_description'] = this.phoneNumberAdsDescription;
+    data['phone_number_ads_image'] = this.phoneNumberAdsImage;
+    data['phone_number_ads_post_id'] = this.phoneNumberAdsPostId;
+    data['phone_number_ads_phone'] = this.phoneNumberAdsPhone;
+    data['phone_number_ads_price'] = this.phoneNumberAdsPrice;
     return data;
   }
 }

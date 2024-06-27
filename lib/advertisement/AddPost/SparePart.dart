@@ -1,4 +1,7 @@
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:flutter/material.dart';
+
+import 'VehicleParts/Ad_VehiclePartAdd.dart';
 
 class SparePart extends StatefulWidget {
   String advertisement_category_id = '';
@@ -41,7 +44,32 @@ class _SparePartState extends State<SparePart> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-            Container(
+            InkWell(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AdVehiclesPartAdd(type: 'Wanted',)));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                height: MediaQuery.of(context).size.height * 0.15,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                padding: EdgeInsets.fromLTRB(20,10,0,0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset("assets/images/WantedIcon.png",height: 60,),
+                    SizedBox(height: 10),
+                    Text("Wanted",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16),)
+                  ],
+                ),
+              ),
+            ),
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AdVehiclesPartAdd(type: 'Sale',)));
+            },
+            child: Container(
               width: MediaQuery.of(context).size.width * 0.45,
               height: MediaQuery.of(context).size.height * 0.15,
               decoration: BoxDecoration(
@@ -51,26 +79,11 @@ class _SparePartState extends State<SparePart> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset("assets/images/WantedIcon.png",height: 60,),
+                  Image.asset("assets/images/SpareSaleIcon.png",height: 60,),
                   SizedBox(height: 10),
-                  Text("Wanted",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16),)
+                  Text("For Sale",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16),)
                 ],
               ),
-            ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.45,
-            height: MediaQuery.of(context).size.height * 0.15,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.withOpacity(0.3)),
-                borderRadius: BorderRadius.all(Radius.circular(15))),
-            padding: EdgeInsets.fromLTRB(20,10,0,0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset("assets/images/SpareSaleIcon.png",height: 60,),
-                SizedBox(height: 10),
-                Text("For Sale",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16),)
-              ],
             ),
           )
           ],

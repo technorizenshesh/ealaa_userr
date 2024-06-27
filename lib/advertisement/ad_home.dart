@@ -34,29 +34,6 @@ class _AdHomeState extends State<AdHome> {
   String currentTime = "";
   String notificationCount = "";
 
-  List<Map<String, String>> carList = [
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_car1.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_car2.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_car1.png"
-    },
-    {
-      'name': "AED- 33,000",
-      "description": "Studio- 4 Rooms \n AI Barsha South 2",
-      'image': "assets/icons/ic_car2.png"
-    },
-  ];
-
   List<AllCategoryPostResult> PostByCategoryList = [];
 
   clickOnNotification() {
@@ -97,8 +74,7 @@ class _AdHomeState extends State<AdHome> {
 
   getAllPostByCategoryApi() async {
     showProgressBar = true;
-    var res =
-        await Webservices.getMap("$baseUrl$get_advertisement_category_post");
+    var res = await Webservices.getMap("$baseUrl$get_ads_with_category_home");
     print("status from api ${res}");
     final resdata = AllCategoryPostModel.fromJson(res);
     print(res);
@@ -273,10 +249,6 @@ class _AdHomeState extends State<AdHome> {
                         ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
-                      // Image.network(
-                      //   adsBannerList[index].image!,
-                      //   fit: BoxFit.fill,
-                      // ),
                     ),
                   );
                 },
@@ -301,36 +273,6 @@ class _AdHomeState extends State<AdHome> {
               SizedBox(
                 height: 15,
               ),
-              // if (getAdvertisementCategoryResult.isNotEmpty)
-              //   ListTile(
-              //     contentPadding:
-              //         const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              //     title: const Text(
-              //       'Categories',
-              //       style: TextStyle(
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.orange),
-              //     ),
-              //     trailing: InkWell(
-              //       borderRadius: const BorderRadius.all(Radius.circular(8)),
-              //       onTap: () async {
-              //         await Navigator.push(context,
-              //             MaterialPageRoute(builder: (context) {
-              //           return const AdViewAllCategories();
-              //         }));
-              //         getAdvertisementPostsApi();
-              //       },
-              //       child: const Text(
-              //         'View All',
-              //         style: TextStyle(
-              //             fontSize: 14,
-              //             fontWeight: FontWeight.normal,
-              //             color: Colors.black54,
-              //             decoration: TextDecoration.underline),
-              //       ),
-              //     ),
-              //   ),
               if (advertisementCategoryList.isNotEmpty ||
                   advertisementCategoryList != [])
                 SizedBox(
@@ -338,92 +280,9 @@ class _AdHomeState extends State<AdHome> {
                   //  height: 110,
                   child: showCategory(),
                 ),
-              // if (getAdvertisementPostsCategoryResult.isNotEmpty)
-              //   ListTile(
-              //     contentPadding:
-              //         const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              //     title: const Text(
-              //       'Recent Uploaded',
-              //       style: TextStyle(
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.orange),
-              //     ),
-              //     trailing: InkWell(
-              //       borderRadius: const BorderRadius.all(Radius.circular(8)),
-              //       onTap: () async {
-              //         await Navigator.push(context,
-              //             MaterialPageRoute(builder: (context) {
-              //           return const AdViewAllSubCategories();
-              //         }));
-              //         getAdvertisementPostsApi();
-              //       },
-              //       child: const Text(
-              //         'View All',
-              //         style: TextStyle(
-              //             fontSize: 14,
-              //             fontWeight: FontWeight.normal,
-              //             color: Colors.black54,
-              //             decoration: TextDecoration.underline),
-              //       ),
-              //     ),
-              //   ),
               PostByCategoryList.isEmpty || PostByCategoryList == []
                   ? SizedBox()
                   : showCategoriesPost()
-              // showPopularPosts(),
-              /*const ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                title: Text(
-                  'Popular in used Car for Sale',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange),
-                ),
-                trailing: Text(
-                  'View All',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black54,
-                      decoration: TextDecoration.underline),
-                ),
-              ),
-              SizedBox(
-                height: 170,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: showPopularCars(),
-                ),
-              ),
-              const ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-                title: Text(
-                  'Popular in Furniture and Garden',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange),
-                ),
-                trailing: Text(
-                  'View All',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black54,
-                      decoration: TextDecoration.underline),
-                ),
-              ),
-              SizedBox(
-                height: 170,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: showPopularFurniture(),
-                ),
-              ),*/
             ],
           ),
         ),
@@ -457,24 +316,23 @@ class _AdHomeState extends State<AdHome> {
               return GestureDetector(
                 onTap: () {
                   if (advertisementCategoryList[index].id == "1" ||
-                      advertisementCategoryList[index].id == "2"||
-                      advertisementCategoryList[index].id=="5"||
-                      advertisementCategoryList[index].id=="6"||
-                      advertisementCategoryList[index].id=="7"||
-                      advertisementCategoryList[index].id=="8"||
-                      advertisementCategoryList[index].id=="10"){
+                      advertisementCategoryList[index].id == "2" ||
+                      advertisementCategoryList[index].id == "5" ||
+                      advertisementCategoryList[index].id == "6" ||
+                      advertisementCategoryList[index].id == "7" ||
+                      advertisementCategoryList[index].id == "8" ||
+                      advertisementCategoryList[index].id == "10") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AdSubCategories(
                           title: advertisementCategoryList[index].name ?? '',
                           advertisement_category_id:
-                          advertisementCategoryList[index].id ?? '',
+                              advertisementCategoryList[index].id ?? '',
                         ),
                       ),
                     );
                   }
-
                 },
                 child: Container(
                   height: 50,
@@ -537,80 +395,6 @@ class _AdHomeState extends State<AdHome> {
               );
             },
           );
-    // ListView.builder(
-    //         physics: const BouncingScrollPhysics(),
-    //         shrinkWrap: true,
-    //         //padding: EdgeInsets.zero,
-    //         scrollDirection: Axis.horizontal,
-    //         itemCount: getAdvertisementCategoryResult.length,
-    //         itemBuilder: (context, int index) {
-    //           //  GetClubsResult item = controller.getClubsModel!.result![index];
-    //           return GestureDetector(
-    //             onTap: () async {
-    //               await Navigator.push(
-    //                 context,
-    //                 MaterialPageRoute(
-    //                   builder: (context) => AdSubCategories(
-    //                     title: getAdvertisementCategoryResult[index].name ?? '',
-    //                     advertisement_category_id:
-    //                         getAdvertisementCategoryResult[index].id ?? '',
-    //                   ),
-    //                 ),
-    //               );
-    //               getAdvertisementPostsApi();
-    //             },
-    //             child: Container(
-    //               height: 110,
-    //               width: 110,
-    //               decoration: BoxDecoration(
-    //                   color: Colors.white,
-    //                   borderRadius: const BorderRadius.all(Radius.circular(15)),
-    //                   border: Border.all(
-    //                       color: Colors.orangeAccent.withOpacity(0.7),
-    //                       width: 2)),
-    //               margin: const EdgeInsets.symmetric(horizontal: 4),
-    //               clipBehavior: Clip.hardEdge,
-    //               child: Column(
-    //                 crossAxisAlignment: CrossAxisAlignment.center,
-    //                 mainAxisAlignment: MainAxisAlignment.center,
-    //                 children: [
-    //                   ClipRRect(
-    //                     borderRadius: BorderRadius.circular(10),
-    //                     child: CachedNetworkImage(
-    //                       imageUrl:
-    //                           getAdvertisementCategoryResult[index].image ?? '',
-    //                       height: 60,
-    //                       fit: BoxFit.fill,
-    //                       placeholder: (context, url) => Center(
-    //                           child: Shimmer.fromColors(
-    //                         baseColor: MyColors.onSecondary.withOpacity(0.4),
-    //                         highlightColor:
-    //                             Theme.of(context).colorScheme.onSecondary,
-    //                         child: Container(
-    //                           height: 60,
-    //                           decoration: BoxDecoration(
-    //                             borderRadius: BorderRadius.circular(16),
-    //                             color: MyColors.onSecondary.withOpacity(0.4),
-    //                           ),
-    //                         ),
-    //                       )),
-    //                       errorWidget: (context, url, error) =>
-    //                           const Icon(Icons.error),
-    //                     ),
-    //                   ),
-    //                   Text(
-    //                     getAdvertisementCategoryResult[index].name ?? '',
-    //                     style: const TextStyle(
-    //                         fontWeight: FontWeight.normal,
-    //                         fontSize: 13,
-    //                         color: Colors.black54),
-    //                   )
-    //                 ],
-    //               ),
-    //             ),
-    //           );
-    //         },
-    //       );
   }
 
 // Show categories post
@@ -626,31 +410,54 @@ class _AdHomeState extends State<AdHome> {
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Browse ${PostByCategoryList[i].count}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "${PostByCategoryList[i].name}",
-                            style: TextStyle(
-                                color: MyColors.primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          SvgPicture.asset(
-                            "assets/images/Navs.svg",
-                            height: 16,
-                          )
-                        ],
+                      child: InkWell(
+                        onTap: () {
+                          if (advertisementCategoryList[i].id == "1" ||
+                              advertisementCategoryList[i].id == "2" ||
+                              advertisementCategoryList[i].id == "5" ||
+                              advertisementCategoryList[i].id == "6" ||
+                              advertisementCategoryList[i].id == "7" ||
+                              advertisementCategoryList[i].id == "8" ||
+                              advertisementCategoryList[i].id == "10") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AdSubCategories(
+                                  title:
+                                      advertisementCategoryList[i].name ?? '',
+                                  advertisement_category_id:
+                                      advertisementCategoryList[i].id ?? '',
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              "Browse ${PostByCategoryList[i].count}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "${PostByCategoryList[i].name}",
+                              style: TextStyle(
+                                  color: MyColors.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            SvgPicture.asset(
+                              "assets/images/Navs.svg",
+                              height: 16,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     SingleChildScrollView(
@@ -658,7 +465,7 @@ class _AdHomeState extends State<AdHome> {
                       child: Row(
                         children: [
                           for (int j = 0;
-                              j < PostByCategoryList[i].postData!.length;
+                              j < PostByCategoryList[i].postListDetails!.length;
                               j++)
                             Container(
                               width: MediaQuery.of(context).size.width * 0.45,
@@ -682,9 +489,11 @@ class _AdHomeState extends State<AdHome> {
                                           topLeft: Radius.circular(10)),
                                       child: CachedNetworkImage(
                                         imageUrl: PostByCategoryList[i]
-                                                .postData![j]
-                                                .image ??
-                                            '',
+                                                .postListDetails![j]
+                                                .adsDetails
+                                                ?.adsImage ??
+                                            ""
+                                                '',
                                         height: 60,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) => Center(
@@ -713,7 +522,7 @@ class _AdHomeState extends State<AdHome> {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     child: Text(
-                                      "Nissan Rogue SL 2017",
+                                      "${PostByCategoryList[i].postListDetails![j].adsDetails?.adsName}",
                                       style: TextStyle(fontSize: 14),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -723,7 +532,7 @@ class _AdHomeState extends State<AdHome> {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10),
                                     child: Text(
-                                      "${PostByCategoryList[i].postData![j].price} OMR",
+                                      "${PostByCategoryList[i].postListDetails![j].adsDetails?.adsPrice} OMR",
                                       style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,

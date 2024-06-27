@@ -1,5 +1,7 @@
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
+import 'VehicleNumbers.dart';
+
 class TransferType extends StatefulWidget {
   String advertisement_category_id = '';
 
@@ -56,16 +58,16 @@ class _TransferTypeState extends State<TransferType> {
             //  GetClubsResult item = controller.getClubsModel!.result![index];
             return GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => AdSubCategories(
-                //       title: subcategoryList[index].subCategoryName?? '',
-                //       advertisement_category_id:
-                //       advertisementCategoryList[index].id ?? '',
-                //     ),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VehicleNumbers(type:icons[index]['text']??"",
+                      // title: subcategoryList[index].subCategoryName?? '',
+                      // advertisement_category_id:
+                      // advertisementCategoryList[index].id ?? '',
+                    ),
+                  ),
+                );
               },
               child: Container(
                 height: 50,
