@@ -326,9 +326,8 @@ class _AdHomeState extends State<AdHome> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AdSubCategories(
-                          title: advertisementCategoryList[index].name ?? '',
                           advertisement_category_id:
-                              advertisementCategoryList[index].id ?? '',
+                              advertisementCategoryList[index].id ?? '', categoryAds: PostByCategoryList[index],
                         ),
                       ),
                     );
@@ -423,10 +422,9 @@ class _AdHomeState extends State<AdHome> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AdSubCategories(
-                                  title:
-                                      advertisementCategoryList[i].name ?? '',
                                   advertisement_category_id:
                                       advertisementCategoryList[i].id ?? '',
+                                  categoryAds: PostByCategoryList[i],
                                 ),
                               ),
                             );

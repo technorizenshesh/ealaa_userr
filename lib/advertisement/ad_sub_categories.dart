@@ -1,8 +1,10 @@
+import 'package:ealaa_userr/advertisement/CategoryPostsScreen.dart';
 import 'package:ealaa_userr/advertisement/PostByCategory.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../Model/advertisement_model/AllCategoryPostModel.dart';
 import '../Model/advertisement_model/ad_subcategory_model.dart';
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../View/Utils/ApiConstants.dart';
@@ -13,12 +15,13 @@ import 'ad_product_detail.dart';
 
 class AdSubCategories extends StatefulWidget {
   String advertisement_category_id = '';
-  String title = '';
+  AllCategoryPostResult categoryAds;
 
-  AdSubCategories(
-      {super.key,
-      required this.advertisement_category_id,
-      required this.title});
+  AdSubCategories({
+    super.key,
+    required this.advertisement_category_id,
+    required this.categoryAds,
+  });
 
   @override
   State<AdSubCategories> createState() => _AdSubCategoriesState();
@@ -39,7 +42,7 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
     showProgressBar = false;
     resdata = GetSubcategoryModel.fromJson(res);
     print(resdata);
-    if (resdata!=null && resdata!.result != null && resdata!.status == '1') {
+    if (resdata != null && resdata!.result != null && resdata!.status == '1') {
       subcategoryList = resdata!.result!;
 
       //  selectedSubcategory = subcategoryList[0];
@@ -89,7 +92,7 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
         ),
         centerTitle: true,
         title: Text(
-          widget.title, // Your badge count here
+          widget.categoryAds.name ?? "", // Your badge count here
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -103,16 +106,14 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
               child: RoundButton(
                 borderRadius: 8,
-                title: "${resdata?.selectedCount!='0'? resdata?.selectedCount: resdata?.count ?? '0'} ${widget.title}",
+                title:
+                    "${resdata?.selectedCount != '0' ? resdata?.selectedCount : resdata?.count ?? '0'} ${widget.categoryAds.name}",
                 onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => PostByCategory(
-                  //           advertisement_category_id:
-                  //               widget.advertisement_category_id,
-                  //           selectedSubcategory: selectedSubcategory!),
-                  //     ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPostsScreen(),
+                      ));
                 },
               ),
             ),
@@ -142,14 +143,16 @@ class _AdSubCategoriesState extends State<AdSubCategories> {
                                 if (subcategoryList[index].selected == null ||
                                     subcategoryList[index].selected != '1') {
                                   subcategoryList[index].selected = '1';
-                                  resdata?.selectedCount = (int.parse(resdata?.selectedCount ?? '0') +
+                                  resdata?.selectedCount = (int.parse(
+                                              resdata?.selectedCount ?? '0') +
                                           int.parse(
                                               subcategoryList[index].subcount!))
                                       .toString();
                                   setState(() {});
                                 } else {
                                   subcategoryList[index].selected = null;
-                                  resdata?.selectedCount = (int.parse(resdata?.selectedCount ?? '0') -
+                                  resdata?.selectedCount = (int.parse(
+                                              resdata?.selectedCount ?? '0') -
                                           int.parse(
                                               subcategoryList[index].subcount!))
                                       .toString();
