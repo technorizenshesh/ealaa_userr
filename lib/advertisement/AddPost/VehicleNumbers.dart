@@ -1,61 +1,46 @@
 import 'dart:io';
 
+import 'package:ealaa_userr/Model/advertisement_model/VehicleLetterModel.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../Model/advertisement_model/VehiclePartsModel.dart';
-import '../../../View/Utils/ApiConstants.dart';
-import '../../../View/Utils/CommonMethods.dart';
-import '../../../View/Utils/CustomSnackBar.dart';
-import '../../../View/Utils/webService.dart';
-import '../../../common/common_widgets.dart';
-import '../../ad_bottom_bar.dart';
+import '../../View/Utils/ApiConstants.dart';
+import '../../View/Utils/CommonMethods.dart';
+import '../../View/Utils/CustomSnackBar.dart';
+import '../../View/Utils/webService.dart';
+import '../../common/common_widgets.dart';
+import '../ad_bottom_bar.dart';
 
-class AdVehiclesPartAdd extends StatefulWidget {
+class VehicleNumbers extends StatefulWidget {
   final String type;
-
-  const AdVehiclesPartAdd({super.key, required this.type});
+  const VehicleNumbers({super.key, required this.type});
 
   @override
-  State<AdVehiclesPartAdd> createState() => _AdVehiclesPartAddState();
+  State<VehicleNumbers> createState() => _VehicleNumbersState();
 }
 
-class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
-  List<String> topList = [
-    'Part',
-    'Makes',
-    'Vehicle Models',
-    'Model Years',
-    'Model Trim',
-    'Engine Size',
-    'Upload Photos',
-    'Additional Details',
-  ];
+class _VehicleNumbersState extends State<VehicleNumbers> {
   final ScrollController _scrollController = ScrollController();
   bool showProgressBar = true;
   int _currentStepIndex = 1;
-  String title = "Part";
-  int selectedIndex = -1;
-  VehiclePartsResult? vehiclePartsResult;
-  List<Part> partsList = [];
-  List<SubPartName> subPartList = [];
-  List<Maker> makerList = [];
-  List<Model> modelList = [];
-  List<ModelYear> yearList = [];
-  List<ModelTrim> trimList = [];
-  List<EngineSize> enginesizeList = [];
+  List<String> topList = [
+    'Letter',
+    'Vehicle Number',
+    'Plate Type',
+    'Governate',
+    'Upload Photos',
+    'Additional Details',
+  ];
+  String title = "Letter";
+  VehicleLetterResult? vehicleLetterResult;
+  List<Letters> lettersList = [];
+  List<PlateTypes> plateTypeList = [];
+  List<Governorate> governateList = [];
 
-
-  Part? selectedPart;
-  SubPartName? selectedSubpart;
-  Maker? selectedMaker;
-  Model? selectesModel;
-  ModelYear? selectedModelyear;
-  ModelTrim? selectedModeltrim;
-  EngineSize? selectedEnginesize;
+  Letters? selectedLetter;
+  PlateTypes? selectedPlateType;
+  Governorate? selectedgovernate;
 
   String? selectedImage;
 
@@ -80,18 +65,16 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
   }
 
   getListData() async {
-    var res = await Webservices.getMap(widget.type == "Wanted"
-        ? "$get_vehicles_parts_accessories_wanted"
-        : "$get_vehicles_parts_accessories_for_sell");
+    var res = await Webservices.getMap("$get_vehicles_numbers_for_sell");
     print("status from api ${res}");
     showProgressBar = false;
-    final resdata = VehiclePartsModel.fromJson(res);
+    final resdata = VehicleLetterModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
-      vehiclePartsResult = resdata.result!;
-      partsList = vehiclePartsResult!.part ?? [];
-      makerList = vehiclePartsResult!.maker ?? [];
-      enginesizeList = vehiclePartsResult!.engineSize ?? [];
+      vehicleLetterResult = resdata.result!;
+      lettersList = vehicleLetterResult?.letters??[];
+      plateTypeList = vehicleLetterResult?.plateTypes??[];
+      governateList = vehicleLetterResult?.governorate??[];
 
       setState(() {});
     } else {
@@ -200,223 +183,209 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
       ),
       body: showProgressBar
           ? Center(
-              child: CircularProgressIndicator(
-                color: MyColors.primaryColor,
-              ),
-            )
-          : vehiclePartsResult == null
-              ? Image.asset("assets/images/NoDataFound.png")
-              : NestedScrollView(
-                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                    SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      pinned: true,
-                      expandedHeight: 100,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: SingleChildScrollView(
-                          controller: _scrollController,
-                          scrollDirection: Axis.horizontal,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-                            child: Row(
-                              children: List.generate(topList.length, (index) {
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Divider(
-                                      height: 10,
-                                      color: Colors.grey,
-                                    ),
-                                    _currentStepIndex <= index
-                                        ? SvgPicture.asset(
-                                            "assets/images/card_grey.svg",
-                                            height: 40,
-                                          )
-                                        : _currentStepIndex == index + 1
-                                            ? SvgPicture.asset(
-                                                'assets/images/card_blue.svg',
-                                                height: 45,
-                                              )
-                                            : SvgPicture.asset(
-                                                'assets/images/card_green.svg',
-                                                height: 45,
-                                              ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      child: Center(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              topList[index],
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color:
-                                                      _currentStepIndex <= index
-                                                          ? Colors.grey
-                                                          : Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              _getSelectedValueForIndex(index),
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color:
-                                                    _currentStepIndex <= index
-                                                        ? Colors.grey
-                                                        : Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      margin: EdgeInsets.only(right: 15),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
+        child: CircularProgressIndicator(
+          color: MyColors.primaryColor,
+        ),
+      )
+          : lettersList.isEmpty
+          ? Image.asset("assets/images/NoDataFound.png")
+          : NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            pinned: true,
+            expandedHeight: 100,
+            flexibleSpace: FlexibleSpaceBar(
+              background: SingleChildScrollView(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                  child: Row(
+                    children: List.generate(topList.length, (index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Divider(
+                            height: 10,
+                            color: Colors.grey,
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                  body: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                        height: MediaQuery.of(context).size.height - 200,
-                        child: tabsScreens(_currentStepIndex)),
+                          _currentStepIndex <= index
+                              ? SvgPicture.asset(
+                            "assets/images/card_grey.svg",
+                            height: 40,
+                          )
+                              : _currentStepIndex == index + 1
+                              ? SvgPicture.asset(
+                            'assets/images/card_blue.svg',
+                            height: 45,
+                          )
+                              : SvgPicture.asset(
+                            'assets/images/card_green.svg',
+                            height: 45,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            child: Center(
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    topList[index],
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color:
+                                        _currentStepIndex <= index
+                                            ? Colors.grey
+                                            : Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    _getSelectedValueForIndex(index),
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color:
+                                      _currentStepIndex <= index
+                                          ? Colors.grey
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            margin: EdgeInsets.only(right: 15),
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ),
                 ),
+              ),
+            ),
+          ),
+        ],
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+              height: MediaQuery.of(context).size.height - 200,
+              child: tabsScreens(_currentStepIndex)),
+        ),
+      ),
     );
   }
 
   Widget tabsScreens(int index) {
     switch (index) {
       case 1:
-        return PartView();
+        return LetterScreen();
       case 2:
-        return MakesView();
+        return VehicleNumberScreen();
       case 3:
-        return ModelsView();
+        return PlateTypeScreen();
       case 4:
-        return YearsView();
+        return GovernateScreen();
       case 5:
-        return TrimView();
-      case 6:
-        return SizeView();
-      case 7:
         return UploadPhotos();
-      case 8:
+      case 6:
         return AdditionalDetails();
       default:
-        return PartView();
+        return LetterScreen();
     }
   }
 
-  Widget PartView() {
+
+  Widget LetterScreen() {
     return ListView.builder(
-        itemCount: partsList.length,
-        itemBuilder: (context, index) => Column(
+        itemCount: lettersList.length,
+        itemBuilder: (context, index) => Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          margin: EdgeInsets.only(bottom: 15),
+          child: RadioListTile(
+            activeColor: MyColors.primaryColor,
+            value: lettersList[index],
+            title: Text('${lettersList[index].letterNameArabic}'),
+            subtitle: Text('${lettersList[index].letterNameEnglish}'),
+            groupValue: selectedLetter,
+            onChanged: (Letters? value) {
+              _currentStepIndex = 2;
+              selectedLetter = value;
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ));
+  }
+
+  Widget VehicleNumberScreen() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 1.5,
+            decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.1),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: (){
-                    subPartList = partsList[index].subPartName??[];
-                    setState(() {
-
-                    });
-                    if(selectedIndex!=index){
-                      selectedIndex = index;
-                      setState(() {
-
-                      });
-                    }
-                    else{
-                      selectedIndex = -1;
-                      setState(() {
-
-                      });
-                    }
-
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    margin: EdgeInsets.only(bottom: 15),
-                    child: ListTile(
-                      leading: Icon(selectedIndex == index?Icons.expand_less:Icons.expand_more,color: MyColors.primaryColor,size: 30,),
-                      title: Text('${partsList[index].partName}'),
-                      trailing: SvgPicture.asset("assets/images/EngineIcon.svg",height: 30,),
-                    ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Text(
+                    "Phone",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
+                ),
+                commonTextFormField(
+                  controller: phone,
+                  hintText: 'Enter Phone',
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                if(selectedIndex==index)
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: subPartList.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      margin: EdgeInsets.only(bottom: 15),
-                      child: RadioListTile(
-                        activeColor: MyColors.primaryColor,
-                        value: subPartList[index],
-                        title: Text('${subPartList[index].subPartName}'),
-                        groupValue: selectedSubpart,
-                        onChanged: (SubPartName? value) {
-                          _currentStepIndex = 2;
-                          selectedSubpart = value;
-                          title = _getTitleForIndex(_currentStepIndex - 1);
-                          _scrollToNextStep();
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                  ),
-                )
               ],
-            ));
-  }
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          RoundButton(
+            loading: loader,
+            height: 45,
+            borderRadius: 10,
+            title: 'Next',
+            fontsize: 18,
+            fontweight: FontWeight.w500,
+            onTap: () {
+              if (phone.text.isEmpty) {
 
-  Widget MakesView() {
-    return ListView.builder(
-        itemCount: makerList.length,
-        itemBuilder: (context, index) => Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: makerList[index],
-            title: Text('${makerList[index].name}'),
-            groupValue: selectedMaker,
-            onChanged: (Maker? value) {
-              _currentStepIndex = 3;
-              selectedMaker = value;
-              title = _getTitleForIndex(_currentStepIndex - 1);
-              modelList = selectedMaker?.model??[];
-              _scrollToNextStep();
-              setState(() {});
+                showSnackbar(context, "Enter phone number");
+              } else {
+                _currentStepIndex = 3;
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {
+
+                });
+              }
             },
           ),
-        ));
+        ],
+      ),
+    );
   }
 
-  Widget ModelsView() {
+  Widget PlateTypeScreen() {
     return ListView.builder(
-        itemCount: modelList.length,
+        itemCount: plateTypeList.length,
         itemBuilder: (context, index) => Container(
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.withOpacity(0.5)),
@@ -424,18 +393,13 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
           margin: EdgeInsets.only(bottom: 15),
           child: RadioListTile(
             activeColor: MyColors.primaryColor,
-            value: modelList[index],
-            title: Text('${modelList[index].name}'),
-            groupValue: selectesModel,
-            onFocusChange: (value) {
-              print("gdhjsgj...$value");
-            },
-            onChanged: (Model? value) {
+            value: plateTypeList[index],
+            title: Text('${plateTypeList[index].plateTypeName}'),
+            groupValue: selectedPlateType,
+            onChanged: (PlateTypes? value) {
               _currentStepIndex = 4;
-              selectesModel = value;
+              selectedPlateType = value;
               title = _getTitleForIndex(_currentStepIndex - 1);
-              yearList = selectesModel?.modelYear??[];
-              trimList = selectesModel?.modelTrim??[];
               _scrollToNextStep();
               setState(() {});
             },
@@ -443,9 +407,10 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
         ));
   }
 
-  Widget YearsView() {
+
+  Widget GovernateScreen() {
     return ListView.builder(
-        itemCount: yearList.length,
+        itemCount: governateList.length,
         itemBuilder: (context, index) => Container(
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey.withOpacity(0.5)),
@@ -453,61 +418,12 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
           margin: EdgeInsets.only(bottom: 15),
           child: RadioListTile(
             activeColor: MyColors.primaryColor,
-            value: yearList[index],
-            title: Text('${yearList[index].yearName}'),
-            groupValue: selectedModelyear,
-            onChanged: (ModelYear? value) {
+            value: governateList[index],
+            title: Text('${governateList[index].governorateName}'),
+            groupValue: selectedgovernate,
+            onChanged: (Governorate? value) {
               _currentStepIndex = 5;
-              selectedModelyear = value;
-              title = _getTitleForIndex(_currentStepIndex - 1);
-
-              _scrollToNextStep();
-              setState(() {});
-            },
-          ),
-        ));
-  }
-
-  Widget TrimView() {
-    return ListView.builder(
-        itemCount: trimList.length,
-        itemBuilder: (context, index) => Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: trimList[index],
-            title: Text('${trimList[index].name}'),
-            groupValue: selectedModeltrim,
-            onChanged: (ModelTrim? value) {
-              _currentStepIndex = 6;
-              selectedModeltrim = value;
-              title = _getTitleForIndex(_currentStepIndex - 1);
-              _scrollToNextStep();
-              setState(() {});
-            },
-          ),
-        ));
-  }
-
-  Widget SizeView() {
-    return ListView.builder(
-        itemCount: enginesizeList.length,
-        itemBuilder: (context, index) => Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: enginesizeList[index],
-            title: Text('${enginesizeList[index].engineValue}'),
-            groupValue: selectedEnginesize,
-            onChanged: (EngineSize? value) {
-              _currentStepIndex = 7;
-              selectedEnginesize = value;
+              selectedgovernate = value;
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
@@ -544,7 +460,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
           title: 'Complete the final step',
           onTap: () {
             if (productPicture != null) {
-              _currentStepIndex = 8;
+              _currentStepIndex = 6;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
               setState(() {});
@@ -558,6 +474,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
       ],
     );
   }
+
 
   Widget AdditionalDetails() {
     return SingleChildScrollView(
@@ -576,20 +493,6 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Text(
-                    "Land Area",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                commonTextFormField(
-                  controller: landArea,
-                  hintText: 'Enter Land Area',
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Text(
                     "Price",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
@@ -604,11 +507,12 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Text(
-                    "Phone",
+                    phone.text.toString(),
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                   ),
                 ),
                 commonTextFormField(
+                  readOnly: true,
                   controller: phone,
                   hintText: 'Enter Phone',
                 ),
@@ -641,9 +545,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
-              if (landArea.text.isEmpty) {
-                showSnackbar(context, "Enter land area");
-              } else if (price.text.isEmpty) {
+              if (price.text.isEmpty) {
                 showSnackbar(context, "Enter price");
               } else if (phone.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
@@ -655,7 +557,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                     MaterialPageRoute(
                       builder: (context) => AdBottomBar(),
                     ));
-                //   PostRealStateAd();
+              //  PostPhoneAd();
               }
             },
           ),
@@ -664,41 +566,25 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
     );
   }
 
+
   String _getSelectedValueForIndex(int index) {
     switch (index) {
       case 0:
-        return selectedPart?.partName ?? "";
-      // case 1:
-      //   return selectedWall?.WallName ?? "";
-      // case 2:
-      //   return selectedLandType?.landtypeName ?? "";
-      // case 3:
-      //   return selectedPosition?.positionName ?? "";
-      // case 4:
-      //   return selectedParking?.parkingName ?? "";
-      // case 5:
-      //   return selectedGovernate?.governorateName ?? "";
-      // case 6:
-      //   return selectedState?.stateName ?? "";
-      // case 7:
-      //   return selectedCity?.cityName ?? "";
-      // case 8:
-      //   return selectedImage ?? "";
+        return selectedLetter?.letterNameArabic ?? "";
+      case 1:
+        return phone.text.toString() ?? "";
+      case 2:
+        return selectedPlateType?.plateTypeName ?? "";
+      case 3:
+        return selectedgovernate?.toString() ?? "";
+      case 4:
+        return selectedImage ?? "";
       default:
         return "";
     }
   }
 
-  void openCamera() async {
-    final imgCamera = await imgPicker.pickImage(source: ImageSource.camera);
-    if (imgCamera != null) {
-      productPicture = await compressImage(File(imgCamera.path));
-      print('store image upload by camera $productPicture');
-      setState(() {});
-    } else {
-      print("no image is selected");
-    }
-  }
+
 
   void _image_camera_dialog(BuildContext context) {
     showCupertinoModalPopup<void>(
@@ -739,6 +625,16 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
         ),
       ),
     );
+  }
+  void openCamera() async {
+    final imgCamera = await imgPicker.pickImage(source: ImageSource.camera);
+    if (imgCamera != null) {
+      productPicture = await compressImage(File(imgCamera.path));
+      print('store image upload by camera $productPicture');
+      setState(() {});
+    } else {
+      print("no image is selected");
+    }
   }
 
   void openGallery() async {

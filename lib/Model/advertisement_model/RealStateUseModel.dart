@@ -103,7 +103,7 @@ class RealStateUseResult {
 }
 
 class UseList {
-  int? useId;
+  String? useId;
   String? useName;
 
   UseList({this.useId, this.useName});
@@ -122,7 +122,7 @@ class UseList {
 }
 
 class WallList {
-  int? WallId;
+  String? WallId;
   String? WallName;
 
   WallList({this.WallId, this.WallName});
@@ -141,7 +141,7 @@ class WallList {
 }
 
 class Landtype {
-  int? landtypeId;
+  String? landtypeId;
   String? landtypeName;
 
   Landtype({this.landtypeId, this.landtypeName});
@@ -160,7 +160,7 @@ class Landtype {
 }
 
 class PositionList {
-  int? positionId;
+  String? positionId;
   String? positionName;
 
   PositionList({this.positionId, this.positionName});
@@ -179,7 +179,7 @@ class PositionList {
 }
 
 class Parking {
-  int? parkingId;
+  String? parkingId;
   String? parkingName;
 
   Parking({this.parkingId, this.parkingName});
@@ -198,7 +198,7 @@ class Parking {
 }
 
 class Governorate {
-  int? governorateId;
+  String? governorateId;
   String? governorateName;
   List<GovernorateState>? governorateState;
 
@@ -229,7 +229,7 @@ class Governorate {
 }
 
 class GovernorateState {
-  int? stateId;
+  String? stateId;
   String? stateName;
   List<StateCity>? stateCity;
 
@@ -258,7 +258,7 @@ class GovernorateState {
 }
 
 class StateCity {
-  int? cityId;
+  String? cityId;
   String? cityName;
 
   StateCity({this.cityId, this.cityName});

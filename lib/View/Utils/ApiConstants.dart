@@ -60,6 +60,7 @@ final get_store_payment = baseUrl + "get_store_payment";
 const get_advertise_banner = 'get_advertise_banner';
 const get_all_advertisement_posts = 'get_all_advertisement_posts';
 const get_advertisement_category_post = 'get_advertisement_category_post';
+const get_ads_with_category_home = 'get_ads_with_category_home';
 const advertisement_post_fav = 'advertisement_post_fav';
 const get_advertisement_details = 'get_advertisement_details';
 const get_advertisement_posts_category = 'get_advertisement_posts_category';
@@ -91,6 +92,10 @@ const upload_animals_sell = baseUrl+'upload_animals_sell';
 const get_phone_number = baseUrl+'get_phone_number';
 const upload_phone_number_sell = baseUrl+'upload_phone_number_sell';
 const get_vehicles_parts_accessories_wanted = baseUrl+'get_vehicles_parts_accessories_wanted';
+const get_vehicles_parts_accessories_for_sell = baseUrl+'get_vehicles_parts_accessories_for_sell';
+const get_vehicles_numbers_for_sell = baseUrl+'get_vehicles_numbers_for_sell';
+const get_vehicles_numbers_for_rent = baseUrl+'get_vehicles_numbers_for_rent';
+const get_vehicles_numbers_for_wanted = baseUrl+'get_vehicles_numbers_for_wanted';
 
 
 
