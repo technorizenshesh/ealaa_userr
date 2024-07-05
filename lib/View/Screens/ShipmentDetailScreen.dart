@@ -1,22 +1,17 @@
+import 'dart:io';
+
 import 'package:ealaa_userr/Model/ShipmentDetailModel.dart';
-import 'package:ealaa_userr/View/Screens/ChooseDropLocation.dart';
-import 'package:ealaa_userr/View/Screens/CompanyListScreen.dart';
 import 'package:ealaa_userr/View/Screens/CompanyOffersScreen.dart';
-import 'package:ealaa_userr/View/Screens/IndividualListScreen.dart';
 import 'package:ealaa_userr/View/Utils/ApiConstants.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
-import '../../Model/CompanyDetailModel.dart';
-import '../../Model/GeneralModel.dart';
-import '../Utils/CustomSnackBar.dart';
-import '../Utils/webService.dart';
 import 'package:intl/intl.dart';
 
-import 'ChoosePickupLocation.dart';
+import '../../Model/CompanyDetailModel.dart';
+import '../Utils/CustomSnackBar.dart';
+import '../Utils/webService.dart';
 import 'ChoosePickupLocationMap.dart';
 
 class ShipmentDetailScreen extends StatefulWidget {

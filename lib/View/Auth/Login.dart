@@ -1,13 +1,14 @@
 import 'package:ealaa_userr/Model/ProfileModel.dart';
 import 'package:ealaa_userr/View/Auth/SignupOtp.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Utils/GlobalData.dart';
+
 import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
+import '../Utils/GlobalData.dart';
 import '../Utils/bottom_bar.dart';
 import '../Utils/webService.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

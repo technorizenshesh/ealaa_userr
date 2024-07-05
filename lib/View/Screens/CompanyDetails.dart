@@ -1,8 +1,6 @@
-import 'package:ealaa_userr/View/Screens/CompanyDetailFinalScreen.dart';
 import 'package:ealaa_userr/View/Screens/ShipmentDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../Model/CompanyDetailModel.dart';
 import '../Utils/ApiConstants.dart';

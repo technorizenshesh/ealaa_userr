@@ -3,13 +3,13 @@ import 'package:ealaa_userr/advertisement/AddPost/transfer_type.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/GlobalData.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
-import '../ad_sub_categories.dart';
 import 'PhoneNumbers/Add_PhonenumbersAd.dart';
 import 'ad_post_subcategories.dart';
 
@@ -30,10 +30,10 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
     print("status from api ${res}");
     showProgressBar = true;
     setState(() {});
-    final resdata = GetAdvertisementCategoryModel.fromJson(res);
+    final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
-      advertisementCategoryList = resdata.result!;
+      getAdsWithCategoryHomeResult = resdata.result!;
       setState(() {});
     } else {
       showSnackbar(context, resdata.message ?? '');
@@ -42,7 +42,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
 
   @override
   void initState() {
-    if (advertisementCategoryList == [] || advertisementCategoryList.isEmpty) {
+    if (getAdsWithCategoryHomeResult == [] || getAdsWithCategoryHomeResult.isEmpty) {
       getAdvertisementCategoryApi();
     }
     super.initState();
@@ -66,8 +66,8 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: (advertisementCategoryList.isNotEmpty ||
-                  advertisementCategoryList != [])
+          child: (getAdsWithCategoryHomeResult.isNotEmpty ||
+                  getAdsWithCategoryHomeResult != [])
               ? SizedBox(
                   height: MediaQuery.of(context).size.height * 0.76,
                   //  height: 110,
@@ -96,74 +96,75 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, mainAxisExtent: 100, mainAxisSpacing: 5),
-            itemCount: advertisementCategoryList.length-2 ,
+            itemCount: getAdsWithCategoryHomeResult.length-2 ,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
               return GestureDetector(
                 onTap: () {
-                  if (advertisementCategoryList[index].id == "1" ||
-                      advertisementCategoryList[index].id == "2" ||
-                      advertisementCategoryList[index].id == "5" ||
-                      advertisementCategoryList[index].id == "6" ||
-                      advertisementCategoryList[index].id == "7" ||
-                      advertisementCategoryList[index].id == "8" ||
-                      advertisementCategoryList[index].id == "10") {
+                  if (getAdsWithCategoryHomeResult[index].id == "1" ||
+                      getAdsWithCategoryHomeResult[index].id == "2" ||
+                      getAdsWithCategoryHomeResult[index].id == "5" ||
+                      getAdsWithCategoryHomeResult[index].id == "6" ||
+                      getAdsWithCategoryHomeResult[index].id == "7" ||
+                      getAdsWithCategoryHomeResult[index].id == "8" ||
+                      getAdsWithCategoryHomeResult[index].id == "10") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Ad_Post_Subcategories(
-                          title: advertisementCategoryList[index].id == "1" ||
-                                  advertisementCategoryList[index].id == "2"
+                          title: getAdsWithCategoryHomeResult[index].id == "1" ||
+                                  getAdsWithCategoryHomeResult[index].id == "2"
                               ? 'Body'
-                              : advertisementCategoryList[index].id == "5" ||
-                                      advertisementCategoryList[index].id == "6"
+                              : getAdsWithCategoryHomeResult[index].id == "5" ||
+                                      getAdsWithCategoryHomeResult[index].id == "6"
                                   ? 'Property Type'
-                                  : advertisementCategoryList[index].id ==
+                                  : getAdsWithCategoryHomeResult[index].id ==
                                               "7" ||
-                                          advertisementCategoryList[index].id ==
+                                          getAdsWithCategoryHomeResult[index].id ==
                                               "8"
                                       ? 'Select Type'
-
-                                      : advertisementCategoryList[index].id ==
+                                      : getAdsWithCategoryHomeResult[index].id ==
                                               "10"
                                           ? 'Animal Type'
                                           : "",
                           advertisement_category_id:
-                              advertisementCategoryList[index].id ?? '',
+                              getAdsWithCategoryHomeResult[index].id ?? '',
                         ),
                       ),
                     );
                   }
-                  else if (advertisementCategoryList[index].id == "3") {
+                  else if (getAdsWithCategoryHomeResult[index].id == "3") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => SparePart(
                           advertisement_category_id:
-                              advertisementCategoryList[index].id ?? '',
+                              getAdsWithCategoryHomeResult[index].id ?? '',
+                          adType:
+                              getAdsWithCategoryHomeResult[index].type ?? ''
                         ),
                       ),
                     );
                   }
-                  else if (advertisementCategoryList[index].id == "4") {
+                  else if (getAdsWithCategoryHomeResult[index].id == "4") {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => TransferType(
                           advertisement_category_id:
-                              advertisementCategoryList[index].id ?? '',
+                              getAdsWithCategoryHomeResult[index].id ?? '',
                         ),
                       ),
                     );
                   }
                   else if
-                  (advertisementCategoryList[index].id=="9")   {
+                  (getAdsWithCategoryHomeResult[index].id=="9")   {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Add_PhoneNumbersAd(
                           advertisement_category_id:
-                          advertisementCategoryList[index].id!,
+                          getAdsWithCategoryHomeResult[index].id!,
                         ),
                       ));
                   }
@@ -190,7 +191,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                           borderRadius: BorderRadius.circular(10),
                           child: CachedNetworkImage(
                             imageUrl:
-                                advertisementCategoryList[index].image ?? '',
+                                getAdsWithCategoryHomeResult[index].image ?? '',
                             height: 60,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Center(
@@ -215,7 +216,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
                         height: 10,
                       ),
                       Text(
-                        advertisementCategoryList[index].name ?? '',
+                        getAdsWithCategoryHomeResult[index].name ?? '',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 12,

@@ -1,3 +1,4 @@
+/*
 class GetAdvertisementCategoryModel {
   List<GetAdvertisementCategoryResult>? result;
   String? message;
@@ -147,3 +148,4 @@ class GetAdvertisementCategoryResult {
     return data;
   }
 }
+*/

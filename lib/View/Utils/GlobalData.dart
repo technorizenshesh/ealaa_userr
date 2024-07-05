@@ -1,10 +1,12 @@
 
+import 'package:ealaa_userr/Model/advertisement_model/BannerModel.dart';
 import 'package:ealaa_userr/View/Utils/bottom_bar.dart';
+
 import '../../Model/BannerModel.dart';
 import '../../Model/ProfileModel.dart';
+import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../../import_ealaa_user.dart';
-import 'package:ealaa_userr/Model/advertisement_model/BannerModel.dart';
 
 var userToken;
 var userId;
@@ -41,4 +43,5 @@ int currentindex = 0;
 //Ads Module
 
 List<AdsBannerResult> adsBannerList = [];
-List<GetAdvertisementCategoryResult> advertisementCategoryList = [];
+// List<GetAdvertisementCategoryResult> advertisementCategoryList = [];
+ List<GetAdsWithCategoryHomeResult> getAdsWithCategoryHomeResult = [];

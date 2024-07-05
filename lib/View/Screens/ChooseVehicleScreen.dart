@@ -1,7 +1,6 @@
 import 'package:ealaa_userr/Model/GetNearbyDriversModel.dart';
 import 'package:ealaa_userr/View/Screens/web_view_screen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../../Model/ShipmentDetailDriverModel.dart';
 import '../../Model/VehicleCategoryModel.dart';
@@ -9,7 +8,6 @@ import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';
 import '../Utils/webService.dart';
-import 'IndividualOffersScreen.dart';
 
 class ChooseVehicleScreen extends StatefulWidget {
   final Map<String,dynamic> shipment;

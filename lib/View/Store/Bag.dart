@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:ealaa_userr/Model/GeneralModel.dart';
 import 'package:ealaa_userr/Model/StoreModel/AddAddressModel.dart';
 import 'package:ealaa_userr/Model/StoreModel/GetCartModel.dart';

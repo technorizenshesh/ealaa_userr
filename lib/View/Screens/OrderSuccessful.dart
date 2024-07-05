@@ -1,7 +1,5 @@
 import 'package:ealaa_userr/View/Utils/bottom_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Utils/GlobalData.dart';
 

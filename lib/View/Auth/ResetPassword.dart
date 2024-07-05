@@ -1,5 +1,4 @@
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../Model/GeneralModel.dart';
 import '../Utils/ApiConstants.dart';

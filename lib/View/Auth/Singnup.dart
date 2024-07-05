@@ -1,15 +1,12 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:ealaa_userr/Model/ProfileModel.dart';
-import 'package:ealaa_userr/Model/SignupModel.dart';
 import 'package:ealaa_userr/View/Auth/SignupOtp.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';
-import '../Utils/bottom_bar.dart';
 import '../Utils/webService.dart';
 
 class SignUp extends StatefulWidget {

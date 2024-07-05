@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../Model/GeneralModel.dart';
 import '../../../Model/advertisement_model/VehiclePartsModel.dart';
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CommonMethods.dart';
@@ -16,8 +15,12 @@ import '../../ad_bottom_bar.dart';
 
 class AdVehiclesPartAdd extends StatefulWidget {
   final String type;
+  final String adType;
+  final String advertisement_category_id;
 
-  const AdVehiclesPartAdd({super.key, required this.type});
+  const AdVehiclesPartAdd({super.key, required this.advertisement_category_id,
+    required this.adType,
+    required this.type});
 
   @override
   State<AdVehiclesPartAdd> createState() => _AdVehiclesPartAddState();
@@ -107,57 +110,54 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
     }
   }
 
-  // PostRealStateAd() async {
-  //   Map<String, dynamic> data = {
-  //     'category_id': widget.advertisement_category_id,
-  //     'sub_catgerory_id': widget.advertisement_sub_category_id,
-  //     'real_state_ads_detail_user_id': userId,
-  //     'real_state_ads_detail_ads_post_id': '1',
-  //     'real_state_ads_detail_use_id': selectedUse?.useId.toString() ?? "",
-  //     'real_state_ads_detail_wall_id': selectedWall?.WallId.toString() ?? "",
-  //     'real_state_ads_detail_landtype_id':
-  //     selectedLandType?.landtypeId.toString() ?? "",
-  //     'real_state_ads_detail_position_id':
-  //     selectedPosition?.positionId.toString() ?? "",
-  //     'real_state_ads_detail_parking_id':
-  //     selectedParking?.parkingId.toString() ?? "",
-  //     'real_state_ads_detail_state_id': selectedState?.stateId.toString() ?? "",
-  //     'real_state_ads_detail_governate_id':
-  //     selectedGovernate?.governorateId.toString() ?? "",
-  //     'real_state_ads_additional_detail_price': price.text.toString(),
-  //     'real_state_ads_additional_detail_land_area': landArea.text.toString(),
-  //     'real_state_ads_additional_detail_phone': phone.text.toString(),
-  //     'real_state_ads_additional_detail_description':
-  //     description.text.toString(),
-  //     'real_state_ads_detail_city_id': selectedCity?.cityId.toString() ?? "",
-  //   };
-  //   Map<String, dynamic> files = {
-  //     'real_state_ads_upload_image': productPicture
-  //   };
-  //   print("request ------------------$data   $files");
-  //   loader = true;
-  //   setState(() {});
-  //   var res = await Webservices.postDataWithImageFunction(
-  //       body: data,
-  //       files: files,
-  //       context: context,
-  //       apiUrl: widget.adType == 'sell'
-  //           ? upload_real_state_sell
-  //           : upload_real_state_buy);
-  //   loader = false;
-  //   setState(() {});
-  //   final resdata = GeneralModel.fromJson(res);
-  //   if (res['status'] == "1") {
-  //     showSnackbar(context, resdata.message!);
-  //     Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => AdBottomBar(),
-  //         ));
-  //   } else {
-  //     showSnackbar(context, resdata.message!);
-  //   }
-  // }
+
+
+  PostRealStateAd() async {
+    Map<String, dynamic> data = {
+      'category_id': widget.advertisement_category_id,
+      'sub_category_id': '',
+      'vehicle_part_part_id': selectedSubpart?.partId ?? '',
+      'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
+      'vehicle_part_maker_id': selectedMaker?.id ?? '',
+      'vehicle_part_model_id': selectesModel?.id ?? '',
+      'vehicle_part_model_trim_id':selectedModeltrim?.id ?? '',
+      'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
+      'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
+      'vehicle_part_price': price.text.toString(),
+      'vehicle_part_quantity':'',
+      'vehicle_part_part_number': '',
+      'vehicle_part_english_title': selectedSubpart?.subPartName ?? '',
+      'vehicle_part_arabic_title': '',
+      'vehicle_part_phone': phone.text.toString(),
+      'vehicle_part_description': description.text.toString(),
+    };
+    Map<String, dynamic> files = {
+      'real_state_ads_upload_image': productPicture
+    };
+    print("request ------------------$data   $files");
+    loader = true;
+    setState(() {});
+    var res = await Webservices.postDataWithImageFunction(
+        body: data,
+        files: files,
+        context: context,
+        apiUrl: widget.adType == 'sell'
+            ? upload_real_state_sell
+            : upload_real_state_buy);
+    loader = false;
+    setState(() {});
+    final resdata = GeneralModel.fromJson(res);
+    if (res['status'] == "1") {
+      showSnackbar(context, resdata.message!);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdBottomBar(),
+          ));
+    } else {
+      showSnackbar(context, resdata.message!);
+    }
+  }
 
   @override
   void initState() {
@@ -326,22 +326,15 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 GestureDetector(
                   onTap: (){
                     subPartList = partsList[index].subPartName??[];
-                    setState(() {
-
-                    });
+                    setState(() {});
                     if(selectedIndex!=index){
                       selectedIndex = index;
-                      setState(() {
-
-                      });
+                      setState(() {});
                     }
                     else{
                       selectedIndex = -1;
-                      setState(() {
-
-                      });
+                      setState(() {});
                     }
-
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -650,12 +643,12 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else {
-                Navigator.pushReplacement(
+                /*Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => AdBottomBar(),
-                    ));
-                //   PostRealStateAd();
+                    ));*/
+                   PostRealStateAd();
               }
             },
           ),

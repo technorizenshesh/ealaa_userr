@@ -3,6 +3,7 @@ import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
@@ -19,14 +20,14 @@ class AdViewAllSubCategories extends StatefulWidget {
 class _AdViewAllSubCategoriesState extends State<AdViewAllSubCategories> {
   TextEditingController search = TextEditingController();
   bool showProgressBar = false;
-  List<GetAdvertisementCategoryResult> getAdvertisementPostsCategoryResult = [];
+  List<GetAdsWithCategoryHomeResult> getAdvertisementPostsCategoryResult = [];
 
   getAdvertisementPostsApi() async {
     showProgressBar = true;
     var res = await Webservices.getMap(
         "$baseUrl$get_all_advertisement_posts?user_id=${userId}");
     print("status from api ${res}");
-    final resdata = GetAdvertisementCategoryModel.fromJson(res);
+    final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
       getAdvertisementPostsCategoryResult = resdata.result!;
@@ -161,7 +162,7 @@ class _AdViewAllSubCategoriesState extends State<AdViewAllSubCategories> {
                                         const Icon(Icons.error),
                                   ),
                                 ),
-                                InkWell(
+                                /*InkWell(
                                   onTap: () async {
                                     showProgressBar = true;
                                     await Webservices.getMap(
@@ -170,7 +171,7 @@ class _AdViewAllSubCategoriesState extends State<AdViewAllSubCategories> {
                                         "$baseUrl$get_all_advertisement_posts?user_id=${userId}");
                                     print("status from api ${res}");
                                     final resdata =
-                                        GetAdvertisementCategoryModel.fromJson(
+                                    GetAdsWithCategoryHomeModel.fromJson(
                                             res);
                                     print(resdata);
                                     if (resdata.result != null &&
@@ -204,10 +205,10 @@ class _AdViewAllSubCategoriesState extends State<AdViewAllSubCategories> {
                                             : Icons.favorite_border,
                                         color: Colors.red),
                                   ),
-                                )
+                                )*/
                               ],
                             ),
-                            Padding(
+                           /* Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Column(
@@ -236,7 +237,7 @@ class _AdViewAllSubCategoriesState extends State<AdViewAllSubCategories> {
                                   )
                                 ],
                               ),
-                            )
+                            )*/
                           ],
                         ),
                       ),

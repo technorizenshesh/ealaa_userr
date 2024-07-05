@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'VehicleParts/Ad_VehiclePartAdd.dart';
 
 class SparePart extends StatefulWidget {
-  String advertisement_category_id = '';
+  final String adType;
+  final String advertisement_category_id;
 
-  SparePart({super.key,
-    required this.advertisement_category_id,});
+  SparePart({super.key,required this.advertisement_category_id,
+    required this.adType});
 
   @override
   State<SparePart> createState() => _SparePartState();
@@ -46,7 +47,7 @@ class _SparePartState extends State<SparePart> {
         children: [
             InkWell(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AdVehiclesPartAdd(type: 'Wanted',)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AdVehiclesPartAdd(type: 'Wanted',adType: widget.adType,advertisement_category_id: widget.advertisement_category_id,)));
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.45,
@@ -67,7 +68,7 @@ class _SparePartState extends State<SparePart> {
             ),
           InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AdVehiclesPartAdd(type: 'Sale',)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AdVehiclesPartAdd(type: 'Sale',adType: widget.adType,advertisement_category_id: widget.advertisement_category_id)));
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.45,

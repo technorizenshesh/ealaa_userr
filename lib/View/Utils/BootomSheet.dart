@@ -1,4 +1,3 @@
-import 'package:ealaa_userr/View/Utils/bottom_bar.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
 void CustomBottomSheet({ context,  body}) {

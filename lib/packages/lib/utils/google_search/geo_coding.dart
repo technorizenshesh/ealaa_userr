@@ -1,6 +1,8 @@
 import 'dart:convert';
-import 'geo_location.dart';
+
 import 'package:http/http.dart' as http;
+
+import 'geo_location.dart';
 
 class Geocoding {
   Geocoding({required this.apiKey,required this.language});

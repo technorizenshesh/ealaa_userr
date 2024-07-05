@@ -1,14 +1,13 @@
 import 'dart:io';
+
 import 'package:ealaa_userr/Model/GeneralModel.dart';
 import 'package:ealaa_userr/Model/advertisement_model/VehiclesMakeModel.dart';
 import 'package:ealaa_userr/advertisement/ad_bottom_bar.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../Model/advertisement_model/AddPostModel.dart';
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CommonMethods.dart';
 import '../../../View/Utils/CustomSnackBar.dart';
@@ -144,7 +143,8 @@ class _VehiclesMakeState extends State<VehiclesMake> {
   PostVehicleAd() async {
     Map<String, dynamic> data = {
       'category_id': widget.advertisement_category_id,
-      'vehicle_ads_sub_category': widget.advertisement_sub_category_id,
+      'sub_category_id': widget.advertisement_sub_category_id,
+      //'vehicle_ads_sub_category': widget.advertisement_sub_category_id,
       'vehicle_ads_detail_user_id': userId,
       'vehicle_ads_detail_maker_id': selectedMake?.id ?? "",
       'vehicle_ads_detail_model_id': selectedModel?.id ?? "",

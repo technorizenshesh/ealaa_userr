@@ -1,6 +1,5 @@
 import 'package:ealaa_userr/advertisement/AddPost/Animals/Add_AnimalsAd.dart';
 import 'package:ealaa_userr/advertisement/AddPost/Electronics/Add_ElectronicsAd.dart';
-import 'package:ealaa_userr/advertisement/AddPost/PhoneNumbers/Add_PhonenumbersAd.dart';
 import 'package:ealaa_userr/advertisement/AddPost/RealState/Add_RealStateAd.dart';
 import 'package:ealaa_userr/advertisement/AddPost/Vehicles/VehiclesMake.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';

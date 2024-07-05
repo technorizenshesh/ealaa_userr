@@ -1,11 +1,9 @@
 import 'package:ealaa_userr/View/Store/AddressHO.dart';
 import 'package:ealaa_userr/View/Store/HelpCenter.dart';
-import 'package:ealaa_userr/View/Store/MyAccount.dart';
 import 'package:ealaa_userr/View/Store/MyStoreOrder.dart';
 import 'package:ealaa_userr/View/Store/PaymentStore.dart';
 import 'package:ealaa_userr/View/Store/WishList.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/services.dart';
 
 import '../SideBar/Profile.dart';
 import '../Utils/GlobalData.dart';

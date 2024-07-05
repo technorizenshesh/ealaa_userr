@@ -1,6 +1,5 @@
 import 'package:ealaa_userr/View/Utils/ApiConstants.dart';
 import 'package:ealaa_userr/View/Utils/MyColors.dart';
-import 'package:ealaa_userr/View/Utils/MyImages.dart';
 import 'package:ealaa_userr/View/Utils/webService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';

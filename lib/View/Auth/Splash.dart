@@ -1,8 +1,7 @@
 import 'package:ealaa_userr/View/Auth/SignupOtp.dart';
-import 'package:ealaa_userr/View/Utils/CustomSnackBar.dart';
-import 'package:ealaa_userr/View/Utils/MyRoutes.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Model/ProfileModel.dart';
@@ -11,8 +10,6 @@ import '../Utils/ApiConstants.dart';
 import '../Utils/GlobalData.dart';
 import '../Utils/bottom_bar.dart';
 import '../Utils/webService.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 bool isMap=false;
  class Splash extends StatefulWidget {

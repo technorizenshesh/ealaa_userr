@@ -1,10 +1,8 @@
 import 'package:ealaa_userr/Model/CompanyListModel.dart';
 import 'package:ealaa_userr/View/Screens/CompanyDetails.dart';
-import 'package:ealaa_userr/View/Screens/ShipmentDetailScreen.dart';
 import 'package:ealaa_userr/View/Utils/CustomSnackBar.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Utils/ApiConstants.dart';
 import '../Utils/webService.dart';

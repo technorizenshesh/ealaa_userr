@@ -1,6 +1,5 @@
 import 'package:ealaa_userr/View/Store/ProductDetails.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../Model/StoreModel/WishListModel.dart';

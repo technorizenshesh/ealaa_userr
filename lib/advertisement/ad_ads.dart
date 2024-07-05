@@ -3,8 +3,7 @@ import 'package:ealaa_userr/advertisement/ad_product_detail.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
-
-import '../Model/advertisement_model/get_advertisement_category_model.dart';
+import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
 import '../View/Utils/GlobalData.dart';
@@ -47,7 +46,7 @@ class _AdAdsState extends State<AdAds> {
   ];
   int drawerIndex = 0;
   String notificationCount = "";
-  List<GetAdvertisementCategoryResult> getAdvertisementCategoryResult = [];
+  List<GetAdsWithCategoryHomeResult> getAdvertisementCategoryResult = [];
   clickOnItem(String image) {
     /* Navigator.push(
       context,
@@ -67,7 +66,7 @@ class _AdAdsState extends State<AdAds> {
     var res = await Webservices.getMap(
         "$baseUrl$get_all_advertisement_posts?user_id=${userId}");
     print("status from api ${res}");
-    final resdata = GetAdvertisementCategoryModel.fromJson(res);
+    final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
       getAdvertisementCategoryResult = resdata.result!;
@@ -376,7 +375,7 @@ class _AdAdsState extends State<AdAds> {
                                     const Icon(Icons.error),
                               ),
                             ),
-                            InkWell(
+                            /*InkWell(
                               onTap: () async {
                                 showProgressBar = true;
                                 await Webservices.getMap(
@@ -385,7 +384,7 @@ class _AdAdsState extends State<AdAds> {
                                     "$baseUrl$get_all_advertisement_posts?user_id=${userId}");
                                 print("status from api ${res}");
                                 final resdata =
-                                    GetAdvertisementCategoryModel.fromJson(res);
+                                GetAdsWithCategoryHomeModel.fromJson(res);
                                 print(resdata);
                                 if (resdata.result != null &&
                                     resdata.status == '1') {
@@ -416,10 +415,10 @@ class _AdAdsState extends State<AdAds> {
                                         : Icons.favorite_border,
                                     color: Colors.red),
                               ),
-                            )
+                            )*/
                           ],
                         ),
-                        Padding(
+                        /*Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 4, horizontal: 20),
                           child: Column(
@@ -473,7 +472,7 @@ class _AdAdsState extends State<AdAds> {
                               )
                             ],
                           ),
-                        )
+                        )*/
                       ],
                     ),
                   ),

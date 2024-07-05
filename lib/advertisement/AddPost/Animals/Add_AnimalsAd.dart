@@ -107,6 +107,8 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
     }
   }
 
+
+
   PostAnimalAd() async {
     Map<String, dynamic> data = {
       'category_id': widget.advertisement_category_id,
@@ -118,12 +120,11 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
       'animals_ads_breed_origin': selectedBreed?.breedId??"",
       'animals_ads_governorate': selectedGovernrate?.governorateId??"",
       'animals_ads_state': selectedState?.stateId??"",
-      'animals_ads_city:re': selectedCity?.cityId??"",
+      'animals_ads_city': selectedCity?.cityId??"",
       'animals_ads_price': price.text.toString(),
       'animals_ads_distance_title': titlee.text.toString(),
       'animals_ads_phone':phone.text.toString(),
       'animals_ads_description':description.text.toString()
-
     };
     Map<String, dynamic> files = {'animals_ads_image': productPicture};
     print("request ------------------$data   $files");

@@ -1,7 +1,6 @@
 import 'package:ealaa_userr/Model/GetShipmentStatusListModel.dart';
 import 'package:ealaa_userr/View/Screens/ChatRoom.dart';
 import 'package:ealaa_userr/View/Screens/OrderDetailScreen.dart';
-import 'package:ealaa_userr/View/Screens/ShowQR.dart';
 import 'package:ealaa_userr/View/Utils/ApiConstants.dart';
 import 'package:ealaa_userr/View/Utils/CustomSnackBar.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
@@ -228,7 +227,8 @@ class _OngoingOrderState extends State<OngoingOrder> {
                                           push(context: context, screen:
                                           ChatRoom(id: ongoingList[index]
                                               .driversId)) ;
-                                        },child:   SvgPicture.asset("assets/images/ChatIcon"
+                                        },
+                                          child:   SvgPicture.asset("assets/images/ChatIcon"
                                             ".svg",  height: 50),)
 
                                       ],

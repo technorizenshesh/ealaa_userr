@@ -1,12 +1,9 @@
 import 'package:ealaa_userr/Model/IndividualOffersModel.dart';
-import 'package:ealaa_userr/View/Map/VehicleMapScreen.dart';
 import 'package:ealaa_userr/View/Utils/bottom_bar.dart';
-
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../Model/ShipmentDetailDriverModel.dart';
 import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';

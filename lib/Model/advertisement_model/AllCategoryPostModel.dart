@@ -1,3 +1,4 @@
+/*
 class AllCategoryPostModel {
   List<AllCategoryPostResult>? result;
   String? message;
@@ -444,3 +445,4 @@ class AdsDetails {
     return data;
   }
 }
+*/

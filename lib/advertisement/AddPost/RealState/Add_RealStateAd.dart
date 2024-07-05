@@ -1,10 +1,11 @@
 import 'dart:io';
+
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../../../Model/GeneralModel.dart';
 import '../../../Model/advertisement_model/RealStateUseModel.dart';
-import '../../../Model/advertisement_model/VehiclesMakeModel.dart';
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CommonMethods.dart';
 import '../../../View/Utils/CustomSnackBar.dart';

@@ -10,6 +10,7 @@ import 'package:ealaa_userr/import_ealaa_user.dart';
 
 import '../Model/CityModel.dart';
 import '../Model/advertisement_model/ad_subcategory_model.dart';
+import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
@@ -17,7 +18,7 @@ import '../View/Utils/webService.dart';
 import 'AddPost/Motors/AddPostNumberplates.dart';
 
 class AdSubcategory extends StatefulWidget {
-  final GetAdvertisementCategoryResult selectedCategory;
+  final GetAdsWithCategoryHomeResult selectedCategory;
   final CityResult selectedCity;
   final String description;
 

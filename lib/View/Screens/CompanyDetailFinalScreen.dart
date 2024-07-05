@@ -1,7 +1,5 @@
-import 'package:ealaa_userr/Model/GeneralModel.dart';
 import 'package:ealaa_userr/Model/ShipmentBooking.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../../Model/CompanyDetailModel.dart';
 import '../Utils/ApiConstants.dart';

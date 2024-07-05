@@ -1,8 +1,4 @@
-import 'dart:ffi';
-
-import 'package:ealaa_userr/View/Store/SearchProduct.dart';
 import 'package:ealaa_userr/View/Store/StoreUserProfile.dart';
-import 'package:ealaa_userr/View/Store/WishList.dart';
 import 'package:ealaa_userr/View/Store/storeHomeTab.dart';
 import 'package:ealaa_userr/View/Utils/bottom_bar.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';

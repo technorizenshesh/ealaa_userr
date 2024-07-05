@@ -1,20 +1,19 @@
+import 'dart:io';
+
 import 'package:ealaa_userr/Model/ShipmentDetailDriverModel.dart';
 import 'package:ealaa_userr/View/Screens/ChoosePickupLocationMap.dart';
 import 'package:ealaa_userr/View/Screens/ChooseVehicleScreen.dart';
-import 'package:ealaa_userr/View/Screens/IndividualListScreen.dart';
-import 'package:ealaa_userr/View/Screens/IndividualOffersScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
 import '../../Model/CityModel.dart';
 import '../../Model/CountryModel.dart';
-import '../../Model/VehicleCategoryModel.dart';
 import '../Utils/ApiConstants.dart';
 import '../Utils/CommonMethods.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import '../Utils/webService.dart';
 
 class ShipmentDetailDriverScreen extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:ealaa_userr/Model/StoreModel/AddAddressModel.dart';
-import 'package:ealaa_userr/View/Store/OrderSuccess.dart';
 import 'package:ealaa_userr/View/Utils/CustomSnackBar.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';

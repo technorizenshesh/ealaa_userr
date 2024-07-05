@@ -73,6 +73,8 @@ dependencies:
   flutter_image_compress: ^2.2.0
   path_provider: ^2.1.2
   country_code_picker: ^3.0.0
+  url_launcher: ^6.0.20
+
 
 
 dev_dependencies:
@@ -114,6 +116,7 @@ flutter:
   assets:
   - assets/images/
   - assets/icons/
+  - assets/icons_for_car/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

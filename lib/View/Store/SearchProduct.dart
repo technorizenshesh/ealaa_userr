@@ -1,4 +1,3 @@
-import 'package:ealaa_userr/View/Store/ProductDetails.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
 import '../Utils/searchbar.dart';

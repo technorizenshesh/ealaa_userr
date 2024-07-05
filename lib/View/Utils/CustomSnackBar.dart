@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 showSnackbar(BuildContext context, String text, {int seconds = 1}) {

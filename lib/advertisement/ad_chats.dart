@@ -1,8 +1,6 @@
-import 'package:ealaa_userr/advertisement/chat_message_detail.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
-import '../View/Screens/ChatRoom.dart';
 import 'ad_chat_room.dart';
 
 class AdChats extends StatefulWidget {

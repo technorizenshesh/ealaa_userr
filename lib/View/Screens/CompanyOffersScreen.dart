@@ -1,8 +1,7 @@
 import 'package:ealaa_userr/Model/GetNearbyCompanyModel.dart';
 import 'package:ealaa_userr/Model/ShipmentDetailModel.dart';
-import 'package:ealaa_userr/View/Screens/CompanyDetailFinalScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/cupertino.dart';
+
 import '../../Model/ShipmentBooking.dart';
 import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';

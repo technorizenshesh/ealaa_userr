@@ -1,6 +1,8 @@
 import 'package:ealaa_userr/advertisement/ad_discription.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+
 import '../Model/CityModel.dart';
+import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
@@ -17,13 +19,13 @@ class AdCategory extends StatefulWidget {
 
 class _AdCategoryState extends State<AdCategory> {
   bool showProgressBar = true;
-  List<GetAdvertisementCategoryResult> advertisementCategory = [];
+  List<GetAdsWithCategoryHomeResult> advertisementCategory = [];
 
   getAdvertisementCategoryApi() async {
     var res = await Webservices.getMap("$baseUrl$get_advertisement_category");
     print("status from api ${res}");
     showProgressBar = false;
-    final resdata = GetAdvertisementCategoryModel.fromJson(res);
+    final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
       advertisementCategory = resdata.result!;

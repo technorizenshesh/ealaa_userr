@@ -1,10 +1,8 @@
 import 'package:ealaa_userr/Model/GeneralModel.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../Model/ProfileModel.dart';
 import '../../import_ealaa_user.dart';
 import '../Utils/ApiConstants.dart';
-
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';
 import '../Utils/bottom_bar.dart';

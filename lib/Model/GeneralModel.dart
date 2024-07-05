@@ -6,7 +6,7 @@ class GeneralModel {
   GeneralModel({this.result, this.message, this.status});
 
   GeneralModel.fromJson(Map<String, dynamic> json) {
-    result = json['result'];
+    result = json['result'].toString();
     message = json['message'];
     status = json['status'];
   }

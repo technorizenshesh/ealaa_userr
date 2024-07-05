@@ -5,6 +5,7 @@ import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
@@ -25,7 +26,7 @@ class _AdMyAdsState extends State<AdMyAds> {
   int drawerIndex = 0;
   String notificationCount = "";
 
-  List<GetAdvertisementCategoryResult> getAdvertisementCategoryResult = [];
+  List<GetAdsWithCategoryHomeResult> getAdvertisementCategoryResult = [];
 
   clickOnItem(String image) {
     /*Navigator.push(
@@ -46,7 +47,7 @@ class _AdMyAdsState extends State<AdMyAds> {
     var res = await Webservices.getMap(
         "$baseUrl$get_advertisement_posts?user_id=${userId}");
     print("status from api ${res}");
-    final resdata = GetAdvertisementCategoryModel.fromJson(res);
+    final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
       getAdvertisementCategoryResult = resdata.result!;
@@ -321,7 +322,7 @@ class _AdMyAdsState extends State<AdMyAds> {
                             )*/
                           ],
                         ),
-                        Padding(
+                        /*Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 4, horizontal: 20),
                           child: Column(
@@ -377,7 +378,7 @@ class _AdMyAdsState extends State<AdMyAds> {
                               )
                             ],
                           ),
-                        )
+                        )*/
                       ],
                     ),
                   ),

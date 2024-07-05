@@ -1,8 +1,8 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ealaa_userr/View/Screens/CancelledOrder.dart';
 import 'package:ealaa_userr/View/Screens/OngoingOrder.dart';
 import 'package:ealaa_userr/View/Screens/PastOrder.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../Model/BannerModel.dart';
 import '../Utils/ApiConstants.dart';

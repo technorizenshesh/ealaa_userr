@@ -1,5 +1,4 @@
 import 'package:ealaa_userr/View/Store/CancelStoreOrder.dart';
-import 'package:ealaa_userr/View/Store/CompletedStoreOrder.dart';
 import 'package:ealaa_userr/View/Store/OngoingStoreOrder.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 

@@ -1,9 +1,10 @@
 import 'dart:io';
+
 import 'package:ealaa_userr/Model/advertisement_model/ElectronicsBrandModel.dart';
-import 'package:ealaa_userr/Model/advertisement_model/VehiclesMakeModel.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CommonMethods.dart';
 import '../../../View/Utils/CustomSnackBar.dart';

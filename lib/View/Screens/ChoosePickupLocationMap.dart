@@ -1,4 +1,3 @@
-import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
 import '../Utils/CustomSnackBar.dart';

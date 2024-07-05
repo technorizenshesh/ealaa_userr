@@ -1,7 +1,7 @@
+import 'package:ealaa_userr/View/Store/OrderDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
 import '../../Model/StoreModel/GetStoreOngoingModel.dart';
-import 'package:ealaa_userr/View/Store/OrderDetailScreen.dart';
 import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';

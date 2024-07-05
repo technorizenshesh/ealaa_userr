@@ -1,4 +1,3 @@
-import 'package:ealaa_userr/View/Screens/DriverDetailFinalScreen.dart';
 import 'package:ealaa_userr/View/Screens/IndividualOffersScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 

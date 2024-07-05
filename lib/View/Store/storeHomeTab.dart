@@ -1,17 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ealaa_userr/Model/StoreModel/CategoryModel.dart';
 import 'package:ealaa_userr/Model/StoreModel/GetStoreByCategoryModel.dart';
-import 'package:ealaa_userr/View/Store/ImageBackgroundExample.dart';
-import 'package:ealaa_userr/View/Store/ProductDetails.dart';
 import 'package:ealaa_userr/View/Store/SearchProduct.dart';
 import 'package:ealaa_userr/View/Store/StoreProductsList.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../Model/BannerModel.dart';
-import '../../Model/StoreModel/GetProductByCategoryModel.dart';
 import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/searchbar.dart';

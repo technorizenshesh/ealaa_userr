@@ -4,11 +4,11 @@ import 'package:ealaa_userr/Model/advertisement_model/AddPostModel.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Model/CityModel.dart';
 import '../Model/advertisement_model/ad_subcategory_model.dart';
+import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../View/Screens/ChoosePickupLocationMap.dart';
 import '../View/Utils/ApiConstants.dart';
@@ -19,7 +19,7 @@ import '../common/common_widgets.dart';
 import 'ad_bottom_bar.dart';
 
 class AddAdsCommercialoffice extends StatefulWidget {
-  final GetAdvertisementCategoryResult selectedCategory;
+  final GetAdsWithCategoryHomeResult selectedCategory;
   final SubcategoryResult selectedSubcategory;
   final CityResult selectedCity;
   final String description;

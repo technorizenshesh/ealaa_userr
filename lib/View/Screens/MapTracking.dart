@@ -1,22 +1,14 @@
   import 'dart:async';
+import 'dart:convert';
+
 import 'package:ealaa_userr/Model/GetDriverLatLonModel.dart';
 import 'package:ealaa_userr/View/Utils/CustomSnackBar.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
-import 'package:ealaa_userr/View/Utils/MySizebox.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-
-import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart' as webservice;
-import 'dart:math';
-import 'package:location/location.dart' as loct;
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+
 import '../Utils/ApiConstants.dart';
 import '../Utils/location.dart';
 import '../Utils/webService.dart';

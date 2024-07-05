@@ -5,6 +5,7 @@ import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../Model/advertisement_model/get_landlord_model.dart';
 import '../View/Screens/ChoosePickupLocationMap.dart';
@@ -61,7 +62,7 @@ class _AdMyAdsState extends State<AdPostAds> {
   List<GetLandLordResult> getOccupancyStatusResult = [];
   List<GetLandLordResult> zonedForResult = [];
 
-  List<GetAdvertisementCategoryResult> getAdvertisementCategoryResult = [];
+  List<GetAdsWithCategoryHomeResult> getAdvertisementCategoryResult = [];
 
   getLandlordApi() async {
     var res = await Webservices.getMap("$baseUrl$get_landlord");
@@ -106,7 +107,7 @@ class _AdMyAdsState extends State<AdPostAds> {
     showProgressBar = true;
     var res = await Webservices.getMap("$baseUrl$get_advertisement_category");
     print("status from api ${res}");
-    final resdata = GetAdvertisementCategoryModel.fromJson(res);
+    final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
       getAdvertisementCategoryResult = resdata.result!;
@@ -412,8 +413,8 @@ class _AdMyAdsState extends State<AdPostAds> {
           files: files,
           context: context,
           apiUrl: '${baseUrl}add_advertisement_posts?');
-      GetAdvertisementCategoryModel getAdvertisementCategoryModel =
-          GetAdvertisementCategoryModel.fromJson(res);
+      GetAdsWithCategoryHomeModel getAdvertisementCategoryModel =
+      GetAdsWithCategoryHomeModel.fromJson(res);
       if (getAdvertisementCategoryModel.result != null &&
           getAdvertisementCategoryModel.result!.isNotEmpty) {
         bedroom.text = '';

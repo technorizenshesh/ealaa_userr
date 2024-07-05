@@ -8,7 +8,6 @@ import 'package:ealaa_userr/View/Utils/webService.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Utils/CommonMethods.dart';
 class EditUserProfile extends StatefulWidget {

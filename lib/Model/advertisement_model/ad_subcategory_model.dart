@@ -1,3 +1,7 @@
+
+
+
+
 class GetSubcategoryModel {
   List<SubcategoryResult>? result;
   String? count;
@@ -39,6 +43,7 @@ class SubcategoryResult {
   String? image;
   String? dateTime;
   String? subcount;
+
   String? selected;
 
   SubcategoryResult(
@@ -47,7 +52,8 @@ class SubcategoryResult {
         this.subCategoryName,
         this.image,
         this.dateTime,
-        this.subcount,});
+        this.selected,
+        this.subcount});
 
   SubcategoryResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -55,8 +61,8 @@ class SubcategoryResult {
     subCategoryName = json['sub_category_name'];
     image = json['image'];
     dateTime = json['date_time'];
-    subcount = json['subcount'];
-
+    selected = json['selected'];
+    subcount = json['subcount'].toString();
   }
 
   Map<String, dynamic> toJson() {

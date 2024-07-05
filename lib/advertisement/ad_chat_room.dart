@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ealaa_userr/View/Utils/ApiConstants.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 import '../../import_ealaa_user.dart';
@@ -11,8 +8,10 @@ import '../View/Utils/webService.dart';
 
 class AdChatRoom extends StatefulWidget {
   final String id;
+  final String image;
+  final String name;
 
-  const AdChatRoom({super.key, required this.id});
+  const AdChatRoom({super.key, required this.id,this.name = '',this.image = ''});
 
   @override
   State<AdChatRoom> createState() => _AdChatRoomState();
@@ -35,7 +34,7 @@ class _AdChatRoomState extends State<AdChatRoom> {
     };
 
     await firebaseFireStore
-        .collection("chatroom")
+        .collection("ad_chatroom")
         .doc(getChatId(userId, widget.id))
         .collection("chats")
         .add(imageMap);
@@ -72,20 +71,18 @@ class _AdChatRoomState extends State<AdChatRoom> {
             SizedBox(
               width: 44,
               height: 44,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(22)),
-                child: Image.asset(
-                  "assets/images/Ellipse 1.png",
-                ),
+              child: Image.network(
+                widget.image.isNotEmpty ? widget.image :'https://avatar.iran.liara.run/public/37',
+                fit: BoxFit.fill
               ),
             ),
             SizedBox(width: 14),
             Text(
-              "User Name",
+              widget.name.isNotEmpty ? widget.name:'Unnamed user',
               style:
                   TextStyle(color: Colors.black.withOpacity(0.8), fontSize: 15),
             ),
-            Spacer(),
+            /*Spacer(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -113,7 +110,7 @@ class _AdChatRoomState extends State<AdChatRoom> {
                   ),
                 ),
               ),
-            )
+            )*/
           ],
         ),
         // AppBarHeadingText(
@@ -126,7 +123,7 @@ class _AdChatRoomState extends State<AdChatRoom> {
         children: [
           // getChatResult.isEmpty?Center(child: CustomLoader(color: ColorConstant.buttonColor,)):
           Divider(height: 1,),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(border: Border.all(color: Colors.grey,width: .4),borderRadius: BorderRadius.circular(10)),
@@ -177,7 +174,7 @@ class _AdChatRoomState extends State<AdChatRoom> {
                 ),
               ),
             ),
-          ),
+          ),*/
           Expanded(
             child: ListView(
               reverse: true,
@@ -196,7 +193,7 @@ class _AdChatRoomState extends State<AdChatRoom> {
                         }
                       },
                       stream: firebaseFireStore
-                          .collection("chatroom")
+                          .collection("ad_chatroom")
                           .doc(getChatId(userId, widget.id))
                           .collection("chats")
                           .orderBy("time", descending: false)
@@ -353,7 +350,7 @@ class _AdChatRoomState extends State<AdChatRoom> {
   void deleteMessage(String docId) async {
     try {
       CollectionReference users =
-          FirebaseFirestore.instance.collection('chatroom');
+          FirebaseFirestore.instance.collection('ad_chatroom');
       await users
           .doc(getChatId(userId, widget.id))
           .collection("chats")
