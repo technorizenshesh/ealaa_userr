@@ -61,7 +61,7 @@ class AdBottomBarState extends State<AdBottomBar> {
                 ),
                 size: 22,
               ),
-              label: 'Ads',
+              label: 'My Ads',
               backgroundColor: Color(0xff000000)),
           BottomNavigationBarItem(
               icon: ImageIcon(

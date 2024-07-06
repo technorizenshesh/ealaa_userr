@@ -3,7 +3,7 @@ import 'package:ealaa_userr/View/Utils/ApiConstants.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:intl/intl.dart';
 
-import '../../import_ealaa_user.dart';
+import '../import_ealaa_user.dart';
 import '../View/Utils/webService.dart';
 
 class AdChatRoom extends StatefulWidget {

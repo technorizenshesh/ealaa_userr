@@ -1,11 +1,13 @@
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../../Model/advertisement_model/get_ads_post_details_model.dart';
-import '../../../Model/advertisement_model/get_ads_with_category_home_model.dart';
-import '../../../View/Utils/ApiConstants.dart';
-import '../../../View/Utils/CustomSnackBar.dart';
-import '../../../View/Utils/webService.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
+import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
+import '../../View/Utils/ApiConstants.dart';
+import '../../View/Utils/CustomSnackBar.dart';
+import '../../View/Utils/webService.dart';
 
 class VehicleDetailScreen extends StatefulWidget {
   String ads_post;
@@ -84,6 +86,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.orange,
         automaticallyImplyLeading: false,
@@ -97,7 +100,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
             color: Colors.white,
           ),
         ),
-        /* actions: [
+         actions: [
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -110,7 +113,118 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
               size: 25,
             ),
           ),
-        ],*/
+        ],
+      ),
+      bottomNavigationBar:
+      Material(
+        elevation: 30,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () async {
+                    final Uri url = Uri(scheme: 'tel', path: "123456");
+                    print('Attempting to launch $url');
+                    if (await canLaunchUrl(url)) {
+                      print('Launching $url');
+                      await launchUrl(url);
+                    } else {
+                      print('Could not launch $url');
+                      throw 'Could not launch $url';
+                    }
+
+
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.grey)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.call,
+                            color: Colors.orange,
+                            size: 18,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Call',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    // print('$smsText $fullName $image');
+                    // if (smsText.isNotEmpty ||
+                    //     fullName.isNotEmpty ||
+                    //     image.isNotEmpty) {
+                    //   push(
+                    //       context: context,
+                    //       screen: AdChatRoom(
+                    //         id: smsText,
+                    //         name: fullName,
+                    //         image: image,
+                    //       ));
+                    // }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.grey)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.chat_bubble_outline,
+                            color: Colors.orange,
+                            size: 18,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Chat',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: showProgressBar
@@ -186,7 +300,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               "Details",
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18),
+                                  fontSize: 18,fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 10,
@@ -194,11 +308,11 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                             GridView.builder(
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  childAspectRatio: 100,
-                                  maxCrossAxisExtent: 170,
-                                  mainAxisExtent: 70,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
+                                      childAspectRatio: 100,
+                                      maxCrossAxisExtent: 200,
+                                      mainAxisExtent: 70,
+                                      mainAxisSpacing: 10,
+                                      crossAxisSpacing: 10,
                                 ),
                                 physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
@@ -220,20 +334,21 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "${detailElements[index]['title']}",
                                               style: TextStyle(
                                                   color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 16),
+                                                      .withOpacity(0.6),
+                                                  fontSize: 15),
                                             ),
                                             Image.asset(
                                               "${detailElements[index]['Image']}",
                                               color:
-                                                  Colors.black.withOpacity(0.5),
-                                              height: 18,
-                                              width: 18,
+                                                  Colors.black.withOpacity(0.4),
+                                              height: 25,
+                                              width: 25,
                                             )
                                           ],
                                         ),
@@ -241,8 +356,9 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                           getTextMethod(index: index),
                                           style: TextStyle(
                                             color:
-                                                Colors.black.withOpacity(0.7),
+                                                Colors.black.withOpacity(0.6),
                                             fontSize: 16,
+                                            fontWeight: FontWeight.bold
                                           ),
                                         )
                                       ],
@@ -253,8 +369,10 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
+                      Divider(color:Colors.grey.withOpacity(0.3)),
+
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
@@ -264,7 +382,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               "Description",
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18),
+                                  fontSize: 18,fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
                               height: 10,
@@ -273,14 +391,19 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               result?.vehicleAdsAdditionalDetailDescription ??
                                   '',
                               style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 14),
+                                  color: Colors.black.withOpacity(0.8),
+                                  fontSize: 16),
                             ),
                           ],
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
+                      ),
+                      Divider(color:Colors.grey.withOpacity(0.3)),
+
+                      SizedBox(
+                        height: 10,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -291,7 +414,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               "Contact the seller",
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18),
+                                  fontSize: 18,fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
                               height: 10,
@@ -300,8 +423,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
                                 child: SizedBox(
-                                  width: 44,
-                                  height: 44,
+                                  width: 50,
+                                  height: 50,
                                   child: Image.network(
                                       (result != null &&
                                               result!.usersDetails != null &&
@@ -314,46 +437,43 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                       fit: BoxFit.fill),
                                 ),
                               ),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    (result != null &&
-                                            result!.usersDetails != null &&
-                                            result!.usersDetails!.fullName !=
-                                                null &&
-                                            result!.usersDetails!.fullName!
-                                                .isNotEmpty)
-                                        ? result?.usersDetails?.fullName ?? ''
-                                        : 'Unnamed',
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.7),
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    (result != null &&
-                                            result!.usersDetails != null &&
-                                            result!.usersDetails!.email !=
-                                                null &&
-                                            result!.usersDetails!.email!
-                                                .isNotEmpty)
-                                        ? result?.usersDetails?.email ?? ''
-                                        : 'Unnamed',
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(0.5),
-                                        fontSize: 12),
-                                  ),
-                                ],
+                              title:
+                              Text(
+                                (result != null &&
+                                    result!.usersDetails != null &&
+                                    result!.usersDetails!.fullName !=
+                                        null &&
+                                    result!.usersDetails!.fullName!
+                                        .isNotEmpty)
+                                    ? result?.usersDetails?.fullName ?? ''
+                                    : 'Unnamed',
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              subtitle:
+                              Text(
+                                (result != null &&
+                                    result!.usersDetails != null &&
+                                    result!.usersDetails!.email !=
+                                        null &&
+                                    result!.usersDetails!.email!
+                                        .isNotEmpty)
+                                    ? result?.usersDetails?.email ?? ''
+                                    : 'Unnamed',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14),
                               ),
                             ),
+
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      SizedBox(height: 30,)
                     ],
                   ),
       ),
@@ -401,7 +521,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
       case 18:
         return result?.vehicleAdsDetailPlate??'';
       case 19:
-        return result?.adsCreatedAt??'';
+        return (DateFormat('yyyy-MM-dd').format(DateTime.parse(result?.adsCreatedAt??""))).toString();
       default:
         return 'test';
     }

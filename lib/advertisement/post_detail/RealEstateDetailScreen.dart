@@ -1,11 +1,13 @@
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../../../Model/advertisement_model/get_ads_post_details_model.dart';
-import '../../../Model/advertisement_model/get_ads_with_category_home_model.dart';
-import '../../../View/Utils/ApiConstants.dart';
-import '../../../View/Utils/CustomSnackBar.dart';
-import '../../../View/Utils/webService.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
+import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
+import '../../View/Utils/ApiConstants.dart';
+import '../../View/Utils/CustomSnackBar.dart';
+import '../../View/Utils/webService.dart';
 
 class RealEstateDetailScreen extends StatefulWidget {
   String ads_post;
@@ -67,7 +69,9 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
+    return
+     Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.orange,
         automaticallyImplyLeading: false,
@@ -81,7 +85,7 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
             color: Colors.white,
           ),
         ),
-        /* actions: [
+        actions: [
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -94,252 +98,365 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
               size: 25,
             ),
           ),
-        ],*/
+        ],
+      ),
+      bottomNavigationBar:
+      Material(
+        elevation: 30,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () async {
+                    final Uri url = Uri(scheme: 'tel', path: "123456");
+                    print('Attempting to launch $url');
+                    if (await canLaunchUrl(url)) {
+                      print('Launching $url');
+                      await launchUrl(url);
+                    } else {
+                      print('Could not launch $url');
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.grey)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.call,
+                            color: Colors.orange,
+                            size: 18,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Call',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    // print('$smsText $fullName $image');
+                    // if (smsText.isNotEmpty ||
+                    //     fullName.isNotEmpty ||
+                    //     image.isNotEmpty) {
+                    //   push(
+                    //       context: context,
+                    //       screen: AdChatRoom(
+                    //         id: smsText,
+                    //         name: fullName,
+                    //         image: image,
+                    //       ));
+                    // }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.grey)),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.chat_bubble_outline,
+                            color: Colors.orange,
+                            size: 18,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Chat',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.orange),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: showProgressBar
             ? Center(
-                child: CircularProgressIndicator(
-                  color: MyColors.primaryColor,
-                ),
-              )
+          child: CircularProgressIndicator(
+            color: MyColors.primaryColor,
+          ),
+        )
             : result == null
-                ? Image.asset("assets/images/NoDataFound.png")
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: width,
-                        child: CachedNetworkImage(
-                          imageUrl: result?.realStateAdsUploadImage ?? '',
-                          fit: BoxFit.fill,
-                          height: 300,
-                          placeholder: (context, url) => Center(
-                            child: Shimmer.fromColors(
-                              baseColor: MyColors.onSecondary.withOpacity(0.4),
-                              highlightColor:
-                                  Theme.of(context).colorScheme.onSecondary,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
-                                color: MyColors.onSecondary.withOpacity(0.4),
-                              ),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                        ),
+            ? Image.asset("assets/images/NoDataFound.png")
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: width,
+              child: CachedNetworkImage(
+                imageUrl: result?.realStateAdsUploadImage ?? '',
+                fit: BoxFit.fill,
+                height: 300,
+                placeholder: (context, url) => Center(
+                  child: Shimmer.fromColors(
+                    baseColor: MyColors.onSecondary.withOpacity(0.4),
+                    highlightColor:
+                    Theme.of(context).colorScheme.onSecondary,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height:
+                      MediaQuery.of(context).size.height * 0.25,
+                      color: MyColors.onSecondary.withOpacity(0.4),
+                    ),
+                  ),
+                ),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.error),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                result?.realStateAdsAdditionalDetailDescription ?? '',
+                maxLines: 1,
+                style: TextStyle(
+                    color: AppColors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                "${result?.realStateAdsAdditionalDetailPrice ?? ''} OMR",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+            ),
+            Divider(
+              color: Colors.grey.withOpacity(0.2),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Details",
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.5),
+                        fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GridView.builder(
+                      gridDelegate:
+                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                        childAspectRatio: 100,
+                        maxCrossAxisExtent: 200,
+                        mainAxisExtent: 70,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          result?.realStateAdsAdditionalDetailDescription ?? '',
-                          maxLines: 1,
-                          style: TextStyle(
-                              color: AppColors.grey,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          "${result?.realStateAdsAdditionalDetailPrice ?? ''} OMR",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.grey.withOpacity(0.2),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Details",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            GridView.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  childAspectRatio: 100,
-                                  maxCrossAxisExtent: 170,
-                                  mainAxisExtent: 70,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                ),
-                                physics: const BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: detailElements.length,
-                                itemBuilder: (context, int index) {
-                                  return Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 10),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Colors.grey.withOpacity(0.3)),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "${detailElements[index]['title']}",
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontSize: 16),
-                                            ),
-                                            Image.asset(
-                                              "${detailElements[index]['Image']}",
-                                              color:
-                                                  Colors.black.withOpacity(0.5),
-                                              height: 18,
-                                              width: 18,
-                                            )
-                                          ],
-                                        ),
-                                        Text(
-                                          getTextMethod(index: index),
-                                          style: TextStyle(
-                                            color:
-                                                Colors.black.withOpacity(0.7),
-                                            fontSize: 16,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                })
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Description",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              result?.realStateAdsAdditionalDetailDescription ??
-                                  '',
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Contact the seller",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            ListTile(
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(40),
-                                child: SizedBox(
-                                  width: 44,
-                                  height: 44,
-                                  child: Image.network(
-                                      (result != null &&
-                                              result!.usersDetails != null &&
-                                              result!.usersDetails!.image !=
-                                                  null &&
-                                              result!.usersDetails!.image!
-                                                  .isNotEmpty)
-                                          ? result!.usersDetails!.image!
-                                          : 'https://avatar.iran.liara.run/public/37',
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
-                              title: Column(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: detailElements.length,
+                      itemBuilder: (context, int index) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 10),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color:
+                                  Colors.grey.withOpacity(0.3)),
+                              borderRadius:
+                              BorderRadius.circular(10)),
+                          child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    (result != null &&
-                                            result!.usersDetails != null &&
-                                            result!.usersDetails!.fullName !=
-                                                null &&
-                                            result!.usersDetails!.fullName!
-                                                .isNotEmpty)
-                                        ? result?.usersDetails?.fullName ?? ''
-                                        : 'Unnamed',
+                                    "${detailElements[index]['title']}",
                                     style: TextStyle(
-                                      color: Colors.black.withOpacity(0.7),
-                                      fontSize: 16,
-                                    ),
+                                        color: Colors.black
+                                            .withOpacity(0.6),
+                                        fontSize: 15),
                                   ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    (result != null &&
-                                            result!.usersDetails != null &&
-                                            result!.usersDetails!.email !=
-                                                null &&
-                                            result!.usersDetails!.email!
-                                                .isNotEmpty)
-                                        ? result?.usersDetails?.email ?? ''
-                                        : 'Unnamed',
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(0.5),
-                                        fontSize: 12),
-                                  ),
+                                  Image.asset(
+                                    "${detailElements[index]['Image']}",
+                                    color:
+                                    Colors.black.withOpacity(0.4),
+                                    height: 25,
+                                    width: 25,
+                                  )
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
+                              Text(
+                                getTextMethod(index: index),
+                                style: TextStyle(
+                                    color:
+                                    Colors.black.withOpacity(0.6),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      })
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Divider(color:Colors.grey.withOpacity(0.3)),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Description",
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.5),
+                        fontSize: 18,fontWeight: FontWeight.w500),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    result?.realStateAdsAdditionalDetailDescription ??
+                        '',
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.8),
+                        fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Divider(color:Colors.grey.withOpacity(0.3)),
+
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Contact the seller",
+                    style: TextStyle(
+                        color: Colors.black.withOpacity(0.5),
+                        fontSize: 18,fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Image.network(
+                            (result != null &&
+                                result!.usersDetails != null &&
+                                result!.usersDetails!.image !=
+                                    null &&
+                                result!.usersDetails!.image!
+                                    .isNotEmpty)
+                                ? result!.usersDetails!.image!
+                                : 'https://avatar.iran.liara.run/public/37',
+                            fit: BoxFit.fill),
+                      ),
+                    ),
+                    title:
+                    Text(
+                      (result != null &&
+                          result!.usersDetails != null &&
+                          result!.usersDetails!.fullName !=
+                              null &&
+                          result!.usersDetails!.fullName!
+                              .isNotEmpty)
+                          ? result?.usersDetails?.fullName ?? ''
+                          : 'Unnamed',
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.8),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    subtitle:
+                    Text(
+                      (result != null &&
+                          result!.usersDetails != null &&
+                          result!.usersDetails!.email !=
+                              null &&
+                          result!.usersDetails!.email!
+                              .isNotEmpty)
+                          ? result?.usersDetails?.email ?? ''
+                          : 'Unnamed',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 30,)
+          ],
+        ),
       ),
     );
   }
@@ -365,7 +482,7 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
       case 8:
         return result?.realStateAdsAdditionalDetailPhone??'';
       case 9:
-        return result?.adsCreatedAt??'';
+        return (DateFormat('yyyy-MM-dd').format(DateTime.parse(result?.adsCreatedAt??""))).toString();
       default:
         return 'test';
     }

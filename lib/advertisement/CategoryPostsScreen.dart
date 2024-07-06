@@ -3,6 +3,7 @@ import 'package:ealaa_userr/advertisement/post_detail/PhoneNumberDetailScreen.da
 import 'package:ealaa_userr/advertisement/post_detail/RealEstateDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -385,257 +386,278 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
       required String image}) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.46,
+      height: MediaQuery.of(context).size.height * 0.55,
       decoration:
-          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
+          BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Card(
+        color: Colors.white,
         elevation: 5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.contain,
-                  height: 150,
-                  placeholder: (context, url) => Center(
-                    child: Shimmer.fromColors(
-                      baseColor: MyColors.onSecondary.withOpacity(0.4),
-                      highlightColor: Theme.of(context).colorScheme.onSecondary,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.25,
-                        color: MyColors.onSecondary.withOpacity(0.4),
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        height: 250,
+                        placeholder: (context, url) => Center(
+                          child: Shimmer.fromColors(
+                            baseColor: MyColors.onSecondary.withOpacity(0.4),
+                            highlightColor: Theme.of(context).colorScheme.onSecondary,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              color: MyColors.onSecondary.withOpacity(0.4),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
-                  Text(
-                    name,
-                    maxLines: 1,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.black.withOpacity(0.7),
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.01,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "${price} OMR",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: Colors.black.withOpacity(0.1))),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.file_upload_outlined,
-                              color: Colors.black.withOpacity(0.5),
-                              size: 18,
-                            ),
-                            SizedBox(
-                              width: 2,
-                            ),
-                            Text(
-                              "Share",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 14),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.02,
-                  ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
+                        Text(
+                          name,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black.withOpacity(0.7),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.01,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.pin_drop,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
                             Text(
-                              firstText,
+                              "${price} OMR",
                               style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5)),
+                                  color: Colors.green,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            InkWell(
+                              onTap: (){
+                                try {
+                                  Uri uri = Uri.parse('qrImage');
+                                  Share.shareUri(uri);
+                                } catch (e) {
+                                  print('Share Error: $e');
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                        color: Colors.black.withOpacity(0.1))),
+                                padding:
+                                EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.file_upload_outlined,
+                                      color: Colors.black.withOpacity(0.5),
+                                      size: 18,
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text(
+                                      "Share",
+                                      style: TextStyle(
+                                          color: Colors.black.withOpacity(0.5),
+                                          fontSize: 14,fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             )
                           ],
                         ),
-                        Expanded(child: Divider()),
-                        Column(
-                          children: [
-                            Icon(
-                              Icons.pin_drop,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              secondText,
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5)),
-                            )
-                          ],
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Icon(
+                                    Icons.pin_drop,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    firstText,
+                                    style: TextStyle(
+                                        color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              Expanded(child: Divider()),
+                              Column(
+                                children: [
+                                  Icon(
+                                    Icons.pin_drop,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    secondText,
+                                    style: TextStyle(
+                                        color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              Expanded(child: Divider()),
+                              Column(
+                                children: [
+                                  Icon(
+                                    Icons.pin_drop,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    thirdText,
+                                    style: TextStyle(
+                                        color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                        Expanded(child: Divider()),
-                        Column(
-                          children: [
-                            Icon(
-                              Icons.pin_drop,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              thirdText,
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5)),
-                            )
-                          ],
-                        )
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () async {
-                            final Uri url = Uri(scheme: 'tel', path: callText);
-                            print('Attempting to launch $url');
-                            if (await canLaunchUrl(url)) {
-                              print('Launching $url');
-                              await launchUrl(url);
-                            } else {
-                              print('Could not launch $url');
-                              throw 'Could not launch $url';
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.grey)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.call,
-                                    color: Colors.orange,
-                                    size: 18,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'Call',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.orange),
-                                  ),
-                                ],
+                ],
+              ),
+            ),
+            Container(height: 0.4,color: Colors.grey,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        final Uri url = Uri(scheme: 'tel', path: callText);
+                        print('Attempting to launch $url');
+                        if (await canLaunchUrl(url)) {
+                          print('Launching $url');
+                          await launchUrl(url);
+                        } else {
+                          print('Could not launch $url');
+                          throw 'Could not launch $url';
+                        }
+
+
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.grey)),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.call,
+                                color: Colors.orange,
+                                size: 18,
                               ),
-                            ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                'Call',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.orange),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            print('$smsText $fullName $image');
-                            if (smsText.isNotEmpty ||
-                                fullName.isNotEmpty ||
-                                image.isNotEmpty) {
-                              push(
-                                  context: context,
-                                  screen: AdChatRoom(
-                                    id: smsText,
-                                    name: fullName,
-                                    image: image,
-                                  ));
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.grey)),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.chat_bubble_outline,
-                                    color: Colors.orange,
-                                    size: 18,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Text(
-                                    'Chat',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.orange),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        print('$smsText $fullName $image');
+                        if (smsText.isNotEmpty ||
+                            fullName.isNotEmpty ||
+                            image.isNotEmpty) {
+                          push(
+                              context: context,
+                              screen: AdChatRoom(
+                                id: smsText,
+                                name: fullName,
+                                image: image,
+                              ));
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.8),
+
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.grey)),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.chat_bubble_outline,
+                                color: Colors.orange,
+                                size: 18,
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                'Chat',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.orange),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

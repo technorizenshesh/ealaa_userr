@@ -1,6 +1,6 @@
 import 'package:ealaa_userr/advertisement/ad_bottom_bar.dart';
 
-import '../../import_ealaa_user.dart';
+import '../import_ealaa_user.dart';
 
 class AdGetStart extends StatefulWidget {
   const AdGetStart({super.key});

@@ -269,7 +269,7 @@ class _AdHomeState extends State<AdHome> {
               if (getAdsWithCategoryHomeResult.isNotEmpty ||
                   getAdsWithCategoryHomeResult != [])
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.76,
+                  height: MediaQuery.of(context).size.height * 0.65,
                   child: showCategory1(getAdsWithCategoryHomeResult),
                 ),
               if (getAdsWithCategoryHomeResult.isNotEmpty ||
@@ -303,7 +303,7 @@ class _AdHomeState extends State<AdHome> {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, mainAxisExtent: 100, mainAxisSpacing: 5),
-            itemCount: getAdsWithCategoryHomeResult.length,
+            itemCount: getAdsWithCategoryHomeResult.length-2,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
               return GestureDetector(
@@ -725,7 +725,7 @@ class _AdHomeState extends State<AdHome> {
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
                 height: 60,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
                     child: Shimmer.fromColors(
                   baseColor: MyColors.onSecondary.withOpacity(0.4),
