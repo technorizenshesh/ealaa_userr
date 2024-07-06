@@ -102,6 +102,7 @@ class _PastOrderState extends State<PastOrder> {
                                                 width: 3.0, // Border width
                                               ),
                                             ),
+
                                             child:  ClipRRect(
                                               borderRadius: BorderRadius.circular(50),
                                               child: CachedNetworkImage(
