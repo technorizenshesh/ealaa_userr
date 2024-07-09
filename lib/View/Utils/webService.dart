@@ -241,6 +241,71 @@ class Webservices {
     required Map<String, dynamic> body,
     required Map<String, dynamic> files,
     required BuildContext context,
+    required String apiUrl,
+    bool successAlert = false,
+    bool errorAlert = true,
+  }) async {
+    print('The request body is $body');
+    var url = Uri.parse(apiUrl);
+    log(apiUrl);
+
+    try {
+      var request = http.MultipartRequest("POST", url);
+      body.forEach((key, value) {
+        request.fields[key] = value;
+      });
+
+      if (files != null && files.isNotEmpty) {
+        for (var key in files.keys) {
+          request.files.add(await http.MultipartFile.fromPath(key, files[key].path));
+        }
+      }
+
+      log('Request fields: ${request.fields}');
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      log('Response body: ${response.body}');
+
+      var jsonResponse = convert.jsonDecode(response.body);
+      if (jsonResponse['status'] == 1) {
+        if (successAlert) {
+           showSnackbar(context, jsonResponse['message']);
+        }
+      } else {
+        if (errorAlert) {
+          showSnackbar(context, jsonResponse['message']);
+        }
+      }
+      return jsonResponse;
+
+    } catch (e) {
+      print('Error: $e');
+
+      try {
+        var response = await http.post(url, body: body);
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          var jsonResponse = convert.jsonDecode(response.body);
+          return jsonResponse;
+        } else {
+          if (errorAlert) {
+            // showSnackbar(context, 'Request failed with status: ${response.statusCode}');
+          }
+        }
+      } catch (error) {
+        print('Error in fallback POST request: $error');
+        if (errorAlert) {
+          // showSnackbar(context, 'An error occurred: $error');
+        }
+      }
+
+      return {'result': null, 'status': "0", 'message': "fail"};
+    }
+  }
+
+/*  static Future<Map<String, dynamic>> postDataWithImageFunction({
+    required Map<String, dynamic> body,
+    required Map<String, dynamic> files,
+    required BuildContext context,
 
     /// endpoint of the api
     required String apiUrl,
@@ -295,7 +360,7 @@ class Webservices {
       return {'result': null, 'status': "0", 'message': "fail"};
       // return null;
     }
-  }
+  }*/
 
 //   static Future<void> updateDeviceToken({
 //     required String userId,

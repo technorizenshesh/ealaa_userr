@@ -1,4 +1,5 @@
 import 'package:ealaa_userr/Model/advertisement_model/get_ads_with_category_subcategory_model.dart';
+import 'package:ealaa_userr/advertisement/post_detail/AnimalsAndSuppliesDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/PhoneNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/RealEstateDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
@@ -142,9 +143,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                     .usersDetails
                     ?.image ??
                 '',
-            fullName: getAdsWithCategorySubCategoryResult[index]
+            userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
-                    ?.fullName ??
+                    ?.userName ??
                 '',
           ),
         );
@@ -173,9 +174,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
           image:
               getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
                   '',
-          fullName: getAdsWithCategorySubCategoryResult[index]
+          userName: getAdsWithCategorySubCategoryResult[index]
                   .usersDetails
-                  ?.fullName ??
+                  ?.userName ??
               '',
         );
       } else if (widget.adsCategoryId == '4') {
@@ -205,9 +206,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
           image:
               getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
                   '',
-          fullName: getAdsWithCategorySubCategoryResult[index]
+          userName: getAdsWithCategorySubCategoryResult[index]
                   .usersDetails
-                  ?.fullName ??
+                  ?.userName ??
               '',
         );
       } else if (widget.adsCategoryId == '5' || widget.adsCategoryId == '6') {
@@ -251,9 +252,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             image:
                 getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
                     '',
-            fullName: getAdsWithCategorySubCategoryResult[index]
+            userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
-                    ?.fullName ??
+                    ?.userName ??
                 '',
           ),
         );
@@ -285,15 +286,15 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
           image:
               getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
                   '',
-          fullName: getAdsWithCategorySubCategoryResult[index]
+          userName: getAdsWithCategorySubCategoryResult[index]
                   .usersDetails
-                  ?.fullName ??
+                  ?.userName ??
               '',
         );
       } else if (widget.adsCategoryId == '9') {
         return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(
+            /*Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return PhoneNumberDetailScreen(
                   ads_post:
@@ -302,7 +303,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                   getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                 );
               },
-            ));
+            ));*/
           },
           child: dataContainer(
             imageUrl:
@@ -331,42 +332,56 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             image:
                 getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
                     '',
-            fullName: getAdsWithCategorySubCategoryResult[index]
+            userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
-                    ?.fullName ??
+                    ?.userName ??
                 '',
           ),
         );
       } else if (widget.adsCategoryId == '10') {
-        return dataContainer(
-          imageUrl:
-              getAdsWithCategorySubCategoryResult[index].animalsAdsImage ?? '',
-          name: getAdsWithCategorySubCategoryResult[index]
-                  .animalsAdsDescription ??
-              '',
-          price:
-              getAdsWithCategorySubCategoryResult[index].animalsAdsPrice ?? '0',
-          firstText: getAdsWithCategorySubCategoryResult[index]
-                  .vehicleAdsDetailTransmission ??
-              '',
-          secondText: getAdsWithCategorySubCategoryResult[index]
-                  .vehicleAdsDetailOrigin ??
-              '',
-          thirdText: getAdsWithCategorySubCategoryResult[index]
-                  .vehicleAdsDetailCondition ??
-              '',
-          callText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
-                  '',
-          smsText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-          image:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
-                  '',
-          fullName: getAdsWithCategorySubCategoryResult[index]
-                  .usersDetails
-                  ?.fullName ??
-              '',
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return AnimalsAndSuppliesDetailScreen(
+                  ads_post:
+                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                  ads_post_id:
+                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                );
+              },
+            ));
+          },
+          child: dataContainer(
+            imageUrl:
+                getAdsWithCategorySubCategoryResult[index].animalsAdsImage ?? '',
+            name: getAdsWithCategorySubCategoryResult[index]
+                    .animalsAdsDescription ??
+                '',
+            price:
+                getAdsWithCategorySubCategoryResult[index].animalsAdsPrice ?? '0',
+            firstText: getAdsWithCategorySubCategoryResult[index]
+                    .vehicleAdsDetailTransmission ??
+                '',
+            secondText: getAdsWithCategorySubCategoryResult[index]
+                    .vehicleAdsDetailOrigin ??
+                '',
+            thirdText: getAdsWithCategorySubCategoryResult[index]
+                    .vehicleAdsDetailCondition ??
+                '',
+            callText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
+                    '',
+            smsText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
+            image:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                    '',
+            userName: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.userName ??
+                '',
+          ),
         );
       }
     }
@@ -382,7 +397,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
       required String thirdText,
       required String callText,
       required String smsText,
-      required String fullName,
+      required String userName,
       required String image}) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -612,15 +627,15 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        print('$smsText $fullName $image');
+                        print('$smsText $userName $image');
                         if (smsText.isNotEmpty ||
-                            fullName.isNotEmpty ||
+                            userName.isNotEmpty ||
                             image.isNotEmpty) {
                           push(
                               context: context,
                               screen: AdChatRoom(
                                 id: smsText,
-                                name: fullName,
+                                name: userName,
                                 image: image,
                               ));
                         }

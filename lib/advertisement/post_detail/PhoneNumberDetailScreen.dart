@@ -20,25 +20,11 @@ class PhoneNumberDetailScreen extends StatefulWidget {
 
 class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
   List<Map<String, String>> detailElements = [
-    {'title': 'Opre', 'Image': 'assets/icons_for_car/ic_body.png'},
-    {'title': 'Governorate', 'Image': 'assets/icons_for_car/ic_model_year.png'},
-    {'title': 'State', 'Image': 'assets/icons_for_car/ic_location.png'},
-    {'title': 'City', 'Image': 'assets/icons_for_car/ic_location.png'},
-    {
-      'title': 'Land Area',
-      'Image': 'assets/icons_for_car/ic_ad.png'
-    },
-    {'title': 'Walled', 'Image': 'assets/icons_for_car/ic_ad.png'},
-    {'title': 'Seats', 'Image': 'assets/icons_for_car/ic_ad.png'},
-    {
-      'title': 'Position',
-      'Image': 'assets/icons_for_car/ic_drivetrain.png'
-    },
-    {
-      'title': 'Parking',
-      'Image': 'assets/icons_for_car/ic_ad.png'
-    },
-    {'title': 'Price', 'Image': 'assets/icons_for_car/ic_price.png'},
+    {'title': 'Operator', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'Governorate', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'State', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'City', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'Price', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {'title': 'Ad Number', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {'title': 'Published Date', 'Image': 'assets/icons_for_car/ic_ad.png'},
   ];
@@ -116,7 +102,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                       Container(
                         width: width,
                         child: CachedNetworkImage(
-                          imageUrl: result?.vehicleAdsUploadImage ?? '',
+                          imageUrl: result?.phoneNumberAdsImage ?? '',
                           fit: BoxFit.fill,
                           height: 300,
                           placeholder: (context, url) => Center(
@@ -142,7 +128,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          result?.vehicleAdsAdditionalDetailDescription ?? '',
+                          result?.phoneNumberAdsDescription ?? '',
                           maxLines: 1,
                           style: TextStyle(
                               color: AppColors.grey,
@@ -153,7 +139,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          "${result?.vehicleAdsAdditionalDetailPrice ?? ''} OMR",
+                          "${result?.phoneNumberAdsPrice ?? ''} OMR",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -183,11 +169,11 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                             GridView.builder(
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  childAspectRatio: 100,
-                                  maxCrossAxisExtent: 170,
-                                  mainAxisExtent: 70,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
+                                      childAspectRatio: 100,
+                                      maxCrossAxisExtent: 200,
+                                      mainAxisExtent: 70,
+                                      mainAxisSpacing: 10,
+                                      crossAxisSpacing: 10,
                                 ),
                                 physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
@@ -259,7 +245,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                               height: 10,
                             ),
                             Text(
-                              result?.realStateAdsAdditionalDetailDescription ??
+                              result?.phoneNumberAdsDescription ??
                                   '',
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.5),
@@ -352,44 +338,18 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
   String getTextMethod({required int index}) {
     switch (index) {
       case 0:
-        return result?.realStateAdsAdditionalDetailDescription??'';
+        return result?.phoneNumberAdsOperators??'';
       case 1:
-        return result?.vehicleAdsDetailYear??'';
+        return result?.phoneNumberAdsGovernorate??'';
       case 2:
-        return result?.vehicleAdsDetailCondition??'';
+        return result?.phoneNumberAdsState??'';
       case 3:
-        return result?.vehicleAdsDetailOrigin??'';
+        return result?.phoneNumberAdsCity??'';
       case 4:
-        return result?.vehicleAdsDetailTransmission??'';
+        return result?.phoneNumberAdsPrice??'';
       case 5:
-        return result?.vehicleAdsDetailExteriorColor??'';
+        return result?.phoneNumberAdsPhone??'';
       case 6:
-        return result?.vehicleAdsDetailDoors??'';
-      case 7:
-        return result?.vehicleAdsDetailSeats??'4';
-      case 8:
-        return result?.vehicleAdsDetailInteriorColor??'';
-      case 9:
-        return result?.vehicleAdsDetailEngineSize??'';
-      case 10:
-        return result?.vehicleAdsDetailCylinders??'';
-      case 11:
-        return result?.vehicleAdsDetailFuel??'';
-      case 12:
-        return result?.vehicleAdsDetailDriveTrain??'';
-      case 13:
-        return result?.vehicleAdsDetailPlate??'';
-      case 14:
-        return result?.vehicleAdsDetailState??'';
-      case 15:
-        return result?.vehicleAdsAdditionalDetailDistanceTravelled??'';
-      case 16:
-        return result?.vehicleAdsAdditionalDetailDistanceTravelled??'';
-      case 17:
-        return result?.vehicleAdsAdditionalDetailPrice??'';
-      case 18:
-        return result?.vehicleAdsDetailPlate??'';
-      case 19:
         return result?.adsCreatedAt??'';
       default:
         return 'test';

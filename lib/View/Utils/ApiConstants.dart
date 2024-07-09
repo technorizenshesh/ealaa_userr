@@ -84,6 +84,7 @@ const add_advertisement_Cars_posts = baseUrl+'add_advertisement_Cars_posts';
 const add_advertisement_Classified_Cycling_posts = baseUrl+'add_advertisement_Classified_Cycling_posts';
 const get_maker_model = baseUrl+'get_maker_model';
 const upload_vehicle_buy = baseUrl+'upload_vehicle_buy';
+const uploadElectronics_sell = baseUrl+'uploadElectronics_sell';
 const upload_vehicle_sell = baseUrl+'upload_vehicle_sell';
 const get_real_state = baseUrl+'get_real_state';
 const upload_real_state_buy = baseUrl+'upload_real_state_buy';

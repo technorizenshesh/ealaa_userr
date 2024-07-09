@@ -441,11 +441,11 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               Text(
                                 (result != null &&
                                     result!.usersDetails != null &&
-                                    result!.usersDetails!.fullName !=
+                                    result!.usersDetails!.userName !=
                                         null &&
-                                    result!.usersDetails!.fullName!
+                                    result!.usersDetails!.userName!
                                         .isNotEmpty)
-                                    ? result?.usersDetails?.fullName ?? ''
+                                    ? result?.usersDetails?.userName ?? ''
                                     : 'Unnamed',
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.8),

@@ -3,6 +3,8 @@ import 'package:ealaa_userr/Model/advertisement_model/BannerModel.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/advertisement/ad_notification.dart';
 import 'package:ealaa_userr/advertisement/ad_sub_categories.dart';
+import 'package:ealaa_userr/advertisement/post_detail/AnimalsAndSuppliesDetailScreen.dart';
+import 'package:ealaa_userr/advertisement/post_detail/PhoneNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/RealEstateDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
@@ -480,11 +482,9 @@ class _AdHomeState extends State<AdHome> {
           child: Row(
             children: [
               for (int j = 0;
-              j <
-                  getAdsWithCategoryHomeResult[index]
+              j < getAdsWithCategoryHomeResult[index]
                       .postListDetails!
-                      .length;
-              j++)
+                      .length; j++)
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
@@ -654,19 +654,35 @@ class _AdHomeState extends State<AdHome> {
                       .postListDetails!
                       .length;
               j++)
-                dataContainer(
-                    imageUrl: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .phoneNumberAdsImage ??
-                        '',
-                    name: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .phoneNumberAdsDescription ??
-                        '',
-                    price: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .phoneNumberAdsPrice ??
-                        '0')
+                GestureDetector(
+                  onTap: () {
+                    /*Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return PhoneNumberDetailScreen(
+                          ads_post:
+                          getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j].adsId ?? '',
+                          ads_post_id:
+                          getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j].adsType ?? '',
+                        );
+                      },
+                    ));*/
+                  },
+                  child: dataContainer(
+                      imageUrl: getAdsWithCategoryHomeResult[index]
+                          .postListDetails![j]
+                          .phoneNumberAdsImage ??
+                          '',
+                      name: getAdsWithCategoryHomeResult[index]
+                          .postListDetails![j]
+                          .phoneNumberAdsDescription ??
+                          '',
+                      price: getAdsWithCategoryHomeResult[index]
+                          .postListDetails![j]
+                          .phoneNumberAdsPrice ??
+                          '0'),
+                )
 
             ],
           ),
@@ -682,19 +698,33 @@ class _AdHomeState extends State<AdHome> {
                       .postListDetails!
                       .length;
               j++)
-                dataContainer(
-                    imageUrl: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .animalsAdsImage ??
-                        '',
-                    name: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .animalsAdsDescription ??
-                        '',
-                    price: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .animalsAdsPrice ??
-                        '0')
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return AnimalsAndSuppliesDetailScreen(
+                          ads_post:
+                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsId ?? '',
+                          ads_post_id:
+                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsType ?? '',
+                        );
+                      },
+                    ));
+                  },
+                  child: dataContainer(
+                      imageUrl: getAdsWithCategoryHomeResult[index]
+                          .postListDetails![j]
+                          .animalsAdsImage ??
+                          '',
+                      name: getAdsWithCategoryHomeResult[index]
+                          .postListDetails![j]
+                          .animalsAdsDescription ??
+                          '',
+                      price: getAdsWithCategoryHomeResult[index]
+                          .postListDetails![j]
+                          .animalsAdsPrice ??
+                          '0'),
+                )
 
             ],
           ),

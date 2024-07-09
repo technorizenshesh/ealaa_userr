@@ -140,13 +140,13 @@ class BrandModel {
 }
 
 class Storage {
-  int? storageId;
+  String? storageId;
   String? storageName;
 
   Storage({this.storageId, this.storageName});
 
   Storage.fromJson(Map<String, dynamic> json) {
-    storageId = json['storage_id'];
+    storageId = json['storage_id'].toString();
     storageName = json['storage_name'];
   }
 
@@ -159,13 +159,13 @@ class Storage {
 }
 
 class Condition {
-  int? conditionId;
+  String? conditionId;
   String? conditionName;
 
   Condition({this.conditionId, this.conditionName});
 
   Condition.fromJson(Map<String, dynamic> json) {
-    conditionId = json['condition_id'];
+    conditionId = json['condition_id'].toString();
     conditionName = json['condition_name'];
   }
 
@@ -178,13 +178,13 @@ class Condition {
 }
 
 class Warranty {
-  int? warrantyId;
+  String? warrantyId;
   String? warrantyName;
 
   Warranty({this.warrantyId, this.warrantyName});
 
   Warranty.fromJson(Map<String, dynamic> json) {
-    warrantyId = json['warranty_id'];
+    warrantyId = json['warranty_id'].toString();
     warrantyName = json['warranty_name'];
   }
 
@@ -197,7 +197,7 @@ class Warranty {
 }
 
 class Governorate {
-  int? governorateId;
+  String? governorateId;
   String? governorateName;
   List<GovernorateState>? governorateState;
 
@@ -205,7 +205,7 @@ class Governorate {
       {this.governorateId, this.governorateName, this.governorateState});
 
   Governorate.fromJson(Map<String, dynamic> json) {
-    governorateId = json['governorate_id'];
+    governorateId = json['governorate_id'].toString();
     governorateName = json['governorate_name'];
     if (json['governorate_state'] != null) {
       governorateState = <GovernorateState>[];
@@ -228,14 +228,14 @@ class Governorate {
 }
 
 class GovernorateState {
-  int? stateId;
+  String? stateId;
   String? stateName;
   List<StateCity>? stateCity;
 
   GovernorateState({this.stateId, this.stateName, this.stateCity});
 
   GovernorateState.fromJson(Map<String, dynamic> json) {
-    stateId = json['state_id'];
+    stateId = json['state_id'].toString();
     stateName = json['state_name'];
     if (json['state_city'] != null) {
       stateCity = <StateCity>[];
@@ -257,13 +257,13 @@ class GovernorateState {
 }
 
 class StateCity {
-  int? cityId;
+  String? cityId;
   String? cityName;
 
   StateCity({this.cityId, this.cityName});
 
   StateCity.fromJson(Map<String, dynamic> json) {
-    cityId = json['city_id'];
+    cityId = json['city_id'].toString();
     cityName = json['city_name'];
   }
 
