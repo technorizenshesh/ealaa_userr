@@ -126,7 +126,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
               Expanded(
                 child: GestureDetector(
                   onTap: () async {
-                    final Uri url = Uri(scheme: 'tel', path: "123456");
+                    final Uri url = Uri(scheme: 'tel', path: result?.vehicleAdsAdditionalDetailPhone);
                     print('Attempting to launch $url');
                     if (await canLaunchUrl(url)) {
                       print('Launching $url');
