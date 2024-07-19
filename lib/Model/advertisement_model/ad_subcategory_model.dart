@@ -1,7 +1,3 @@
-
-
-
-
 class GetSubcategoryModel {
   List<SubcategoryResult>? result;
   String? count;

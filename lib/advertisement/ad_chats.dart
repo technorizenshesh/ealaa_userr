@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
+import '../Model/advertisement_model/get_conversation_model.dart';
+import '../View/Utils/ApiConstants.dart';
+import '../View/Utils/GlobalData.dart';
+import '../View/Utils/webService.dart';
 import 'ad_chat_room.dart';
 
 class AdChats extends StatefulWidget {
@@ -37,17 +43,30 @@ class _AdAdsState extends State<AdChats> {
     },
   ];
 
-  clickOnItem() {
-   /* Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AdChatMessageDetail()),
-    );*/
-      push(context: context, screen: AdChatRoom(id: '10000'));
+  List<GetConversationResult> result = [];
+
+  getConversationApi() async {
+    showProgressBar = true;
+    Map<String, dynamic> data = {"receiver_id": userId,};
+    print("data.....$data");
+    var res = await Webservices.postData(
+        apiUrl: "$baseUrl$get_conversation", body: data, context: context);
+    GetConversationModel getConversationModel =GetConversationModel.fromJson(res);
+    if (getConversationModel.status == 1 && getConversationModel.result!=null&& getConversationModel.result!.isNotEmpty) {
+      result = getConversationModel.result!;
+      setState(() {});
+      print('Successss::::::::::');
+    }else{
+      print('Fail::::::::::');
+    }
+    showProgressBar = false;
   }
+
 
   @override
   void initState() {
     // TODO: implement initState
+    getConversationApi();
     super.initState();
   }
 
@@ -79,7 +98,7 @@ class _AdAdsState extends State<AdChats> {
           ),
           textAlign: TextAlign.center,
         ),
-        actions: [
+        /*actions: [
           Padding(
               padding: const EdgeInsets.only(right: 15),
               child: Row(
@@ -100,7 +119,7 @@ class _AdAdsState extends State<AdChats> {
                   // SvgPicture.asset("assets/images/Notification.svg",height: 30,color: MyColors.primaryColor,)
                 ],
               ))
-        ],
+        ],*/
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
@@ -142,12 +161,12 @@ class _AdAdsState extends State<AdChats> {
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             scrollDirection: Axis.vertical,
-            itemCount: chatUserList.length,
+            itemCount: result.length,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
               return GestureDetector(
                 onTap: () {
-                  clickOnItem();
+                  push(context: context, screen: AdChatRoom(id: result[index].id??'1'));
                 },
                 child: Container(
                   height: 95,
@@ -167,11 +186,19 @@ class _AdAdsState extends State<AdChats> {
                         children: [
                           Expanded(
                             flex: 1,
-                            child: Image.asset(
-                              chatUserList[index]['image'] ?? '',
+                            child: Image.network(
+                              result[index].image ?? 'https://avatar.iran.liara.run/public/37',
                               height: 60,
                               width: 60,
                               fit: BoxFit.fill,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.network(
+                                 'https://avatar.iran.liara.run/public/37',
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.fill,
+                                );
+                              },
                             ),
                           ),
                           SizedBox(width: 20),
@@ -181,7 +208,7 @@ class _AdAdsState extends State<AdChats> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  chatUserList[index]['name'] ?? '',
+                                  result[index].userName?? 'NA',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
@@ -193,17 +220,17 @@ class _AdAdsState extends State<AdChats> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        chatUserList[index]['message'] ?? '',
+                                        result.last.lastMessage ?? 'NA',
                                         style: const TextStyle(
                                             fontWeight: FontWeight.normal,
                                             fontSize: 13,
                                             color: Colors.black54),
                                       ),
                                     ),
-                                    const SizedBox(
+                                    SizedBox(
                                       width: 70,
                                       child: Text(
-                                        '08:00 PM',
+                                        result[index].time??'NA',
                                         style: TextStyle(
                                             fontWeight: FontWeight.normal,
                                             fontSize: 12,

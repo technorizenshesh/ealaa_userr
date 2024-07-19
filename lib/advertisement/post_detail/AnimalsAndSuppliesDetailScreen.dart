@@ -1,3 +1,4 @@
+import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
@@ -8,13 +9,16 @@ import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/webService.dart';
+import '../ad_chat_room.dart';
+import '../ad_my_ads_post.dart';
 
 class AnimalsAndSuppliesDetailScreen extends StatefulWidget {
   String ads_post;
   String ads_post_id;
+  String user_id_value;
 
   AnimalsAndSuppliesDetailScreen(
-      {super.key, required this.ads_post, required this.ads_post_id});
+      {super.key, required this.ads_post, required this.ads_post_id,this.user_id_value=''});
 
   @override
   State<AnimalsAndSuppliesDetailScreen> createState() => _AnimalsAndSuppliesDetailScreenState();
@@ -27,7 +31,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
     {'title': 'Gender', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {'title': 'Age', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {'title': 'Breed Origin', 'Image': 'assets/icons_for_car/ic_ad.png'},
-    {'title': 'Governorete', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'Governorate', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {'title': 'State', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {'title': 'City', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {'title': 'Price', 'Image': 'assets/icons_for_car/ic_ad.png'},
@@ -46,6 +50,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
         GetAdsPostDetailsModel.fromJson(res);
     if (getAdsPostDetailsModel.result != null) {
       result = getAdsPostDetailsModel.result!;
+      print('result?.animalsAdsImage:::::::::::::${result?.animalsAdsImage}');
       setState(() {});
     } else {
       showSnackbar(context, 'Something went wrong!');
@@ -94,114 +99,120 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
           ),
         ],
       ),
-      bottomNavigationBar:
-      Material(
+      bottomNavigationBar: widget.user_id_value == userId ?null:Material(
         elevation: 30,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () async {
-                    final Uri url = Uri(scheme: 'tel', path: "123456");
-                    print('Attempting to launch $url');
-                    if (await canLaunchUrl(url)) {
-                      print('Launching $url');
-                      await launchUrl(url);
-                    } else {
-                      print('Could not launch $url');
-                      throw 'Could not launch $url';
-                    }
-
-
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.grey)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.call,
-                            color: Colors.orange,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Call',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                        ],
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final Uri url = Uri(
+                          scheme: 'tel', path: result?.usersDetails?.mobile);
+                      print('Attempting to launch $url');
+                      if (await canLaunchUrl(url)) {
+                        print('Launching $url');
+                        await launchUrl(url);
+                      } else {
+                        print('Could not launch $url');
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: Colors.grey)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.call,
+                              color: Colors.orange,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Call',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    // print('$smsText $fullName $image');
-                    // if (smsText.isNotEmpty ||
-                    //     fullName.isNotEmpty ||
-                    //     image.isNotEmpty) {
-                    //   push(
-                    //       context: context,
-                    //       screen: AdChatRoom(
-                    //         id: smsText,
-                    //         name: fullName,
-                    //         image: image,
-                    //       ));
-                    // }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.grey)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            color: Colors.orange,
-                            size: 18,
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      if (result != null &&
+                          result?.usersDetails?.id != null &&
+                          result!.usersDetails!.id!.isNotEmpty ||
+                          result != null &&
+                              result?.usersDetails?.userName != null &&
+                              result!.usersDetails!.userName!.isNotEmpty ||
+                          result != null &&
+                              result?.usersDetails?.image != null &&
+                              result!.usersDetails!.image!.isNotEmpty) {
+                        push(
+                          context: context,
+                          screen: AdChatRoom(
+                            id: result!.usersDetails!.id!,
+                            name: result!.usersDetails!.userName!,
+                            image: result!.usersDetails!.image!,
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Chat',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                        ],
+                        );
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: Colors.grey)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.chat_bubble_outline,
+                              color: Colors.orange,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Chat',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -221,7 +232,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                         width: width,
                         child: CachedNetworkImage(
                           imageUrl: result?.animalsAdsImage ?? '',
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           height: 300,
                           placeholder: (context, url) => Center(
                             child: Shimmer.fromColors(
@@ -241,7 +252,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 20
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -383,6 +394,20 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                       SizedBox(
                         height: 10,
                       ),
+                      widget.user_id_value == userId ?
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: RoundButton(
+                          height: 45,
+                          borderRadius: 10,
+                          title: 'Update your post',
+                          onTap: () {
+
+                          },
+                          fontsize: 18,
+                          fontweight: FontWeight.w500,
+                        ),
+                      ):
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
@@ -398,6 +423,16 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                               height: 10,
                             ),
                             ListTile(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                                    result!.usersDetails != null &&
+                                    result!.usersDetails!.id !=
+                                        null &&
+                                    result!.usersDetails!.id!
+                                        .isNotEmpty)
+                                    ?result!.usersDetails!.id!
+                                    :null,),));
+                              },
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
                                 child: SizedBox(
@@ -461,21 +496,21 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
   String getTextMethod({required int index}) {
     switch (index) {
       case 0:
-        return result?.animalsAdsDescription??'';
+        return result?.subCategoryName??'';
       case 1:
-        return result?.animalsAdsType??'';
+        return result?.typeName??'';
       case 2:
-        return result?.animalsAdsGender??'';
+        return result?.genderName??'';
       case 3:
-        return result?.animalsAdsAge??'';
+        return result?.ageName??'';
       case 4:
-        return result?.animalsAdsBreedOrigin??'';
+        return result?.breedName??'';
       case 5:
-        return result?.animalsAdsGovernorate??'';
+        return result?.governorateName??'';
       case 6:
-        return result?.animalsAdsState??'';
+        return result?.stateName??'';
       case 7:
-        return result?.animalsAdsCity??'';
+        return result?.cityName??'';
       case 8:
         return result?.animalsAdsPrice??'';
       case 9:

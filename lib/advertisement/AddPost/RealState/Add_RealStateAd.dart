@@ -120,7 +120,7 @@ class _AddRealStateAdState extends State<AddRealStateAd> {
       'category_id': widget.advertisement_category_id,
       'sub_catgerory_id': widget.advertisement_sub_category_id,
       'real_state_ads_detail_user_id': userId,
-      'real_state_ads_detail_ads_post_id': '1',
+      'real_state_ads_detail_ads_post_id': '',
       'real_state_ads_detail_use_id': selectedUse?.useId.toString() ?? "",
       'real_state_ads_detail_wall_id': selectedWall?.WallId.toString() ?? "",
       'real_state_ads_detail_landtype_id':
@@ -214,91 +214,113 @@ class _AddRealStateAdState extends State<AddRealStateAd> {
             )
           : realStateUseResult == null
               ? Image.asset("assets/images/NoDataFound.png")
-              : NestedScrollView(
-                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                    SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      pinned: true,
-                      expandedHeight: 100,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: SingleChildScrollView(
-                          controller: _scrollController,
-                          scrollDirection: Axis.horizontal,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-                            child: Row(
-                              children: List.generate(topList.length, (index) {
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Divider(
-                                      height: 10,
-                                      color: Colors.grey,
-                                    ),
-                                    _currentStepIndex <= index
+              : Column(
+                  children: [
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                        child: Row(
+                          children: List.generate(topList.length, (index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                /* _currentStepIndex <= index
+                                    ? SvgPicture.asset(
+                                        "assets/images/card_grey.svg",
+                                        height: 40,
+                                      )
+                                    : _currentStepIndex == index + 1
                                         ? SvgPicture.asset(
-                                            "assets/images/card_grey.svg",
-                                            height: 40,
+                                            'assets/images/card_orange.svg',
+                                            height: 45,
                                           )
-                                        : _currentStepIndex == index + 1
-                                            ? SvgPicture.asset(
-                                                'assets/images/card_blue.svg',
-                                                height: 45,
-                                              )
-                                            : SvgPicture.asset(
-                                                'assets/images/card_green.svg',
-                                                height: 45,
-                                              ),
-                                    SizedBox(
-                                      width: 10,
+                                        : SvgPicture.asset(
+                                            'assets/images/card_green.svg',
+                                            height: 45,
+                                          ),*/
+
+                                _currentStepIndex <= index
+                                    ? Image.asset(
+                                        'assets/icons/ic_card.png',
+                                        height: 28,
+                                        width: 28,
+                                      )
+                                    : _currentStepIndex == index + 1
+                                        ? Image.asset(
+                                            'assets/icons/ic_card_orange.png',
+                                            height: 40,
+                                            width: 40,
+                                          )
+                                        : Image.asset(
+                                            'assets/icons/ic_card_green.png',
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                SizedBox(width: 14),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      topList[index],
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                          fontWeight: FontWeight.w500),
                                     ),
-                                    Container(
-                                      child: Center(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              topList[index],
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color:
-                                                      _currentStepIndex <= index
-                                                          ? Colors.grey
-                                                          : Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              _getSelectedValueForIndex(index),
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color:
-                                                    _currentStepIndex <= index
-                                                        ? Colors.grey
-                                                        : Colors.black,
-                                              ),
-                                            ),
-                                          ],
+                                    if (_getSelectedValueForIndex(index)
+                                        .isNotEmpty)
+                                      Text(
+                                        _getSelectedValueForIndex(index),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
                                         ),
                                       ),
-                                      margin: EdgeInsets.only(right: 15),
-                                    ),
                                   ],
-                                );
-                              }).toList(),
-                            ),
+                                ),
+                                SizedBox(width: 7),
+                                if (index != topList.length - 1)
+                                  SizedBox(
+                                      width: 20,
+                                      child: Divider(
+                                        color: Colors.grey.withOpacity(.2),
+                                        thickness: 2,
+                                      )),
+                                if (index != topList.length - 1)
+                                  SizedBox(width: 7),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xfff8f2ee),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(14),
+                            topRight: Radius.circular(14),
                           ),
+                        ),
+                        height: MediaQuery.of(context).size.height - 200,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: tabsScreens(_currentStepIndex),
                         ),
                       ),
                     ),
                   ],
-                  body: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                        height: MediaQuery.of(context).size.height - 200,
-                        child: tabsScreens(_currentStepIndex)),
-                  ),
                 ),
     );
   }
@@ -395,7 +417,7 @@ class _AddRealStateAdState extends State<AddRealStateAd> {
                   print("gdhjsgj...$value");
                 },
                 onChanged: (Landtype? value) {
-                  _currentStepIndex = 5;
+                  _currentStepIndex = 4;
                   selectedLandType = value;
                   title = _getTitleForIndex(_currentStepIndex - 1);
                   _scrollToNextStep();
@@ -422,7 +444,6 @@ class _AddRealStateAdState extends State<AddRealStateAd> {
                   _currentStepIndex = 5;
                   selectedPosition = value;
                   title = _getTitleForIndex(_currentStepIndex - 1);
-
                   _scrollToNextStep();
                   setState(() {});
                 },
@@ -548,9 +569,7 @@ class _AddRealStateAdState extends State<AddRealStateAd> {
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(
-          height: 50,
-        ),
+        SizedBox(height: 50),
         RoundButton(
           height: 45,
           borderRadius: 10,
@@ -768,9 +787,7 @@ class _AddRealStateAdState extends State<AddRealStateAd> {
           borderRadius: BorderRadius.circular(10),
           child: Image.file(
             productPicture!,
-            height: 150,
-            width: 150,
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
     } else {
@@ -788,21 +805,27 @@ class _AddRealStateAdState extends State<AddRealStateAd> {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(12)),
         child: Container(
-          height: 120,
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ParagraphText(
+                  text: "Attractive photo influence 90% of buyer decisions.",
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Image.asset(
                 MyImages.add,
                 height: 45,
                 width: 45,
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(20.0),
                 child: ParagraphText(
-                  text: "Tap here to add a photo",
+                  text: "Click to add image from gallery and camera",
                   textAlign: TextAlign.center,
                 ),
               ),

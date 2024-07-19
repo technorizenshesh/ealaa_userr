@@ -207,19 +207,21 @@ commonTextFormField(
       GestureTapCallback? onTap,
       bool readOnly = false,
       double? width,
+      double? height,
       bool suffixIcon = false,
-
       TextEditingController? controller}) {
   return Container(
     width: width,
+    height: height,
     child: TextFormField(
       maxLines: maxLines,
       readOnly: readOnly,
       onTap: onTap,
       controller: controller,
       cursorColor: Colors.orange,
+      cursorHeight: 16,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 0),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),
         suffixIcon: suffixIcon
             ? const Icon(CupertinoIcons.arrowtriangle_down_circle,
             color: Colors.orange)

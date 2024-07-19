@@ -3,8 +3,8 @@ import 'package:ealaa_userr/View/Utils/ApiConstants.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:intl/intl.dart';
 
-import '../import_ealaa_user.dart';
 import '../View/Utils/webService.dart';
+import '../import_ealaa_user.dart';
 
 class AdChatRoom extends StatefulWidget {
   final String id;
@@ -22,22 +22,31 @@ class _AdChatRoomState extends State<AdChatRoom> {
   bool sendVisibility = false;
   final FirebaseFirestore firebaseFireStore = FirebaseFirestore.instance;
 
+  insertChatMessageApi() async {
+    Map<String, dynamic> data = {"sender_id": userId, "reciever_id": widget.id,"chat_message": messageController.text};
+    print("data.....$data");
+    var res = await Webservices.postData(
+        apiUrl: "$baseUrl$insertChatMessage", body: data, context: context);
+    if (res['status'] == '1') {
+      print('Successss::::::::::');
+    }else{
+      print('Fail::::::::::');
+    }
+  }
+
   Future<void> uploadToFirestore() async {
-    //  sendmessapi();
-    // print("type is...............$type");
-    //
     Map<String, dynamic> imageMap = {
       "sendBy": userId,
-      "sendTo": "Admin",
+      "sendTo": widget.id,
       "message": messageController.text.trim().toString(),
       "time": FieldValue.serverTimestamp(),
     };
-
     await firebaseFireStore
         .collection("ad_chatroom")
         .doc(getChatId(userId, widget.id))
         .collection("chats")
         .add(imageMap);
+    await insertChatMessageApi();
     messageController.clear();
     sendVisibility = false;
     setState(() {});
@@ -68,12 +77,15 @@ class _AdChatRoomState extends State<AdChatRoom> {
         titleSpacing: 0,
         title: Row(
           children: [
-            SizedBox(
-              width: 44,
-              height: 44,
-              child: Image.network(
-                widget.image.isNotEmpty ? widget.image :'https://avatar.iran.liara.run/public/37',
-                fit: BoxFit.fill
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox(
+                width: 34,
+                height: 34,
+                child: Image.network(
+                  widget.image.isNotEmpty ? widget.image :'https://avatar.iran.liara.run/public/37',
+                  fit: BoxFit.fill
+                ),
               ),
             ),
             SizedBox(width: 14),
@@ -287,13 +299,9 @@ class _AdChatRoomState extends State<AdChatRoom> {
       );
 
   String getTimeAgo(Timestamp timestamp) {
-    if (timestamp == null) {
-      return "";
-    }
     DateTime dateTime = timestamp.toDate();
     DateTime now = DateTime.now();
     Duration difference = now.difference(dateTime);
-
     if (difference.inDays == 0) {
       return 'Today';
     } else if (difference.inDays == 1) {
@@ -303,7 +311,6 @@ class _AdChatRoomState extends State<AdChatRoom> {
     } else if (difference.inDays > 5) {
       return DateFormat('dd-MM-yyyy').format(dateTime);
     } else {
-      // Handle future dates
       return 'Future date';
     }
   }

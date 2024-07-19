@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ealaa_userr/Model/ProfileModel.dart';
 import 'package:ealaa_userr/View/Auth/SignupOtp.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
@@ -25,7 +27,7 @@ class _LoginState extends State<Login> {
   loginUser() async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> data = {"email": email.text, "password": pass.text,"register_id": await FirebaseMessaging.instance.getToken()};
+    Map<String, dynamic> data = {"email": email.text, "password": pass.text,"register_id": Platform.isAndroid ? await FirebaseMessaging.instance.getToken():''};
     setState(() {
       loader = true;
     });

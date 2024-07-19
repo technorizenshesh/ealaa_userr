@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -69,6 +70,10 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
   TextEditingController landArea = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController quantity = TextEditingController();
+  TextEditingController englishTitle = TextEditingController();
+  TextEditingController arabicTitle = TextEditingController();
+  TextEditingController vehiclePartPartNumber = TextEditingController();
 
   void _scrollToNextStep() {
     if (_currentStepIndex < topList.length) {
@@ -116,6 +121,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
     Map<String, dynamic> data = {
       'category_id': widget.advertisement_category_id,
       'sub_category_id': '',
+      'vehicle_part_user_id': userId,
       'vehicle_part_part_id': selectedSubpart?.partId ?? '',
       'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
       'vehicle_part_maker_id': selectedMaker?.id ?? '',
@@ -124,15 +130,15 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
       'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
       'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
       'vehicle_part_price': price.text.toString(),
-      'vehicle_part_quantity':'',
-      'vehicle_part_part_number': '',
-      'vehicle_part_english_title': selectedSubpart?.subPartName ?? '',
-      'vehicle_part_arabic_title': '',
+      'vehicle_part_quantity':quantity.text ?? '',
+      'vehicle_part_part_number': vehiclePartPartNumber.text,
+      'vehicle_part_english_title': englishTitle.text,
+      'vehicle_part_arabic_title': arabicTitle.text,
       'vehicle_part_phone': phone.text.toString(),
       'vehicle_part_description': description.text.toString(),
     };
     Map<String, dynamic> files = {
-      'real_state_ads_upload_image': productPicture
+      'vehicle_part_image': productPicture
     };
     print("request ------------------$data   $files");
     loader = true;
@@ -141,9 +147,9 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
         body: data,
         files: files,
         context: context,
-        apiUrl: widget.adType == 'sell'
-            ? upload_real_state_sell
-            : upload_real_state_buy);
+        apiUrl: widget.type != "Wanted"
+            ? upload_vehicles_parts_accessories_sale
+            : upload_vehicles_parts_accessories_wanted);
     loader = false;
     setState(() {});
     final resdata = GeneralModel.fromJson(res);
@@ -205,93 +211,103 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
               ),
             )
           : vehiclePartsResult == null
-              ? Image.asset("assets/images/NoDataFound.png")
-              : NestedScrollView(
-                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                    SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      pinned: true,
-                      expandedHeight: 100,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: SingleChildScrollView(
-                          controller: _scrollController,
-                          scrollDirection: Axis.horizontal,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-                            child: Row(
-                              children: List.generate(topList.length, (index) {
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Divider(
-                                      height: 10,
-                                      color: Colors.grey,
-                                    ),
-                                    _currentStepIndex <= index
+          ? Image.asset("assets/images/NoDataFound.png")
+          : Column(
+        children: [
+          SingleChildScrollView(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+              child: Row(
+                children: List.generate(topList.length, (index) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      /* _currentStepIndex <= index
+                                    ? SvgPicture.asset(
+                                        "assets/images/card_grey.svg",
+                                        height: 40,
+                                      )
+                                    : _currentStepIndex == index + 1
                                         ? SvgPicture.asset(
-                                            "assets/images/card_grey.svg",
-                                            height: 40,
+                                            'assets/images/card_orange.svg',
+                                            height: 45,
                                           )
-                                        : _currentStepIndex == index + 1
-                                            ? SvgPicture.asset(
-                                                'assets/images/card_blue.svg',
-                                                height: 45,
-                                              )
-                                            : SvgPicture.asset(
-                                                'assets/images/card_green.svg',
-                                                height: 45,
-                                              ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      child: Center(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              topList[index],
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color:
-                                                      _currentStepIndex <= index
-                                                          ? Colors.grey
-                                                          : Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              _getSelectedValueForIndex(index),
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color:
-                                                    _currentStepIndex <= index
-                                                        ? Colors.grey
-                                                        : Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      margin: EdgeInsets.only(right: 15),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
+                                        : SvgPicture.asset(
+                                            'assets/images/card_green.svg',
+                                            height: 45,
+                                          ),*/
+
+                      _currentStepIndex <= index
+                          ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
+                          : _currentStepIndex == index + 1
+                          ? Image.asset('assets/icons/ic_card_orange.png',height: 40,width: 40,)
+                          : Image.asset('assets/icons/ic_card_green.png',height: 40,width: 40,),
+                      SizedBox(width: 14),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            topList[index],
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: _currentStepIndex <= index
+                                    ? Colors.grey
+                                    : Colors.black,
+                                fontWeight: FontWeight.w500),
                           ),
-                        ),
+                          if (_getSelectedValueForIndex(index)
+                              .isNotEmpty)
+                            Text(
+                              _getSelectedValueForIndex(index),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: _currentStepIndex <= index
+                                    ? Colors.grey
+                                    : Colors.black,
+                              ),
+                            ),
+                        ],
                       ),
-                    ),
-                  ],
-                  body: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                        height: MediaQuery.of(context).size.height - 200,
-                        child: tabsScreens(_currentStepIndex)),
-                  ),
+                      SizedBox(width: 7),
+                      if (index != topList.length - 1)
+                        SizedBox(
+                            width: 20,
+                            child: Divider(
+                              color: Colors.grey.withOpacity(.2),
+                              thickness: 2,
+                            )),
+                      if (index != topList.length - 1)
+                        SizedBox(width: 7),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xfff8f2ee),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(14),
+                  topRight: Radius.circular(14),
                 ),
+              ),
+              height: MediaQuery.of(context).size.height - 200,
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: tabsScreens(_currentStepIndex),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -348,7 +364,8 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                     ),
                   ),
                 ),
-                SizedBox(
+                if(selectedIndex==index)
+                  SizedBox(
                   height: 10,
                 ),
                 if(selectedIndex==index)
@@ -510,7 +527,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
   }
 
   Widget UploadPhotos() {
-    return Column(
+    return ListView(
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -529,7 +546,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
           ),
         ),
         SizedBox(
-          height: 50,
+            height: 20
         ),
         RoundButton(
           height: 45,
@@ -556,72 +573,103 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 1.5,
-            decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Text(
-                    "Land Area",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                commonTextFormField(
-                  controller: landArea,
-                  hintText: 'Enter Land Area',
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Text(
-                    "Price",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                commonTextFormField(
-                  controller: price,
-                  hintText: 'Enter Price',
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Text(
-                    "Phone",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                commonTextFormField(
-                  controller: phone,
-                  hintText: 'Enter Phone',
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Text(
-                    "Description",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                commonTextFormField(
-                  maxLines: null,
-                  controller: description,
-                  hintText: 'Enter Description',
-                ),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Price",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              commonTextFormField(
+                controller: price,
+                hintText: 'Enter Price',
+              ),
+              SizedBox(
+                height: 10
+              ),
+              Text(
+                "Quantity",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                  height: 10
+              ),
+              commonTextFormField(
+                controller: quantity,
+                hintText: 'Enter quantity',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Part Number (Optional)",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                  height: 10
+              ),
+              commonTextFormField(
+                controller: vehiclePartPartNumber,
+                hintText: 'Enter part number',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "English Title",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                  height: 10
+              ),
+              commonTextFormField(
+                controller: englishTitle,
+                hintText: 'Enter english title',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Arabic Title",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                  height: 10
+              ),
+              commonTextFormField(
+                controller: arabicTitle,
+                hintText: 'Enter arabic title',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Phone",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                  height: 10
+              ),
+              commonTextFormField(
+                controller: phone,
+                hintText: 'Enter Phone',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Description",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                  height: 10
+              ),
+              commonTextFormField(
+                maxLines: null,
+                controller: description,
+                hintText: 'Enter Description',
+              ),
+            ],
           ),
           SizedBox(
             height: 20,
@@ -634,20 +682,19 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
-              if (landArea.text.isEmpty) {
-                showSnackbar(context, "Enter land area");
-              } else if (price.text.isEmpty) {
+               if (price.text.isEmpty) {
                 showSnackbar(context, "Enter price");
+              } else if (quantity.text.isEmpty) {
+                showSnackbar(context, "Enter quantity");
+              }else if (englishTitle.text.isEmpty) {
+                showSnackbar(context, "Enter english title");
+              }else if (arabicTitle.text.isEmpty) {
+                showSnackbar(context, "Enter arabic title");
               } else if (phone.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else if (description.text.isEmpty) {
-                showSnackbar(context, "Enter phone number");
+                showSnackbar(context, "Enter description");
               } else {
-                /*Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AdBottomBar(),
-                    ));*/
                    PostRealStateAd();
               }
             },
@@ -660,23 +707,19 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
   String _getSelectedValueForIndex(int index) {
     switch (index) {
       case 0:
-        return selectedPart?.partName ?? "";
-      // case 1:
-      //   return selectedWall?.WallName ?? "";
-      // case 2:
-      //   return selectedLandType?.landtypeName ?? "";
-      // case 3:
-      //   return selectedPosition?.positionName ?? "";
-      // case 4:
-      //   return selectedParking?.parkingName ?? "";
-      // case 5:
-      //   return selectedGovernate?.governorateName ?? "";
-      // case 6:
-      //   return selectedState?.stateName ?? "";
-      // case 7:
-      //   return selectedCity?.cityName ?? "";
-      // case 8:
-      //   return selectedImage ?? "";
+        return selectedSubpart?.subPartName ?? "";
+      case 1:
+        return selectedMaker?.name ?? "";
+      case 2:
+        return selectesModel?.name ?? "";
+      case 3:
+        return selectedModelyear?.yearName ?? "";
+      case 4:
+        return selectedModeltrim?.name ?? "";
+      case 5:
+        return selectedEnginesize?.engineValue ?? "";
+      case 6:
+        return selectedImage ?? "";
       default:
         return "";
     }
@@ -753,9 +796,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
           borderRadius: BorderRadius.circular(10),
           child: Image.file(
             productPicture!,
-            height: 150,
-            width: 150,
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
     } else {
@@ -773,21 +814,27 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(12)),
         child: Container(
-          height: 120,
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ParagraphText(
+                  text: "Attractive photo influence 90% of buyer decisions.",
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Image.asset(
                 MyImages.add,
                 height: 45,
                 width: 45,
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(20.0),
                 child: ParagraphText(
-                  text: "Tap here to add a photo",
+                  text: "Click to add image from gallery and camera",
                   textAlign: TextAlign.center,
                 ),
               ),

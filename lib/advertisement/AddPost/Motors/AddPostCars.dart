@@ -8,7 +8,6 @@ import '../../../Model/CityModel.dart';
 import '../../../Model/advertisement_model/AddPostModel.dart';
 import '../../../Model/advertisement_model/ad_subcategory_model.dart';
 import '../../../Model/advertisement_model/get_ads_with_category_home_model.dart';
-import '../../../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../../../View/Screens/ChoosePickupLocationMap.dart';
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CommonMethods.dart';

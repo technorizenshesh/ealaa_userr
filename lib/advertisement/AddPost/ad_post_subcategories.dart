@@ -69,7 +69,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
           widget.title, // Your badge count here
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 16,
           ),
           textAlign: TextAlign.center,
         ),
@@ -95,6 +95,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                           //  GetClubsResult item = controller.getClubsModel!.result![index];
                           return GestureDetector(
                             onTap: () {
+                              print(';;;;;;;;;;;;;;;;;;${subcategoryList[index].id??'8888888'}');
                               widget.advertisement_category_id=="1"||widget.advertisement_category_id=="2"?
                               Navigator.push(
                                 context,

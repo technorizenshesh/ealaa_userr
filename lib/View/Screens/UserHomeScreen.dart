@@ -8,8 +8,10 @@ import 'package:ealaa_userr/advertisement/ad_get_start.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../advertisement/ad_bottom_bar.dart';
 import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';
@@ -245,11 +247,23 @@ class _UserHomeState extends State<UserHome> {
                     left: 10,
                     child: Center(
                       child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const AdGetStart()));
+                          onTap: () async {
+                            final SharedPreferences sharedPreferences =
+                                await SharedPreferences.getInstance();
+                            if (sharedPreferences.getString('ads_first') !=
+                                '1') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AdGetStart()));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AdBottomBar()));
+                            }
                           },
                           child: Image.asset(
                             "assets/icons/ic_ads_logo.png",

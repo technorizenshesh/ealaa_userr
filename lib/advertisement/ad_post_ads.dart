@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
-import '../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../Model/advertisement_model/get_landlord_model.dart';
 import '../View/Screens/ChoosePickupLocationMap.dart';
 import '../View/Utils/ApiConstants.dart';

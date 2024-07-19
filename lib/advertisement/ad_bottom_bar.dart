@@ -1,9 +1,10 @@
 import 'package:ealaa_userr/advertisement/AddPost/List_anything_free.dart';
-import 'package:ealaa_userr/advertisement/ad_ads.dart';
 import 'package:ealaa_userr/advertisement/ad_chats.dart';
 import 'package:ealaa_userr/advertisement/ad_home.dart';
 import 'package:ealaa_userr/advertisement/ad_profile.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+
+import 'ad_my_ads_post.dart';
 
 class AdBottomBar extends StatefulWidget {
   const AdBottomBar({super.key});
@@ -23,10 +24,11 @@ class AdBottomBarState extends State<AdBottomBar> {
 
   final pages = [
     const AdHome(),
-    const AdAds(),
+    const AdChats(),
     const ListAnythingFree(),
     //const AdPostAds(),
-    const AdChats(),
+    //const AdAds(),
+    AdMyAdsPosts(),
     const AdProfile(),
   ];
 
@@ -57,24 +59,6 @@ class AdBottomBarState extends State<AdBottomBar> {
           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage(
-                  MyImages.icAds,
-                ),
-                size: 22,
-              ),
-              label: 'My Ads',
-              backgroundColor: Color(0xff000000)),
-          BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage(
-                  MyImages.add,
-                ),
-                size: 22,
-              ),
-              label: 'Post an ad',
-              backgroundColor: Color(0xff000000)),
-          BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage(
                   MyImages.icChat,
                 ),
                 size: 22,
@@ -84,11 +68,29 @@ class AdBottomBarState extends State<AdBottomBar> {
           BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage(
+                  MyImages.add,
+                ),
+                size: 22,
+              ),
+              label: 'Add Post',
+              backgroundColor: Color(0xff000000)),
+          BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage(
+                  MyImages.icAds,
+                ),
+                size: 22,
+              ),
+              label: 'My Ads',
+              backgroundColor: Color(0xff000000)),
+          BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage(
                   MyImages.icProfile,
                 ),
                 size: 22,
               ),
-              label: 'Profile',
+              label: 'Account',
               backgroundColor: Color(0xff000000)),
         ],
         currentIndex: _currentindex,

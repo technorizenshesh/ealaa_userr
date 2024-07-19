@@ -115,7 +115,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
       'sub_category_id': widget.advertisement_sub_category_id,
       'animals_ads_user_id': userId,
       'animals_ads_type': selectedType?.typeId ?? "",
-      'animals_ads_gender': selectedGender?.genderId ?? "",
+      'animals_ads_gender': selectedGender?.id ?? "",
       'animals_ads_age': selectedAge?.ageId?? "",
       'animals_ads_breed_origin': selectedBreed?.breedId??"",
       'animals_ads_governorate': selectedGovernrate?.governorateId??"",
@@ -195,93 +195,101 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
       )
           : animalTypeResult == null
           ? Image.asset("assets/images/NoDataFound.png")
-          :
-      NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            pinned: true,
-            expandedHeight: 100,
-            flexibleSpace: FlexibleSpaceBar(
-              background: SingleChildScrollView(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-                  child: Row(
-                    children: List.generate(topList.length, (index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+          : Column(
+        children: [
+          SingleChildScrollView(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+              child: Row(
+                children: List.generate(topList.length, (index) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      /* _currentStepIndex <= index
+                                    ? SvgPicture.asset(
+                                        "assets/images/card_grey.svg",
+                                        height: 40,
+                                      )
+                                    : _currentStepIndex == index + 1
+                                        ? SvgPicture.asset(
+                                            'assets/images/card_orange.svg',
+                                            height: 45,
+                                          )
+                                        : SvgPicture.asset(
+                                            'assets/images/card_green.svg',
+                                            height: 45,
+                                          ),*/
+
+                      _currentStepIndex <= index
+                          ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
+                          : _currentStepIndex == index + 1
+                          ? Image.asset('assets/icons/ic_card_orange.png',height: 40,width: 40,)
+                          : Image.asset('assets/icons/ic_card_green.png',height: 40,width: 40,),
+                      SizedBox(width: 14),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Divider(
-                            height: 10,
-                            color: Colors.grey,
+                          Text(
+                            topList[index],
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: _currentStepIndex <= index
+                                    ? Colors.grey
+                                    : Colors.black,
+                                fontWeight: FontWeight.w500),
                           ),
-                          _currentStepIndex <= index
-                              ? SvgPicture.asset(
-                            "assets/images/card_grey.svg",
-                            height: 40,
-                          )
-                              : _currentStepIndex == index + 1
-                              ? SvgPicture.asset(
-                            'assets/images/card_blue.svg',
-                            height: 45,
-                          )
-                              : SvgPicture.asset(
-                            'assets/images/card_green.svg',
-                            height: 45,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    topList[index],
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color:
-                                        _currentStepIndex <= index
-                                            ? Colors.grey
-                                            : Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    _getSelectedValueForIndex(index),
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color:
-                                      _currentStepIndex <= index
-                                          ? Colors.grey
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ],
+                          if (_getSelectedValueForIndex(index)
+                              .isNotEmpty)
+                            Text(
+                              _getSelectedValueForIndex(index),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: _currentStepIndex <= index
+                                    ? Colors.grey
+                                    : Colors.black,
                               ),
                             ),
-                            margin: EdgeInsets.only(right: 15),
-                          ),
                         ],
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                      SizedBox(width: 7),
+                      if (index != topList.length - 1)
+                        SizedBox(
+                            width: 20,
+                            child: Divider(
+                              color: Colors.grey.withOpacity(.2),
+                              thickness: 2,
+                            )),
+                      if (index != topList.length - 1)
+                        SizedBox(width: 7),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xfff8f2ee),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(14),
+                  topRight: Radius.circular(14),
                 ),
+              ),
+              height: MediaQuery.of(context).size.height - 200,
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: tabsScreens(_currentStepIndex),
               ),
             ),
           ),
         ],
-         body:
-    Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-              height: MediaQuery.of(context).size.height - 200,
-              child: tabsScreens(_currentStepIndex)),
-        ),
       ),
     );
   }
@@ -346,7 +354,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
           child: RadioListTile(
             activeColor: MyColors.primaryColor,
             value: genderList[index],
-            title: Text('${genderList[index].genderName}'),
+            title: Text('${genderList[index].name}'),
             groupValue: selectedGender,
             onChanged: (Gender? value) {
               _currentStepIndex = 3;
@@ -635,7 +643,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
       case 0:
         return selectedType?.typeName ?? "";
       case 1:
-        return selectedGender?.genderName ?? "";
+        return selectedGender?.name ?? "";
       case 2:
         return selectedAge?.ageName ?? "";
       case 3:
@@ -724,9 +732,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
           borderRadius: BorderRadius.circular(10),
           child: Image.file(
             productPicture!,
-            height: 150,
-            width: 150,
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
     } else {
@@ -744,21 +750,27 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(12)),
         child: Container(
-          height: 120,
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ParagraphText(
+                  text: "Attractive photo influence 90% of buyer decisions.",
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Image.asset(
                 MyImages.add,
                 height: 45,
                 width: 45,
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(20.0),
                 child: ParagraphText(
-                  text: "Tap here to add a photo",
+                  text: "Click to add image from gallery and camera",
                   textAlign: TextAlign.center,
                 ),
               ),

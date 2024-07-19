@@ -1,8 +1,11 @@
 import 'package:ealaa_userr/Model/advertisement_model/get_ads_with_category_subcategory_model.dart';
 import 'package:ealaa_userr/advertisement/post_detail/AnimalsAndSuppliesDetailScreen.dart';
+import 'package:ealaa_userr/advertisement/post_detail/ElectronicsDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/PhoneNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/RealEstateDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
+import 'package:ealaa_userr/advertisement/post_detail/VehicleNumberDetailScreen.dart';
+import 'package:ealaa_userr/advertisement/post_detail/VehiclePartsAndAccessoriesDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
@@ -123,14 +126,14 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             price: getAdsWithCategorySubCategoryResult[index]
                     .vehicleAdsAdditionalDetailPrice ??
                 '0',
-            firstText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailTransmission ??
-                '',
+            firstText: '${getAdsWithCategorySubCategoryResult[index]
+                .vehicleAdsAdditionalDetailDistanceTravelled ??
+                '0' } km',
             secondText: getAdsWithCategorySubCategoryResult[index]
                     .vehicleAdsDetailOrigin ??
                 '',
             thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailCondition ??
+                    .vehicleAdsDetailState ??
                 '',
             callText: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
@@ -147,69 +150,106 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                     .usersDetails
                     ?.userName ??
                 '',
+            secondIcon: 'assets/icons_for_car/ic_transmission.png',
+          firstIcon:  'assets/icons_for_car/ic_kilometer.png',
+            thirdIcon:  'assets/icons_for_car/ic_location.png',
           ),
         );
       } else if (widget.adsCategoryId == '3') {
-        return dataContainer(
-          imageUrl:
-              getAdsWithCategorySubCategoryResult[index].vehiclePartImage ?? '',
-          name: getAdsWithCategorySubCategoryResult[index]
-                  .vehiclePartDescription ??
-              '',
-          price: getAdsWithCategorySubCategoryResult[index].vehiclePartPrice ??
-              '0',
-          firstText: getAdsWithCategorySubCategoryResult[index]
-                  .vehiclePartEngineSizeId ??
-              '',
-          secondText:
-              getAdsWithCategorySubCategoryResult[index].vehiclePartPhone ?? '',
-          thirdText: getAdsWithCategorySubCategoryResult[index]
-                  .vehiclePartModelYearId ??
-              '',
-          callText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
-                  '',
-          smsText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-          image:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
-                  '',
-          userName: getAdsWithCategorySubCategoryResult[index]
-                  .usersDetails
-                  ?.userName ??
-              '',
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return VehiclePartsAndAccessoriesDetailScreen(
+                  ads_post:
+                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                  ads_post_id:
+                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                );
+              },
+            ));
+          },
+          child: dataContainer(
+            imageUrl:
+                getAdsWithCategorySubCategoryResult[index].vehiclePartImage ?? '',
+            name: getAdsWithCategorySubCategoryResult[index]
+                    .vehiclePartDescription ??
+                'NA',
+            price: getAdsWithCategorySubCategoryResult[index].vehiclePartPrice ??
+                'NA',
+            firstText: getAdsWithCategorySubCategoryResult[index]
+                    .partName ??
+                'NA',
+            secondText:
+                getAdsWithCategorySubCategoryResult[index].cityName ?? '',
+            thirdText: getAdsWithCategorySubCategoryResult[index]
+                    .modelTrimName ??
+                'NA',
+            callText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
+                    'NA',
+            smsText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
+            image:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                    'NA',
+            userName: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.userName ??
+                'NA',
+            secondIcon: 'assets/icons_for_car/ic_location.png',
+            firstIcon:  'assets/icons_for_car/ic_engine_size.png',
+            thirdIcon:  'assets/icons_for_car/ic_transmission.png',
+          ),
         );
       } else if (widget.adsCategoryId == '4') {
-        return dataContainer(
-          imageUrl:
-              getAdsWithCategorySubCategoryResult[index].vehicleNumberImage ??
-                  '',
-          name: getAdsWithCategorySubCategoryResult[index]
-                  .vehicleNumberDescription ??
-              '',
-          price: getAdsWithCategorySubCategoryResult[index]
-                  .realStateAdsAdditionalDetailLandArea ??
-              '0',
-          firstText: getAdsWithCategorySubCategoryResult[index]
-                  .vehiclePartEngineSizeId ??
-              '',
-          secondText:
-              getAdsWithCategorySubCategoryResult[index].vehiclePartPhone ?? '',
-          thirdText: getAdsWithCategorySubCategoryResult[index]
-                  .vehiclePartModelYearId ??
-              '',
-          callText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
-                  '',
-          smsText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-          image:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
-                  '',
-          userName: getAdsWithCategorySubCategoryResult[index]
-                  .usersDetails
-                  ?.userName ??
-              '',
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return VehicleNumberDetailScreen(
+                  ads_post:
+                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                  ads_post_id:
+                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                );
+              },
+            ));
+          },
+          child: dataContainer(
+            imageUrl:
+                getAdsWithCategorySubCategoryResult[index].vehicleNumberImage ??
+                    '',
+            name: getAdsWithCategorySubCategoryResult[index]
+                    .vehicleNumberDescription ??
+                '',
+            price: getAdsWithCategorySubCategoryResult[index]
+                    .vehicleNumberPrice ??
+                '0',
+            firstText: getAdsWithCategorySubCategoryResult[index]
+                    .plateTypeName ??
+                '',
+            secondText:
+                getAdsWithCategorySubCategoryResult[index].cityName ?? '',
+            thirdText: getAdsWithCategorySubCategoryResult[index]
+                    .governorateName ??
+                '',
+            callText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
+                    '',
+            smsText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
+            image:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                    '',
+            userName: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.userName ??
+                '',
+            secondIcon: 'assets/icons_for_car/ic_location.png',
+            firstIcon:  'assets/icons_for_car/ic_ad.png',
+            thirdIcon:  'assets/icons_for_car/ic_transmission.png',
+          ),
         );
       } else if (widget.adsCategoryId == '5' || widget.adsCategoryId == '6') {
         return GestureDetector(
@@ -235,14 +275,14 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             price: getAdsWithCategorySubCategoryResult[index]
                     .realStateAdsAdditionalDetailPrice ??
                 '0',
-            firstText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailTransmission ??
-                '',
+            firstText: '${getAdsWithCategorySubCategoryResult[index]
+                .realStateAdsAdditionalDetailLandArea ??
+                ''} SQM',
             secondText: getAdsWithCategorySubCategoryResult[index]
-                    .realStateAdsAdditionalDetailDescription ??
+                    .cityName ??
                 '',
             thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .realStateAdsAdditionalDetailPhone ??
+                      .parkingName ??
                 '',
             callText:
                 getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
@@ -256,45 +296,65 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                     .usersDetails
                     ?.userName ??
                 '',
+            secondIcon: 'assets/icons_for_car/ic_location.png',
+            firstIcon:  'assets/icons_for_car/ic_ad.png',
+            thirdIcon:  'assets/icons_for_car/ic_ad.png',
           ),
         );
       } else if (widget.adsCategoryId == '7' || widget.adsCategoryId == '8') {
-        return dataContainer(
-          imageUrl:
-              getAdsWithCategorySubCategoryResult[index].electronicsAdsImage ??
-                  '',
-          name: getAdsWithCategorySubCategoryResult[index]
-                  .electronicsAdsDescription ??
-              '',
-          price: getAdsWithCategorySubCategoryResult[index]
-                  .realStateAdsAdditionalDetailPrice ??
-              '0',
-          firstText: getAdsWithCategorySubCategoryResult[index]
-                  .vehicleAdsDetailTransmission ??
-              '',
-          secondText: getAdsWithCategorySubCategoryResult[index]
-                  .realStateAdsAdditionalDetailDescription ??
-              '',
-          thirdText: getAdsWithCategorySubCategoryResult[index]
-                  .realStateAdsAdditionalDetailPhone ??
-              '',
-          callText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
-                  '',
-          smsText:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-          image:
-              getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
-                  '',
-          userName: getAdsWithCategorySubCategoryResult[index]
-                  .usersDetails
-                  ?.userName ??
-              '',
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return ElectronicsDetailScreen(
+                  ads_post:
+                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                  ads_post_id:
+                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                );
+              },
+            ));
+          },
+          child: dataContainer(
+            imageUrl:
+                getAdsWithCategorySubCategoryResult[index].electronicsAdsImage ??
+                    '',
+            name: getAdsWithCategorySubCategoryResult[index]
+                    .electronicsAdsDescription ??
+                '',
+            price: getAdsWithCategorySubCategoryResult[index]
+                    .electronicsAdsPrice ??
+                '0',
+            firstText: getAdsWithCategorySubCategoryResult[index]
+                    .subCategoryName ??
+                '',
+            secondText: getAdsWithCategorySubCategoryResult[index]
+                    .storageName ??
+                '',
+            thirdText: getAdsWithCategorySubCategoryResult[index]
+                    .governorateName ??
+                '',
+            callText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
+                    '',
+            smsText:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
+            image:
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                    '',
+            userName: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.userName ??
+                '',
+            secondIcon: 'assets/icons_for_car/ic_ad.png',
+            firstIcon:  'assets/icons_for_car/ic_ad.png',
+            thirdIcon:  'assets/icons_for_car/ic_ad.png',
+          ),
         );
       } else if (widget.adsCategoryId == '9') {
         return GestureDetector(
           onTap: () {
-            /*Navigator.push(context, MaterialPageRoute(
+            Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return PhoneNumberDetailScreen(
                   ads_post:
@@ -303,7 +363,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                   getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                 );
               },
-            ));*/
+            ));
           },
           child: dataContainer(
             imageUrl:
@@ -316,13 +376,13 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                 getAdsWithCategorySubCategoryResult[index].phoneNumberAdsPrice ??
                     '0',
             firstText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailTransmission ??
+                    .operatorsName ??
                 '',
             secondText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailOrigin ??
+                    .cityName ??
                 '',
             thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailCondition ??
+                    .governorateName ??
                 '',
             callText:
                 getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
@@ -336,6 +396,10 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                     .usersDetails
                     ?.userName ??
                 '',
+
+            secondIcon: 'assets/icons_for_car/ic_ad.png',
+            firstIcon:  'assets/icons_for_car/ic_ad.png',
+            thirdIcon:  'assets/icons_for_car/ic_ad.png',
           ),
         );
       } else if (widget.adsCategoryId == '10') {
@@ -361,13 +425,13 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             price:
                 getAdsWithCategorySubCategoryResult[index].animalsAdsPrice ?? '0',
             firstText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailTransmission ??
+                    .subCategoryName ??
                 '',
             secondText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailOrigin ??
+                    .breedName ??
                 '',
             thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleAdsDetailCondition ??
+                    .cityName ??
                 '',
             callText:
                 getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
@@ -381,6 +445,10 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                     .usersDetails
                     ?.userName ??
                 '',
+
+            secondIcon: 'assets/icons_for_car/ic_ad.png',
+            firstIcon:  'assets/icons_for_car/ic_ad.png',
+            thirdIcon:  'assets/icons_for_car/ic_location.png',
           ),
         );
       }
@@ -395,13 +463,16 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
       required String firstText,
       required String secondText,
       required String thirdText,
+      required String firstIcon,
+      required String secondIcon,
+      required String thirdIcon,
       required String callText,
       required String smsText,
       required String userName,
       required String image}) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.55,
+      height: MediaQuery.of(context).size.height * 0.45,
       decoration:
           BoxDecoration(
               color: Colors.white,
@@ -423,8 +494,8 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                       child: CachedNetworkImage(
                         imageUrl: imageUrl,
-                        fit: BoxFit.cover,
-                        height: 250,
+                        fit: BoxFit.contain,
+                        height: MediaQuery.of(context).size.height * .2,
                         placeholder: (context, url) => Center(
                           child: Shimmer.fromColors(
                             baseColor: MyColors.onSecondary.withOpacity(0.4),
@@ -449,12 +520,12 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                           name,
                           maxLines: 1,
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.black.withOpacity(0.7),
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
+                          height: 10
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -463,7 +534,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                               "${price} OMR",
                               style: TextStyle(
                                   color: Colors.green,
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold),
                             ),
                             InkWell(
@@ -505,59 +576,72 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                             )
                           ],
                         ),
+                        SizedBox(
+                            height: 10
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 34.0),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                firstIcon,
+                                color:
+                                Colors.black.withOpacity(0.4),
+                                height: 18,
+                                width: 18,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Divider(),
+                                ),
+                              ),
+                              Image.asset(
+                                secondIcon,
+                                color:
+                                Colors.black.withOpacity(0.4),
+                                height: 18,
+                                width: 18,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Divider(),
+                                ),
+                              ),
+                              Image.asset(
+                                thirdIcon,
+                                color:
+                                Colors.black.withOpacity(0.4),
+                                height: 18,
+                                width: 18,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                            height: 4
+                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Row(
                             children: [
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.pin_drop,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    firstText,
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
-                                  )
-                                ],
+                              Text(
+                                firstText,
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
                               ),
-                              Expanded(child: Divider()),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.pin_drop,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    secondText,
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
-                                  )
-                                ],
+                              Expanded(child: Divider(color: Colors.transparent,)),
+                              Text(
+                                secondText,
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
                               ),
-                              Expanded(child: Divider()),
-                              Column(
-                                children: [
-                                  Icon(
-                                    Icons.pin_drop,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    thirdText,
-                                    style: TextStyle(
-                                        color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
-                                  )
-                                ],
+                              Expanded(child: Divider(color: Colors.transparent,)),
+                              Text(
+                                thirdText,
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
                               )
                             ],
                           ),
@@ -586,8 +670,6 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                           print('Could not launch $url');
                           throw 'Could not launch $url';
                         }
-
-
                       },
                       child: Container(
                         decoration: BoxDecoration(

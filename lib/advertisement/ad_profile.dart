@@ -1,5 +1,6 @@
 import 'package:ealaa_userr/advertisement/ad_myAds.dart';
 import 'package:ealaa_userr/advertisement/ad_myFavorites.dart';
+import 'package:ealaa_userr/advertisement/ad_my_ads_post.dart';
 import 'package:ealaa_userr/advertisement/ad_my_profile.dart';
 import 'package:ealaa_userr/advertisement/ad_my_save_search.dart';
 import 'package:ealaa_userr/advertisement/ad_notification.dart';
@@ -24,7 +25,7 @@ class _AdProfileState extends State<AdProfile> {
   clickOnMyAd() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AdMyAds()),
+      MaterialPageRoute(builder: (context) =>  AdMyAdsPosts()),
     );
   }
 
@@ -38,7 +39,7 @@ class _AdProfileState extends State<AdProfile> {
   clickOnMyFavorites() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const AdMyFavorites()),
+      MaterialPageRoute(builder: (context) =>  AdMyAdsPosts(FavValue: true,)),
     );
   }
 
@@ -293,7 +294,7 @@ class _AdProfileState extends State<AdProfile> {
                           style: TextStyle(fontSize: 16, color: Colors.black54),
                         ),
                       ),
-                      ListTile(
+                      /*ListTile(
                         onTap: () {
                           clickOnMySaveSearch();
                         },
@@ -307,7 +308,7 @@ class _AdProfileState extends State<AdProfile> {
                           'My Saved Searches',
                           style: TextStyle(fontSize: 16, color: Colors.black54),
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

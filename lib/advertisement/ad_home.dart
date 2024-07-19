@@ -4,13 +4,18 @@ import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/advertisement/ad_notification.dart';
 import 'package:ealaa_userr/advertisement/ad_sub_categories.dart';
 import 'package:ealaa_userr/advertisement/post_detail/AnimalsAndSuppliesDetailScreen.dart';
+import 'package:ealaa_userr/advertisement/post_detail/ElectronicsDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/PhoneNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/RealEstateDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
+import 'package:ealaa_userr/advertisement/post_detail/VehicleNumberDetailScreen.dart';
+import 'package:ealaa_userr/advertisement/post_detail/VehiclePartsAndAccessoriesDetailScreen.dart';
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
@@ -32,8 +37,6 @@ class _AdHomeState extends State<AdHome> {
   String currentTime = "";
   String notificationCount = "";
 
-  List<GetAdsWithCategoryHomeResult> getAdsWithCategoryHomeResult = [];
-
   clickOnNotification() {
     Navigator.push(
       context,
@@ -42,6 +45,11 @@ class _AdHomeState extends State<AdHome> {
   }
 
   getBannerApi() async {
+    final SharedPreferences sharedPreferences =
+    await SharedPreferences.getInstance();
+    if(sharedPreferences.getString('ads_first')!='1') {
+      sharedPreferences.setString('ads_first','1');
+    }
     var res = await Webservices.getMap("$baseUrl$get_advertise_banner");
     print("status from banner api ${res}");
     final resdata = AdsBannerModel.fromJson(res);
@@ -70,10 +78,7 @@ class _AdHomeState extends State<AdHome> {
     showProgressBar = false;
   }*/
 
-
-
   getAdsWithCategoryHomeApi() async {
-    showProgressBar = true;
     var res = await Webservices.getMap("$baseUrl$get_ads_with_category_home");
     print("status from api ${res}");
     final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
@@ -109,7 +114,13 @@ class _AdHomeState extends State<AdHome> {
     if (adsBannerList == [] || adsBannerList.isEmpty) {
       getBannerApi();
     }
-    getAdsWithCategoryHomeApi();
+    if (getAdsWithCategoryHomeResult == [] ||
+        getAdsWithCategoryHomeResult.isEmpty) {
+      showProgressBar = true;
+      getAdsWithCategoryHomeApi();
+    }else{
+      getAdsWithCategoryHomeApi();
+    }
     super.initState();
   }
 
@@ -120,11 +131,32 @@ class _AdHomeState extends State<AdHome> {
         toolbarHeight: 70,
         automaticallyImplyLeading: false,
         scrolledUnderElevation: 0,
-        title: Container(
+        backgroundColor: Colors.orange,
+        centerTitle: true,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            size: 25,
+            color: Colors.white,
+          ),
+        ),
+        title:
+        const Text(
+          'Home', // Your badge count here
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        /*title: Container(
           height: 50,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
-              color: Colors.grey.withOpacity(0.4)),
+              color: Colors.white.withOpacity(0.4)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -133,25 +165,26 @@ class _AdHomeState extends State<AdHome> {
                 child: Icon(
                   Icons.search,
                   size: 25,
-                  color: Colors.black45,
+                  color: Colors.white,
                 ),
               ),
               Expanded(
-                  child: TextFormField(
-                decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    hintText: 'What are you looking for?',
-                    hintStyle: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 16,
-                        color: Colors.black54)),
-              ),),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      hintText: 'What are you looking for?',
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                          color: Colors.white)),
+                ),
+              ),
             ],
           ),
-        ),
-        actions: [
+        ),*/
+        /*actions: [
           Padding(
               padding: const EdgeInsets.only(right: 10),
               child: Row(
@@ -165,7 +198,7 @@ class _AdHomeState extends State<AdHome> {
                         const Icon(
                           Icons.notifications_none_rounded,
                           size: 32,
-                          color: Colors.orange,
+                          color: Colors.white,
                         ), // Your icon here
                         Positioned(
                           right: 0,
@@ -198,87 +231,80 @@ class _AdHomeState extends State<AdHome> {
                   // SvgPicture.asset("assets/images/Notification.svg",height: 30,color: MyColors.primaryColor,)
                 ],
               ))
-        ],
+        ],*/
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CarouselSlider.builder(
-                options: CarouselOptions(
-                  height: 150,
-                  //height: MediaQuery.of(context).size.height / 6,
-                  aspectRatio: 10.5 / 9,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  viewportFraction: 1,
-                  enlargeCenterPage: true,
-                  enableInfiniteScroll: false,
-                  enlargeStrategy: CenterPageEnlargeStrategy.height,
-                  onPageChanged: (index, reason) =>
-                      setState(() => activeIndex = index),
-                ),
-                itemCount: adsBannerList.length,
-                itemBuilder: (context, int index, int realIndex) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(25),
-                      child: CachedNetworkImage(
-                        imageUrl: adsBannerList[index].image!,
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) => Center(
-                          child: Shimmer.fromColors(
-                            baseColor: MyColors.onSecondary.withOpacity(0.4),
-                            highlightColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              color: MyColors.onSecondary.withOpacity(0.4),
-                            ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: ListView(
+          children: [
+            SizedBox(height: 10),
+            CarouselSlider.builder(
+              options: CarouselOptions(
+                height: 150,
+                //height: MediaQuery.of(context).size.height / 6,
+                aspectRatio: 10.5 / 9,
+                autoPlay: true,
+                autoPlayInterval: Duration(seconds: 3),
+                viewportFraction: 1,
+                enlargeCenterPage: true,
+                enableInfiniteScroll: false,
+                enlargeStrategy: CenterPageEnlargeStrategy.height,
+                onPageChanged: (index, reason) =>
+                    setState(() => activeIndex = index),
+              ),
+              itemCount: adsBannerList.length,
+              itemBuilder: (context, int index, int realIndex) {
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: adsBannerList[index].image!,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) => Center(
+                        child: Shimmer.fromColors(
+                          baseColor: MyColors.onSecondary.withOpacity(0.4),
+                          highlightColor:
+                              Theme.of(context).colorScheme.onSecondary,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            color: MyColors.onSecondary.withOpacity(0.4),
                           ),
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+            adsBannerList.isEmpty || adsBannerList == []
+                ? SizedBox()
+                : Center(
+                    child: AnimatedSmoothIndicator(
+                      activeIndex: activeIndex,
+                      count: adsBannerList.length,
+                      effect: const ExpandingDotsEffect(
+                        dotHeight: 6,
+                        dotWidth: 6,
+                        activeDotColor: MyColors.primaryColor,
+                        dotColor: Color(0xffD9D9D9),
                       ),
                     ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-              adsBannerList.isEmpty || adsBannerList == []
-                  ? SizedBox()
-                  : Center(
-                      child: AnimatedSmoothIndicator(
-                        activeIndex: activeIndex,
-                        count: adsBannerList.length,
-                        effect: const ExpandingDotsEffect(
-                          dotHeight: 6,
-                          dotWidth: 6,
-                          activeDotColor: MyColors.primaryColor,
-                          dotColor: Color(0xffD9D9D9),
-                        ),
-                      ),
-                    ),
-              SizedBox(
-                height: 15
-              ),
-              if (getAdsWithCategoryHomeResult.isNotEmpty ||
-                  getAdsWithCategoryHomeResult != [])
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.65,
-                  child: showCategory1(getAdsWithCategoryHomeResult),
-                ),
-              if (getAdsWithCategoryHomeResult.isNotEmpty ||
-                  getAdsWithCategoryHomeResult != [])
-                showCategoriesPost1(getAdsWithCategoryHomeResult)
-            ],
-          ),
+                  ),
+            SizedBox(height: 15),
+            if (getAdsWithCategoryHomeResult.isNotEmpty ||
+                getAdsWithCategoryHomeResult != [])
+              showCategory1(getAdsWithCategoryHomeResult),
+            SizedBox(height: 10),
+            if (getAdsWithCategoryHomeResult.isNotEmpty ||
+                getAdsWithCategoryHomeResult != [])
+              showCategoriesPost1(getAdsWithCategoryHomeResult)
+          ],
         ),
       ),
     );
@@ -289,7 +315,7 @@ class _AdHomeState extends State<AdHome> {
       List<GetAdsWithCategoryHomeResult> getAdsWithCategoryHomeResult) {
     return showProgressBar
         ? CommonWidget.commonShimmer(
-            itemCount: 4,
+            itemCount: 8,
             shimmerWidget: Container(
               height: 100,
               width: double.infinity,
@@ -300,12 +326,14 @@ class _AdHomeState extends State<AdHome> {
               margin:
                   const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 2),
               clipBehavior: Clip.hardEdge,
-            ),)
+            ),
+          )
         : GridView.builder(
+            shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, mainAxisExtent: 100, mainAxisSpacing: 5),
-            itemCount: getAdsWithCategoryHomeResult.length-2,
+            itemCount: getAdsWithCategoryHomeResult.length,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
               return GestureDetector(
@@ -322,20 +350,30 @@ class _AdHomeState extends State<AdHome> {
                       MaterialPageRoute(
                         builder: (context) => AdSubCategories(
                           advertisement_category_id:
-                           getAdsWithCategoryHomeResult[index].id ?? '',
-                          ads_post: getAdsWithCategoryHomeResult[index].type ?? '',
-                          getAdsWithCategoryHomeResult: getAdsWithCategoryHomeResult[index],
+                              getAdsWithCategoryHomeResult[index].id ?? '',
+                          ads_post:
+                              getAdsWithCategoryHomeResult[index].type ?? '',
+                          getAdsWithCategoryHomeResult:
+                              getAdsWithCategoryHomeResult[index],
                         ),
                       ),
                     );
-                  }else if (getAdsWithCategoryHomeResult[index].id == "3" ||
+                  } else if (getAdsWithCategoryHomeResult[index].id == "3" ||
                       getAdsWithCategoryHomeResult[index].id == "4" ||
                       getAdsWithCategoryHomeResult[index].id == "9") {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CategoryPostsScreen(adsPost: getAdsWithCategoryHomeResult[index].type.toString(),adsCategoryId: getAdsWithCategoryHomeResult[index].id.toString(),adsSubCategoryId: '',),
-                        ));
+                          builder: (context) => CategoryPostsScreen(
+                            adsPost: getAdsWithCategoryHomeResult[index]
+                                .type
+                                .toString(),
+                            adsCategoryId: getAdsWithCategoryHomeResult[index]
+                                .id
+                                .toString(),
+                            adsSubCategoryId: '',
+                          ),
+                        ),);
                   }
                 },
                 child: Container(
@@ -423,16 +461,35 @@ class _AdHomeState extends State<AdHome> {
                               getAdsWithCategoryHomeResult[i].id == "7" ||
                               getAdsWithCategoryHomeResult[i].id == "8" ||
                               getAdsWithCategoryHomeResult[i].id == "10") {
-                             Navigator.push(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AdSubCategories(
-                                  advertisement_category_id: getAdsWithCategoryHomeResult[i].id ?? '',
-                                  ads_post: getAdsWithCategoryHomeResult[i].type ?? '',
-                                  getAdsWithCategoryHomeResult: getAdsWithCategoryHomeResult[i],
+                                  advertisement_category_id:
+                                  getAdsWithCategoryHomeResult[i].id ?? '',
+                                  ads_post:
+                                  getAdsWithCategoryHomeResult[i].type ?? '',
+                                  getAdsWithCategoryHomeResult:
+                                  getAdsWithCategoryHomeResult[i],
                                 ),
                               ),
                             );
+                          } else if (getAdsWithCategoryHomeResult[i].id == "3" ||
+                              getAdsWithCategoryHomeResult[i].id == "4" ||
+                              getAdsWithCategoryHomeResult[i].id == "9") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CategoryPostsScreen(
+                                  adsPost: getAdsWithCategoryHomeResult[i]
+                                      .type
+                                      .toString(),
+                                  adsCategoryId: getAdsWithCategoryHomeResult[i]
+                                      .id
+                                      .toString(),
+                                  adsSubCategoryId: '',
+                                ),
+                              ),);
                           }
                         },
                         child: Row(
@@ -440,7 +497,7 @@ class _AdHomeState extends State<AdHome> {
                             Text(
                               "Browse ${getAdsWithCategoryHomeResult[i].totalCount}",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                                  fontWeight: FontWeight.bold, fontSize: 14),
                             ),
                             SizedBox(
                               width: 5,
@@ -450,7 +507,7 @@ class _AdHomeState extends State<AdHome> {
                               style: TextStyle(
                                   color: MyColors.primaryColor,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16),
+                                  fontSize: 14),
                             ),
                             SizedBox(
                               width: 5,
@@ -476,256 +533,321 @@ class _AdHomeState extends State<AdHome> {
   Widget listOfData({required int index}) {
     if (getAdsWithCategoryHomeResult[index].postListDetails != null &&
         getAdsWithCategoryHomeResult[index].postListDetails!.isNotEmpty) {
-      if(getAdsWithCategoryHomeResult[index].id == '1' || getAdsWithCategoryHomeResult[index].id == '2') {
+      if (getAdsWithCategoryHomeResult[index].id == '1' ||
+          getAdsWithCategoryHomeResult[index].id == '2') {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               for (int j = 0;
-              j < getAdsWithCategoryHomeResult[index]
-                      .postListDetails!
-                      .length; j++)
+                  j <
+                      getAdsWithCategoryHomeResult[index]
+                          .postListDetails!
+                          .length;
+                  j++)
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return VehicleDetailScreen(
-                          ads_post:
-                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsId ?? '',
-                          ads_post_id:
-                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsType ?? '',
+                          ads_post: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails?[j]
+                                  .adsId ??
+                              '',
+                          ads_post_id: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails?[j]
+                                  .adsType ??
+                              '',
                         );
                       },
                     ));
                   },
                   child: dataContainer(
                       imageUrl: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .vehicleAdsUploadImage ??
+                              .postListDetails![j]
+                              .vehicleAdsUploadImage ??
                           '',
                       name: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .vehicleAdsAdditionalDetailDescription ??
+                              .postListDetails![j]
+                              .vehicleAdsAdditionalDetailDescription ??
                           '',
                       price: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .vehicleAdsAdditionalDetailPrice ??
+                              .postListDetails![j]
+                              .vehicleAdsAdditionalDetailPrice ??
                           '0'),
                 )
-
             ],
           ),
         );
-      }
-      else if(getAdsWithCategoryHomeResult[index].id == '3') {
+      } else if (getAdsWithCategoryHomeResult[index].id == '3') {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-                for (int j = 0;
-                j <
-                    getAdsWithCategoryHomeResult[index]
-                        .postListDetails!
-                        .length;
-                j++)
-                  dataContainer(
+              for (int j = 0;
+                  j <
+                      getAdsWithCategoryHomeResult[index]
+                          .postListDetails!
+                          .length;
+                  j++)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return VehiclePartsAndAccessoriesDetailScreen(
+                          ads_post: getAdsWithCategoryHomeResult[index]
+                              .postListDetails?[j]
+                              .adsId ??
+                              '',
+                          ads_post_id: getAdsWithCategoryHomeResult[index]
+                              .postListDetails?[j]
+                              .adsType ??
+                              '',
+                        );
+                      },
+                    ));
+                  },
+                  child: dataContainer(
                       imageUrl: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .vehiclePartImage ??
+                              .postListDetails![j]
+                              .vehiclePartImage ??
                           '',
                       name: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .vehiclePartDescription ??
+                              .postListDetails![j]
+                              .vehiclePartDescription ??
                           '',
                       price: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .vehiclePartPrice ??
-                          '0')
-
+                              .postListDetails![j]
+                              .vehiclePartPrice ??
+                          '0'),
+                )
             ],
           ),
         );
-      }else if(getAdsWithCategoryHomeResult[index].id == '4') {
+      } else if (getAdsWithCategoryHomeResult[index].id == '4') {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               for (int j = 0;
-              j <
-                  getAdsWithCategoryHomeResult[index]
-                      .postListDetails!
-                      .length;
-              j++)
-                dataContainer(
-                    imageUrl: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .vehicleNumberImage ??
-                        '',
-                    name: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .vehicleNumberDescription ??
-                        '',
-                    price: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .vehicleNumberPrice ??
-                        '0')
-
+                  j <
+                      getAdsWithCategoryHomeResult[index]
+                          .postListDetails!
+                          .length;
+                  j++)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return VehicleNumberDetailScreen(
+                          ads_post: getAdsWithCategoryHomeResult[index]
+                              .postListDetails?[j]
+                              .adsId ??
+                              '',
+                          ads_post_id: getAdsWithCategoryHomeResult[index]
+                              .postListDetails?[j]
+                              .adsType ??
+                              '',
+                        );
+                      },
+                    ));
+                  },
+                  child: dataContainer(
+                      imageUrl: getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j]
+                              .vehicleNumberImage ??
+                          '',
+                      name: getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j]
+                              .vehicleNumberDescription ??
+                          '',
+                      price: getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j]
+                              .vehicleNumberPrice ??
+                          '0'),
+                )
             ],
           ),
         );
-      }else if(getAdsWithCategoryHomeResult[index].id == '5' || getAdsWithCategoryHomeResult[index].id == '6') {
+      } else if (getAdsWithCategoryHomeResult[index].id == '5' ||
+          getAdsWithCategoryHomeResult[index].id == '6') {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               for (int j = 0;
-              j <
-                  getAdsWithCategoryHomeResult[index]
-                      .postListDetails!
-                      .length;
-              j++)
+                  j <
+                      getAdsWithCategoryHomeResult[index]
+                          .postListDetails!
+                          .length;
+                  j++)
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return RealEstateDetailScreen(
-                          ads_post:
-                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsId ?? '',
-                          ads_post_id:
-                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsType ?? '',
+                          ads_post: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails?[j]
+                                  .adsId ??
+                              '',
+                          ads_post_id: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails?[j]
+                                  .adsType ??
+                              '',
                         );
                       },
                     ));
                   },
                   child: dataContainer(
                       imageUrl: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .realStateAdsUploadImage ??
+                              .postListDetails![j]
+                              .realStateAdsUploadImage ??
                           '',
                       name: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .realStateAdsAdditionalDetailDescription ??
+                              .postListDetails![j]
+                              .realStateAdsAdditionalDetailDescription ??
                           '',
                       price: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .realStateAdsAdditionalDetailPrice ??
+                              .postListDetails![j]
+                              .realStateAdsAdditionalDetailPrice ??
                           '0'),
                 )
-
             ],
           ),
         );
-      }else if(getAdsWithCategoryHomeResult[index].id == '7'||getAdsWithCategoryHomeResult[index].id == '8') {
+      } else if (getAdsWithCategoryHomeResult[index].id == '7' ||
+          getAdsWithCategoryHomeResult[index].id == '8') {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               for (int j = 0;
-              j <
-                  getAdsWithCategoryHomeResult[index]
-                      .postListDetails!
-                      .length;
-              j++)
-                dataContainer(
-                    imageUrl: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .electronicsAdsImage ??
-                        '',
-                    name: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .electronicsAdsDescription ??
-                        '',
-                    price: getAdsWithCategoryHomeResult[index]
-                        .postListDetails![j]
-                        .realStateAdsAdditionalDetailPrice ??
-                        '0')
-
-            ],
-          ),
-        );
-      }else if(getAdsWithCategoryHomeResult[index].id == '9') {
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              for (int j = 0;
-              j <
-                  getAdsWithCategoryHomeResult[index]
-                      .postListDetails!
-                      .length;
-              j++)
+                  j <
+                      getAdsWithCategoryHomeResult[index]
+                          .postListDetails!
+                          .length;
+                  j++)
                 GestureDetector(
                   onTap: () {
-                    /*Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return PhoneNumberDetailScreen(
-                          ads_post:
-                          getAdsWithCategoryHomeResult[index]
-                              .postListDetails![j].adsId ?? '',
-                          ads_post_id:
-                          getAdsWithCategoryHomeResult[index]
-                              .postListDetails![j].adsType ?? '',
+                        return ElectronicsDetailScreen(
+                          ads_post: getAdsWithCategoryHomeResult[index]
+                              .postListDetails?[j]
+                              .adsId ??
+                              '',
+                          ads_post_id: getAdsWithCategoryHomeResult[index]
+                              .postListDetails?[j]
+                              .adsType ??
+                              '',
                         );
                       },
-                    ));*/
+                    ));
                   },
                   child: dataContainer(
                       imageUrl: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .phoneNumberAdsImage ??
+                              .postListDetails![j]
+                              .electronicsAdsImage ??
                           '',
                       name: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .phoneNumberAdsDescription ??
+                              .postListDetails![j]
+                              .electronicsAdsDescription ??
                           '',
                       price: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .phoneNumberAdsPrice ??
+                              .postListDetails![j]
+                              .electronicsAdsPrice ??
                           '0'),
                 )
-
             ],
           ),
         );
-      }else if(getAdsWithCategoryHomeResult[index].id == '10') {
+      } else if (getAdsWithCategoryHomeResult[index].id == '9') {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
               for (int j = 0;
-              j <
-                  getAdsWithCategoryHomeResult[index]
-                      .postListDetails!
-                      .length;
-              j++)
+                  j <
+                      getAdsWithCategoryHomeResult[index]
+                          .postListDetails!
+                          .length;
+                  j++)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return PhoneNumberDetailScreen(
+                          ads_post: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails![j]
+                                  .adsId ??
+                              '',
+                          ads_post_id: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails![j]
+                                  .adsType ??
+                              '',
+                        );
+                      },
+                    ));
+                  },
+                  child: dataContainer(
+                      imageUrl: getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j]
+                              .phoneNumberAdsImage ??
+                          '',
+                      name: getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j]
+                              .phoneNumberAdsDescription ??
+                          '',
+                      price: getAdsWithCategoryHomeResult[index]
+                              .postListDetails![j]
+                              .phoneNumberAdsPrice ??
+                          '0'),
+                )
+            ],
+          ),
+        );
+      } else if (getAdsWithCategoryHomeResult[index].id == '10') {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              for (int j = 0;
+                  j <
+                      getAdsWithCategoryHomeResult[index]
+                          .postListDetails!
+                          .length;
+                  j++)
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return AnimalsAndSuppliesDetailScreen(
-                          ads_post:
-                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsId ?? '',
-                          ads_post_id:
-                          getAdsWithCategoryHomeResult[index].postListDetails?[j].adsType ?? '',
+                          ads_post: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails?[j]
+                                  .adsId ??
+                              '',
+                          ads_post_id: getAdsWithCategoryHomeResult[index]
+                                  .postListDetails?[j]
+                                  .adsType ??
+                              '',
                         );
                       },
                     ));
                   },
                   child: dataContainer(
                       imageUrl: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .animalsAdsImage ??
+                              .postListDetails![j]
+                              .animalsAdsImage ??
                           '',
                       name: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .animalsAdsDescription ??
+                              .postListDetails![j]
+                              .animalsAdsDescription ??
                           '',
                       price: getAdsWithCategoryHomeResult[index]
-                          .postListDetails![j]
-                          .animalsAdsPrice ??
+                              .postListDetails![j]
+                              .animalsAdsPrice ??
                           '0'),
                 )
-
             ],
           ),
         );
@@ -797,5 +919,4 @@ class _AdHomeState extends State<AdHome> {
       ),
     );
   }
-
 }

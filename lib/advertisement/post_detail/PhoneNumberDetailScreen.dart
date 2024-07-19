@@ -1,18 +1,23 @@
+import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../Model/advertisement_model/get_ads_post_details_model.dart';
 import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/webService.dart';
+import '../ad_chat_room.dart';
+import '../ad_my_ads_post.dart';
 
 class PhoneNumberDetailScreen extends StatefulWidget {
   String ads_post;
   String ads_post_id;
+  String user_id_value;
 
   PhoneNumberDetailScreen(
-      {super.key, required this.ads_post, required this.ads_post_id});
+      {super.key, required this.ads_post, required this.ads_post_id,this.user_id_value = ''});
 
   @override
   State<PhoneNumberDetailScreen> createState() => _PhoneNumberDetailScreenState();
@@ -87,6 +92,123 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
           ),
         ],*/
       ),
+      bottomNavigationBar: widget.user_id_value==userId?null:Material(
+        elevation: 30,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      final Uri url = Uri(
+                          scheme: 'tel', path: result?.usersDetails?.mobile);
+                      print('Attempting to launch $url');
+                      if (await canLaunchUrl(url)) {
+                        print('Launching $url');
+                        await launchUrl(url);
+                      } else {
+                        print('Could not launch $url');
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: Colors.grey)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.call,
+                              color: Colors.orange,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Call',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      if (result != null &&
+                          result?.usersDetails?.id != null &&
+                          result!.usersDetails!.id!.isNotEmpty ||
+                          result != null &&
+                              result?.usersDetails?.userName != null &&
+                              result!.usersDetails!.userName!.isNotEmpty ||
+                          result != null &&
+                              result?.usersDetails?.image != null &&
+                              result!.usersDetails!.image!.isNotEmpty) {
+                        push(
+                          context: context,
+                          screen: AdChatRoom(
+                            id: result!.usersDetails!.id!,
+                            name: result!.usersDetails!.userName!,
+                            image: result!.usersDetails!.image!,
+                          ),
+                        );
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: Colors.grey)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.chat_bubble_outline,
+                              color: Colors.orange,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Chat',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: showProgressBar
             ? Center(
@@ -103,7 +225,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                         width: width,
                         child: CachedNetworkImage(
                           imageUrl: result?.phoneNumberAdsImage ?? '',
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           height: 300,
                           placeholder: (context, url) => Center(
                             child: Shimmer.fromColors(
@@ -257,6 +379,20 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                       SizedBox(
                         height: 20,
                       ),
+                      widget.user_id_value == userId ?
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: RoundButton(
+                          height: 45,
+                          borderRadius: 10,
+                          title: 'Update your post',
+                          onTap: () {
+
+                          },
+                          fontsize: 18,
+                          fontweight: FontWeight.w500,
+                        ),
+                      ):
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
@@ -272,6 +408,16 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                               height: 10,
                             ),
                             ListTile(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                                    result!.usersDetails != null &&
+                                    result!.usersDetails!.id !=
+                                        null &&
+                                    result!.usersDetails!.id!
+                                        .isNotEmpty)
+                                    ?result!.usersDetails!.id!
+                                    :null,),));
+                              },
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
                                 child: SizedBox(
@@ -338,13 +484,13 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
   String getTextMethod({required int index}) {
     switch (index) {
       case 0:
-        return result?.phoneNumberAdsOperators??'';
+        return result?.operatorsName??'';
       case 1:
-        return result?.phoneNumberAdsGovernorate??'';
+        return result?.governorateName??'';
       case 2:
-        return result?.phoneNumberAdsState??'';
+        return result?.stateName??'';
       case 3:
-        return result?.phoneNumberAdsCity??'';
+        return result?.cityName??'';
       case 4:
         return result?.phoneNumberAdsPrice??'';
       case 5:

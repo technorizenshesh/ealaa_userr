@@ -4,7 +4,6 @@ import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
-import '../../Model/advertisement_model/get_advertisement_category_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/GlobalData.dart';
@@ -24,11 +23,11 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
   bool showProgressBar = false;
 
   getAdvertisementCategoryApi() async {
-    showProgressBar = true;
-    setState(() {});
-    var res = await Webservices.getMap("$baseUrl$get_advertisement_category");
+     setState(() {});
+     showProgressBar = true;
+     var res = await Webservices.getMap("$baseUrl$get_advertisement_category");
     print("status from api ${res}");
-    showProgressBar = true;
+    showProgressBar = false;
     setState(() {});
     final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
     print(resdata);
@@ -55,6 +54,16 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
           backgroundColor: Colors.orange,
           automaticallyImplyLeading: false,
           centerTitle: true,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              size: 25,
+              color: Colors.white,
+            ),
+          ),
           title: const Text(
             'List anything for FREE!',
             style: TextStyle(
@@ -68,11 +77,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: (getAdsWithCategoryHomeResult.isNotEmpty ||
                   getAdsWithCategoryHomeResult != [])
-              ? SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.76,
-                  //  height: 110,
-                  child: showCategory(),
-                )
+              ? showCategory()
               : SizedBox(),
         ));
   }
@@ -96,7 +101,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
             physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, mainAxisExtent: 100, mainAxisSpacing: 5),
-            itemCount: getAdsWithCategoryHomeResult.length-2 ,
+            itemCount: getAdsWithCategoryHomeResult.length,
             itemBuilder: (context, int index) {
               //  GetClubsResult item = controller.getClubsModel!.result![index];
               return GestureDetector(

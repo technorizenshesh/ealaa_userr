@@ -1,3 +1,6 @@
+import 'package:ealaa_userr/View/Utils/GlobalData.dart';
+import 'package:ealaa_userr/advertisement/UpdatePosts/update_VehiclesMake.dart';
+import 'package:ealaa_userr/advertisement/ad_my_ads_post.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
@@ -8,13 +11,18 @@ import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/webService.dart';
+import '../ad_chat_room.dart';
 
 class VehicleDetailScreen extends StatefulWidget {
   String ads_post;
   String ads_post_id;
+  String user_id_value;
 
   VehicleDetailScreen(
-      {super.key, required this.ads_post, required this.ads_post_id});
+      {super.key,
+      required this.ads_post,
+      required this.ads_post_id,
+      this.user_id_value = ''});
 
   @override
   State<VehicleDetailScreen> createState() => _VehicleDetailScreenState();
@@ -84,7 +92,6 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -100,7 +107,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
             color: Colors.white,
           ),
         ),
-         actions: [
+        actions: [
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -115,117 +122,126 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
           ),
         ],
       ),
-      bottomNavigationBar:
-      Material(
-        elevation: 30,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () async {
-                    final Uri url = Uri(scheme: 'tel', path: "123456");
-                    print('Attempting to launch $url');
-                    if (await canLaunchUrl(url)) {
-                      print('Launching $url');
-                      await launchUrl(url);
-                    } else {
-                      print('Could not launch $url');
-                      throw 'Could not launch $url';
-                    }
-
-
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.grey)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.call,
-                            color: Colors.orange,
-                            size: 18,
+      bottomNavigationBar: widget.user_id_value == userId
+          ? null
+          : Material(
+              elevation: 30,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            final Uri url = Uri(
+                                scheme: 'tel',
+                                path: result?.usersDetails?.mobile);
+                            print('Attempting to launch $url');
+                            if (await canLaunchUrl(url)) {
+                              print('Launching $url');
+                              await launchUrl(url);
+                            } else {
+                              print('Could not launch $url');
+                              throw 'Could not launch $url';
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: Colors.grey)),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.call,
+                                    color: Colors.orange,
+                                    size: 18,
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    'Call',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.orange),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Call',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            if (result != null &&
+                                    result?.usersDetails?.id != null &&
+                                    result!.usersDetails!.id!.isNotEmpty ||
+                                result != null &&
+                                    result?.usersDetails?.userName != null &&
+                                    result!
+                                        .usersDetails!.userName!.isNotEmpty ||
+                                result != null &&
+                                    result?.usersDetails?.image != null &&
+                                    result!.usersDetails!.image!.isNotEmpty) {
+                              push(
+                                  context: context,
+                                  screen: AdChatRoom(
+                                    id: result!.usersDetails!.id!,
+                                    name: result!.usersDetails!.userName!,
+                                    image: result!.usersDetails!.image!,
+                                  ));
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(color: Colors.grey)),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.chat_bubble_outline,
+                                    color: Colors.orange,
+                                    size: 18,
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(
+                                    'Chat',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.orange),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    // print('$smsText $fullName $image');
-                    // if (smsText.isNotEmpty ||
-                    //     fullName.isNotEmpty ||
-                    //     image.isNotEmpty) {
-                    //   push(
-                    //       context: context,
-                    //       screen: AdChatRoom(
-                    //         id: smsText,
-                    //         name: fullName,
-                    //         image: image,
-                    //       ));
-                    // }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.grey)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            color: Colors.orange,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Chat',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
       body: SingleChildScrollView(
         child: showProgressBar
             ? Center(
@@ -242,7 +258,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                         width: width,
                         child: CachedNetworkImage(
                           imageUrl: result?.vehicleAdsUploadImage ?? '',
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                           height: 300,
                           placeholder: (context, url) => Center(
                             child: Shimmer.fromColors(
@@ -300,7 +316,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               "Details",
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18,fontWeight: FontWeight.bold),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 10,
@@ -308,11 +325,11 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                             GridView.builder(
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
-                                      childAspectRatio: 100,
-                                      maxCrossAxisExtent: 200,
-                                      mainAxisExtent: 70,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
+                                  childAspectRatio: 100,
+                                  maxCrossAxisExtent: 200,
+                                  mainAxisExtent: 70,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
                                 ),
                                 physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
@@ -334,7 +351,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "${detailElements[index]['title']}",
@@ -355,11 +373,10 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                         Text(
                                           getTextMethod(index: index),
                                           style: TextStyle(
-                                            color:
-                                                Colors.black.withOpacity(0.6),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold
-                                          ),
+                                              color:
+                                                  Colors.black.withOpacity(0.6),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
                                         )
                                       ],
                                     ),
@@ -368,11 +385,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(color:Colors.grey.withOpacity(0.3)),
-
+                      SizedBox(height: 10),
+                      Divider(color: Colors.grey.withOpacity(0.3)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
@@ -382,7 +396,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               "Description",
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18,fontWeight: FontWeight.w500),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
                               height: 10,
@@ -398,14 +413,24 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 10
                       ),
-                      Divider(color:Colors.grey.withOpacity(0.3)),
-
-                      SizedBox(
-                        height: 10,
-                      ),
+                      Divider(color: Colors.grey.withOpacity(0.3)),
+                      SizedBox(height: 10),
+                      widget.user_id_value == userId ?
                       Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: RoundButton(
+                          height: 45,
+                          borderRadius: 10,
+                          title: 'Update your post',
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateVehiclesMake(adType: result?.adsType ?? '', advertisement_category_id: result?.adsCategoryId ?? '', advertisement_sub_category_id: result?.adsSubCategoryId ?? '')));
+                          },
+                          fontsize: 18,
+                          fontweight: FontWeight.w500,
+                        ),
+                      ):Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,12 +439,23 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                               "Contact the seller",
                               style: TextStyle(
                                   color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18,fontWeight: FontWeight.w500),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             ListTile(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                                    result!.usersDetails != null &&
+                                    result!.usersDetails!.id !=
+                                        null &&
+                                    result!.usersDetails!.id!
+                                        .isNotEmpty)
+                                    ?result!.usersDetails!.id!
+                                    :null,),));
+                              },
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
                                 child: SizedBox(
@@ -437,14 +473,13 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                       fit: BoxFit.fill),
                                 ),
                               ),
-                              title:
-                              Text(
+                              title: Text(
                                 (result != null &&
-                                    result!.usersDetails != null &&
-                                    result!.usersDetails!.userName !=
-                                        null &&
-                                    result!.usersDetails!.userName!
-                                        .isNotEmpty)
+                                        result!.usersDetails != null &&
+                                        result!.usersDetails!.userName !=
+                                            null &&
+                                        result!
+                                            .usersDetails!.userName!.isNotEmpty)
                                     ? result?.usersDetails?.userName ?? ''
                                     : 'Unnamed',
                                 style: TextStyle(
@@ -453,14 +488,11 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                   fontSize: 16,
                                 ),
                               ),
-                              subtitle:
-                              Text(
+                              subtitle: Text(
                                 (result != null &&
-                                    result!.usersDetails != null &&
-                                    result!.usersDetails!.email !=
-                                        null &&
-                                    result!.usersDetails!.email!
-                                        .isNotEmpty)
+                                        result!.usersDetails != null &&
+                                        result!.usersDetails!.email != null &&
+                                        result!.usersDetails!.email!.isNotEmpty)
                                     ? result?.usersDetails?.email ?? ''
                                     : 'Unnamed',
                                 style: TextStyle(
@@ -469,11 +501,10 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                     fontSize: 14),
                               ),
                             ),
-
                           ],
                         ),
                       ),
-                      SizedBox(height: 30,)
+                      SizedBox(height: 30)
                     ],
                   ),
       ),
@@ -483,45 +514,47 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
   String getTextMethod({required int index}) {
     switch (index) {
       case 0:
-        return result?.vehicleAdsDetailGovernate??'';
+        return result?.vehicleAdsDetailGovernate ?? '';
       case 1:
-        return result?.vehicleAdsDetailYear??'';
+        return result?.vehicleAdsDetailYear ?? '';
       case 2:
-        return result?.vehicleAdsDetailCondition??'';
+        return result?.vehicleAdsDetailCondition ?? '';
       case 3:
-        return result?.vehicleAdsDetailOrigin??'';
+        return result?.vehicleAdsDetailOrigin ?? '';
       case 4:
-        return result?.vehicleAdsDetailTransmission??'';
+        return result?.vehicleAdsDetailTransmission ?? '';
       case 5:
-        return result?.vehicleAdsDetailExteriorColor??'';
+        return result?.vehicleAdsDetailExteriorColor ?? '';
       case 6:
-        return result?.vehicleAdsDetailDoors??'';
+        return result?.vehicleAdsDetailDoors ?? '';
       case 7:
-        return result?.vehicleAdsDetailSeats??'4';
+        return result?.vehicleAdsDetailSeats ?? '4';
       case 8:
-        return result?.vehicleAdsDetailInteriorColor??'';
+        return result?.vehicleAdsDetailInteriorColor ?? '';
       case 9:
-        return result?.vehicleAdsDetailEngineSize??'';
+        return result?.vehicleAdsDetailEngineSize ?? '';
       case 10:
-        return result?.vehicleAdsDetailCylinders??'';
+        return result?.vehicleAdsDetailCylinders ?? '';
       case 11:
-        return result?.vehicleAdsDetailFuel??'';
+        return result?.vehicleAdsDetailFuel ?? '';
       case 12:
-        return result?.vehicleAdsDetailDriveTrain??'';
+        return result?.vehicleAdsDetailDriveTrain ?? '';
       case 13:
-        return result?.vehicleAdsDetailPlate??'';
+        return result?.vehicleAdsDetailPlate ?? '';
       case 14:
-        return result?.vehicleAdsDetailState??'';
+        return result?.vehicleAdsDetailState ?? '';
       case 15:
-        return result?.vehicleAdsAdditionalDetailDistanceTravelled??'';
+        return result?.vehicleAdsAdditionalDetailDistanceTravelled ?? '';
       case 16:
-        return result?.vehicleAdsAdditionalDetailDistanceTravelled??'';
+        return result?.vehicleAdsAdditionalDetailDistanceTravelled ?? '';
       case 17:
-        return result?.vehicleAdsAdditionalDetailPrice??'';
+        return result?.vehicleAdsAdditionalDetailPrice ?? '';
       case 18:
-        return result?.vehicleAdsDetailPlate??'';
+        return result?.vehicleAdsDetailPlate ?? '';
       case 19:
-        return (DateFormat('yyyy-MM-dd').format(DateTime.parse(result?.adsCreatedAt??""))).toString();
+        return (DateFormat('yyyy-MM-dd')
+                .format(DateTime.parse(result?.adsCreatedAt ?? "")))
+            .toString();
       default:
         return 'test';
     }

@@ -1,4 +1,5 @@
 class BannerModel {
+
   List<BannerResult> result;
   String message;
   String status;

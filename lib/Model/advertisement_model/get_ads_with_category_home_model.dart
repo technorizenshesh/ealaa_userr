@@ -59,7 +59,7 @@ class PostListDetails {
   String? adsDetailsId;
   String? adsCreatedAt;
   String? adsUpdatedAt;
-  Null? adsDeletedAt;
+  String? adsDeletedAt;
   String? adsAdminStatus;
   String? vehicleAdsDetailId;
   String? vehicleAdsDetailUserId;
@@ -103,10 +103,10 @@ class PostListDetails {
   String? vehiclePartArabicTitle;
   String? vehiclePartPhone;
   String? vehiclePartDescription;
-  Null? vehiclePartAdsPostId;
-  Null? vehicleGovernorateId;
-  Null? vehicleStateId;
-  Null? vehicleCityId;
+  String? vehiclePartAdsPostId;
+  String? vehicleGovernorateId;
+  String? vehicleStateId;
+  String? vehicleCityId;
   String? vehicleNumberId;
   String? vehicleNumberLetterId;
   String? vehicleNumberPlateTypeId;
@@ -151,6 +151,7 @@ class PostListDetails {
   String? electronicsAdsCity;
   String? electronicsAdsDescription;
   String? electronicsAdsPostId;
+  String? electronicsAdsPrice;
   String? electronicsAdsImage;
   String? electronicsAdsUserId;
   String? phoneNumberAdsId;
@@ -180,6 +181,29 @@ class PostListDetails {
   String? animalsAdsPhone;
   String? animalsAdsDescription;
   UsersDetails?  usersDetails;
+  String? partName;
+  String? subPartName;
+  String? makername;
+  String? modelname;
+  String? modelTrimName;
+  String? yearName;
+  String? engineValue;
+  String? categoryName;
+  String? subCategoryName;
+  String? typeName;
+  String? ageName;
+  String? genderName;
+  String? breedName;
+  String? brandName;
+  String? storageName;
+  String? conditionName;
+  String? warrantyName;
+  String? operatorsName;
+  String? letterNameEnglish;
+  String? plateTypeName;
+  String? uploadVehiclesNumbers;
+
+
   
 
   PostListDetails(
@@ -282,6 +306,7 @@ class PostListDetails {
         this.electronicsAdsCity,
         this.electronicsAdsDescription,
         this.electronicsAdsPostId,
+        this.electronicsAdsPrice,
         this.electronicsAdsImage,
         this.electronicsAdsUserId,
         this.phoneNumberAdsId,
@@ -311,6 +336,27 @@ class PostListDetails {
         this.animalsAdsPhone,
         this.animalsAdsDescription,
         this.usersDetails,
+        this.partName,
+        this.subPartName,
+        this.makername,
+        this.modelname,
+        this.modelTrimName,
+        this.yearName,
+        this.engineValue,
+        this.categoryName,
+        this.subCategoryName,
+        this.typeName,
+        this.ageName,
+        this.genderName,
+        this.breedName,
+        this.brandName,
+        this.storageName,
+        this.conditionName,
+        this.warrantyName,
+        this.operatorsName,
+        this.letterNameEnglish,
+        this.plateTypeName,
+        this.uploadVehiclesNumbers,
       });
 
   PostListDetails.fromJson(Map<String, dynamic> json) {
@@ -421,6 +467,7 @@ class PostListDetails {
     electronicsAdsCity = json['electronics_ads_city'];
     electronicsAdsDescription = json['electronics_ads_description'];
     electronicsAdsPostId = json['electronics_ads_post_id'];
+    electronicsAdsPrice = json['electronics_ads_price'];
     electronicsAdsImage = json['electronics_ads_image'];
     electronicsAdsUserId = json['electronics_ads_user_id'];
     phoneNumberAdsId = json['phone_number_ads_id'];
@@ -452,6 +499,27 @@ class PostListDetails {
     usersDetails = json['users_details'] != null && json['users_details'].isNotEmpty
         ? UsersDetails.fromJson(json['users_details'])
         : null;
+    partName = json['part_name'];
+    subPartName = json['sub_part_name'];
+    makername = json['makername'];
+    modelname = json['modelname'];
+    modelTrimName = json['model_trim_name'];
+    yearName = json['year_name'];
+    engineValue = json['engine_value'];
+    categoryName = json['category_name'];
+    subCategoryName = json['sub_category_name'];
+    typeName = json['type_name'];
+    ageName = json['age_name'];
+    genderName = json['gender_name'];
+    breedName = json['breed_name'];
+    brandName = json['brand_name'];
+    storageName = json['storage_name'];
+    conditionName = json['condition_name'];
+    warrantyName = json['warranty_name'];
+    operatorsName = json['operators_name'];
+    letterNameEnglish = json['letter_name_english'];
+    plateTypeName = json['plate_type_name'];
+    uploadVehiclesNumbers = json['upload_vehicles_numbers'];
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
@@ -8,13 +9,16 @@ import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/webService.dart';
+import '../ad_chat_room.dart';
+import '../ad_my_ads_post.dart';
 
 class RealEstateDetailScreen extends StatefulWidget {
   String ads_post;
   String ads_post_id;
+  String user_id_value;
 
   RealEstateDetailScreen(
-      {super.key, required this.ads_post, required this.ads_post_id});
+      {super.key, required this.ads_post, required this.ads_post_id,this.user_id_value = ''});
 
   @override
   State<RealEstateDetailScreen> createState() => _RealEstateDetailScreenState();
@@ -22,10 +26,10 @@ class RealEstateDetailScreen extends StatefulWidget {
 
 class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
   List<Map<String, String>> detailElements = [
-    {'title': 'Body', 'Image': 'assets/icons_for_car/ic_body.png'},
-    {'title': 'Governorate', 'Image': 'assets/icons_for_car/ic_model_year.png'},
-    {'title': 'State', 'Image': 'assets/icons_for_car/ic_location.png'},
-    {'title': 'City', 'Image': 'assets/icons_for_car/ic_location.png'},
+    {'title': 'Body', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'Governorate', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'State', 'Image': 'assets/icons_for_car/ic_ad.png'},
+    {'title': 'City', 'Image': 'assets/icons_for_car/ic_ad.png'},
     {
       'title': 'Land Area',
       'Image': 'assets/icons_for_car/ic_ad.png'
@@ -100,114 +104,123 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
           ),
         ],
       ),
-      bottomNavigationBar:
-      Material(
-        elevation: 30,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () async {
-                    final Uri url = Uri(scheme: 'tel', path: "123456");
-                    print('Attempting to launch $url');
-                    if (await canLaunchUrl(url)) {
-                      print('Launching $url');
-                      await launchUrl(url);
-                    } else {
-                      print('Could not launch $url');
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.grey)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.call,
-                            color: Colors.orange,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Call',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    // print('$smsText $fullName $image');
-                    // if (smsText.isNotEmpty ||
-                    //     fullName.isNotEmpty ||
-                    //     image.isNotEmpty) {
-                    //   push(
-                    //       context: context,
-                    //       screen: AdChatRoom(
-                    //         id: smsText,
-                    //         name: fullName,
-                    //         image: image,
-                    //       ));
-                    // }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.grey)),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            color: Colors.orange,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Chat',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+       bottomNavigationBar: widget.user_id_value == userId ? null:Material(
+         elevation: 30,
+         child: Padding(
+           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+           child: Padding(
+             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.spaceAround,
+               children: [
+                 Expanded(
+                   child: GestureDetector(
+                     onTap: () async {
+                       final Uri url = Uri(
+                           scheme: 'tel', path: result?.usersDetails?.mobile);
+                       print('Attempting to launch $url');
+                       if (await canLaunchUrl(url)) {
+                         print('Launching $url');
+                         await launchUrl(url);
+                       } else {
+                         print('Could not launch $url');
+                         throw 'Could not launch $url';
+                       }
+                     },
+                     child: Container(
+                       decoration: BoxDecoration(
+                           color: Colors.white.withOpacity(0.8),
+                           borderRadius: BorderRadius.circular(6),
+                           border: Border.all(color: Colors.grey)),
+                       child: const Padding(
+                         padding: EdgeInsets.all(8.0),
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           mainAxisSize: MainAxisSize.min,
+                           children: [
+                             Icon(
+                               Icons.call,
+                               color: Colors.orange,
+                               size: 18,
+                             ),
+                             SizedBox(
+                               width: 8,
+                             ),
+                             Text(
+                               'Call',
+                               style: TextStyle(
+                                   fontSize: 15,
+                                   fontWeight: FontWeight.bold,
+                                   color: Colors.orange),
+                             ),
+                           ],
+                         ),
+                       ),
+                     ),
+                   ),
+                 ),
+                 SizedBox(
+                   width: 10,
+                 ),
+                 Expanded(
+                   child: GestureDetector(
+                     onTap: () {
+                       if (result != null &&
+                           result?.usersDetails?.id != null &&
+                           result!.usersDetails!.id!.isNotEmpty ||
+                           result != null &&
+                               result?.usersDetails?.userName != null &&
+                               result!.usersDetails!.userName!.isNotEmpty ||
+                           result != null &&
+                               result?.usersDetails?.image != null &&
+                               result!.usersDetails!.image!.isNotEmpty) {
+                         push(
+                           context: context,
+                           screen: AdChatRoom(
+                             id: result!.usersDetails!.id!,
+                             name: result!.usersDetails!.userName!,
+                             image: result!.usersDetails!.image!,
+                           ),
+                         );
+                       }
+                     },
+                     child: Container(
+                       decoration: BoxDecoration(
+                           color: Colors.white.withOpacity(0.8),
+                           borderRadius: BorderRadius.circular(6),
+                           border: Border.all(color: Colors.grey)),
+                       child: const Padding(
+                         padding: EdgeInsets.all(8.0),
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           mainAxisSize: MainAxisSize.min,
+                           children: [
+                             Icon(
+                               Icons.chat_bubble_outline,
+                               color: Colors.orange,
+                               size: 18,
+                             ),
+                             SizedBox(
+                               width: 8,
+                             ),
+                             Text(
+                               'Chat',
+                               style: TextStyle(
+                                   fontSize: 15,
+                                   fontWeight: FontWeight.bold,
+                                   color: Colors.orange),
+                             ),
+                           ],
+                         ),
+                       ),
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+           ),
+         ),
+       ),
       body: SingleChildScrollView(
         child: showProgressBar
             ? Center(
@@ -224,7 +237,7 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
               width: width,
               child: CachedNetworkImage(
                 imageUrl: result?.realStateAdsUploadImage ?? '',
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
                 height: 300,
                 placeholder: (context, url) => Center(
                   child: Shimmer.fromColors(
@@ -386,7 +399,20 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
 
             SizedBox(
               height: 10,
-            ),
+            ),widget.user_id_value == userId ?
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: RoundButton(
+                height: 45,
+                borderRadius: 10,
+                title: 'Update your post',
+                onTap: () {
+
+                },
+                fontsize: 18,
+                fontweight: FontWeight.w500,
+              ),
+            ):
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Column(
@@ -402,6 +428,16 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
                     height: 10,
                   ),
                   ListTile(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                          result!.usersDetails != null &&
+                          result!.usersDetails!.id !=
+                              null &&
+                          result!.usersDetails!.id!
+                              .isNotEmpty)
+                          ?result!.usersDetails!.id!
+                          :null,),));
+                    },
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: SizedBox(

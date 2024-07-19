@@ -1,13 +1,12 @@
+import 'dart:io';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import 'View/Utils/notification_services.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-
     'high_importance_channel', // id
     'High Importance Notifications', // title
     // 'This channel is used for important notifications.', // description
@@ -42,20 +41,23 @@ void onSelectNotification(NotificationResponse? notificationResponse) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  NS().initNotification();
-  FirebaseMessaging.onBackgroundMessage(_backgroundNotificationHandler);
+  if(Platform.isAndroid)
+    {
+      await Firebase.initializeApp();
+      NS().initNotification();
+      FirebaseMessaging.onBackgroundMessage(_backgroundNotificationHandler);
 
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+          ?.createNotificationChannel(channel);
 
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+      await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
 
   runApp(const MyApp());
 }
@@ -84,3 +86,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
