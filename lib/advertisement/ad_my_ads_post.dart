@@ -20,7 +20,8 @@ import '../View/Utils/webService.dart';
 class AdMyAdsPosts extends StatefulWidget {
   String? userIdValue;
   bool FavValue;
-  AdMyAdsPosts({super.key,this.userIdValue,this.FavValue = false});
+
+  AdMyAdsPosts({super.key, this.userIdValue, this.FavValue = false});
 
   @override
   State<AdMyAdsPosts> createState() => _AdMyAdsPostsState();
@@ -35,7 +36,8 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
   getAdvertisementCategoryApi() async {
     setState(() {});
     showProgressBarForCategory = true;
-    var res = await Webservices.getMap("$baseUrl$get_advertisement_category?post_fav=${widget.FavValue ?"yes":"no"}");
+    var res = await Webservices.getMap("$baseUrl$get_advertisement_category");
+    //?post_fav=${widget.FavValue ? "yes" : "no"}
     showProgressBarForCategory = false;
     setState(() {});
     final resdata = GetAdsWithCategoryHomeModel.fromJson(res);
@@ -57,7 +59,15 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
     setState(() {});
     final resdata = GetAdsWithCategorySubCategoryModel.fromJson(res);
     if (resdata.result != null && resdata.status == '1') {
-      getAdsWithCategorySubCategoryResult = resdata.result!;
+      if (widget.FavValue) {
+        resdata.result!.forEach((element) {
+          if (element.postFav == 'yes') {
+            getAdsWithCategorySubCategoryResult.add(element);
+          }
+        });
+      } else {
+        getAdsWithCategorySubCategoryResult = resdata.result!;
+      }
       setState(() {});
     } else {
       showSnackbar(context, resdata.message ?? '');
@@ -69,10 +79,9 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
     if (getAdsWithCategoryHomeResult == [] ||
         getAdsWithCategoryHomeResult.isEmpty) {
       getAdvertisementCategoryApi();
-    } else {
-      getAdsMyPostApi(
-          adsPost: getAdsWithCategoryHomeResult[selectedIndex].type ?? '');
     }
+    getAdsMyPostApi(
+        adsPost: getAdsWithCategoryHomeResult[selectedIndex].type ?? '');
     super.initState();
   }
 
@@ -93,8 +102,8 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
           ),
         ),
         centerTitle: true,
-        title: const Text(
-          'My Ads', // Your badge count here
+        title: Text(
+          widget.FavValue ? 'My Favorites' : 'My Ads',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -105,7 +114,8 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
       body: Column(
         children: [
           if (!showProgressBarForCategory)
-            SizedBox(
+            Container(
+              color: Colors.grey.shade200,
               height: 60,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -124,20 +134,22 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
+                          color: selectedIndex == index
+                              ? Colors.white54
+                              : Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                              color: selectedIndex == index
-                                  ? Colors.orange
-                                  : Colors.black),
                         ),
                         child: Center(
-                            child: Text(
-                          getAdsWithCategoryHomeResult[index].name ?? '',
-                          style: TextStyle(
-                              color: selectedIndex == index
-                                  ? Colors.orange
-                                  : Colors.black),
-                        )),
+                          child: Text(
+                            getAdsWithCategoryHomeResult[index].name ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: selectedIndex == index
+                                    ? Colors.orange
+                                    : Colors.black),
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -151,29 +163,32 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
   }
 
   Widget showCurrentAds() {
-    return showProgressBar
-        ? CommonWidget.commonShimmer(
-            itemCount: 4,
-            shimmerWidget: Container(
-              height: 100,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: showProgressBar
+          ? CommonWidget.commonShimmer(
+              itemCount: 4,
+              shimmerWidget: Container(
+                height: 100,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                margin: const EdgeInsets.only(
+                    left: 20, right: 20, top: 5, bottom: 2),
+                clipBehavior: Clip.hardEdge,
               ),
-              margin:
-                  const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 2),
-              clipBehavior: Clip.hardEdge,
-            ),
-          )
-        : getAdsWithCategorySubCategoryResult.isEmpty
-            ? Image.asset("assets/images/NoDataFound.png")
-            : ListView.builder(
-                itemCount: getAdsWithCategorySubCategoryResult.length,
-                itemBuilder: (context, index) {
-                  return listOfData(index: index);
-                },
-              );
+            )
+          : getAdsWithCategorySubCategoryResult.isEmpty
+              ? Image.asset("assets/images/NoDataFound.png")
+              : ListView.builder(
+                  itemCount: getAdsWithCategorySubCategoryResult.length,
+                  itemBuilder: (context, index) {
+                    return listOfData(index: index);
+                  },
+                ),
+    );
   }
 
   Widget listOfData({required int index}) {
@@ -186,11 +201,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return VehicleDetailScreen(
-                  user_id_value: userId,
+                  user_id_value: widget.FavValue ? "" : userId,
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -239,11 +254,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return VehiclePartsAndAccessoriesDetailScreen(
-                  user_id_value: userId,
+                  user_id_value: widget.FavValue ? "" : userId,
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -263,8 +278,7 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             secondText:
                 getAdsWithCategorySubCategoryResult[index].cityName ?? '',
             thirdText:
-                getAdsWithCategorySubCategoryResult[index].modelTrimName ??
-                    '',
+                getAdsWithCategorySubCategoryResult[index].modelTrimName ?? '',
             callText: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
                     ?.mobile ??
@@ -292,11 +306,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return VehicleNumberDetailScreen(
-                  user_id_value: userId,
+                  user_id_value: widget.FavValue ? "" : userId,
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -345,11 +359,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return RealEstateDetailScreen(
-                  user_id_value: userId,
+                  user_id_value: widget.FavValue ? "" : userId,
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -397,11 +411,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return ElectronicsDetailScreen(
-                  user_id_value: userId,
+                  user_id_value: widget.FavValue ? "" : userId,
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -450,11 +464,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return PhoneNumberDetailScreen(
-                  user_id_value: userId,
+                  user_id_value: widget.FavValue ? "" : userId,
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -463,6 +477,10 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             imageUrl: getAdsWithCategorySubCategoryResult[index]
                     .phoneNumberAdsImage ??
                 '',
+            imageUrlValue: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                        .phoneNumberAdsPhone ??
+                    ''),
             name: getAdsWithCategorySubCategoryResult[index]
                     .phoneNumberAdsDescription ??
                 '',
@@ -502,11 +520,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return AnimalsAndSuppliesDetailScreen(
-                  user_id_value: userId,
+                  user_id_value: widget.FavValue ? "" : userId,
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -554,6 +572,7 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
 
   Widget dataContainer(
       {required String imageUrl,
+      TextEditingController? imageUrlValue,
       required String name,
       required String price,
       required String firstText,
@@ -566,29 +585,83 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
       required String smsText,
       required String userName,
       required String image}) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.38,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Card(
-        color: Colors.white,
-        elevation: 5,
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            border: Border.all(color: Colors.grey.shade100),
+            color: Colors.white),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: Colors.white,
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(10)),
-                      child: CachedNetworkImage(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * .2,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.grey.shade100),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: imageUrlValue != null &&
+                        imageUrlValue.text.trim().isNotEmpty
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 36),
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              readOnly: true,
+                              maxLines: 1,
+                              maxLength: 8,
+                              autofocus: true,
+                              controller: imageUrlValue,
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 8),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.zero,
+                                counterText: '',
+                                fillColor: Color(0xff067445),
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                                disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 20, right: 45),
+                            child: Image.asset(
+                              'assets/images/ic_number_plate_image_one.png',
+                              height: 40,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      )
+                    : CachedNetworkImage(
                         imageUrl: imageUrl,
                         fit: BoxFit.contain,
                         height: MediaQuery.of(context).size.height * .2,
@@ -606,155 +679,155 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                         ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
-                    ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(0.7),
+                        fontWeight: FontWeight.bold),
                   ),
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${price} OMR",
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          try {
+                            Uri uri = Uri.parse('qrImage');
+                            Share.shareUri(uri);
+                          } catch (e) {
+                            print('Share Error: $e');
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.1))),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.file_upload_outlined,
+                                color: Colors.black.withOpacity(0.5),
+                                size: 18,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                "Share",
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.5),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  /* SizedBox(height: 10),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Row(
                       children: [
-                        Text(
-                          name,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black.withOpacity(0.7),
-                              fontWeight: FontWeight.bold),
+                        Image.asset(
+                          firstIcon,
+                          color: Colors.black.withOpacity(0.4),
+                          height: 14,
+                          width: 14,
                         ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "${price} OMR",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                try {
-                                  Uri uri = Uri.parse('qrImage');
-                                  Share.shareUri(uri);
-                                } catch (e) {
-                                  print('Share Error: $e');
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                        color: Colors.black.withOpacity(0.1))),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 2),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.file_upload_outlined,
-                                      color: Colors.black.withOpacity(0.5),
-                                      size: 18,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Text(
-                                      "Share",
-                                      style: TextStyle(
-                                          color: Colors.black.withOpacity(0.5),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 34.0),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                firstIcon,
-                                color: Colors.black.withOpacity(0.4),
-                                height: 18,
-                                width: 18,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Divider(),
-                                ),
-                              ),
-                              Image.asset(
-                                secondIcon,
-                                color: Colors.black.withOpacity(0.4),
-                                height: 18,
-                                width: 18,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Divider(),
-                                ),
-                              ),
-                              Image.asset(
-                                thirdIcon,
-                                color: Colors.black.withOpacity(0.4),
-                                height: 18,
-                                width: 18,
-                              ),
-                            ],
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Divider(),
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                firstText,
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.5),
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Expanded(
-                                  child: Divider(
-                                color: Colors.transparent,
-                              )),
-                              Text(
-                                secondText,
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.5),
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Expanded(
-                                  child: Divider(
-                                color: Colors.transparent,
-                              )),
-                              Text(
-                                thirdText,
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.5),
-                                    fontWeight: FontWeight.w500),
-                              )
-                            ],
+                        Image.asset(
+                          secondIcon,
+                          color: Colors.black.withOpacity(0.4),
+                          height: 14,
+                          width: 14,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Divider(),
                           ),
+                        ),
+                        Image.asset(
+                          thirdIcon,
+                          color: Colors.black.withOpacity(0.4),
+                          height: 14,
+                          width: 14,
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(height: 4),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            firstText,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            secondText,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            thirdText,
+                            textAlign: TextAlign.end,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),*/
                 ],
               ),
             ),
-            /*Container(height: 0.4,color: Colors.grey,),
+            /*Divider(color: Colors.grey.shade100,height: 0,),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -775,7 +848,8 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                         decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.8),
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.grey)),
+                            border:
+                            Border.all(color: Colors.orange, width: .2)),
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Row(
@@ -803,9 +877,7 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
@@ -825,9 +897,9 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.8),
-
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.grey)),
+                            border:
+                            Border.all(color: Colors.orange, width: .2)),
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Row(

@@ -5,8 +5,6 @@ import 'package:ealaa_userr/Model/advertisement_model/VehiclesMakeModel.dart';
 import 'package:ealaa_userr/advertisement/ad_bottom_bar.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -62,7 +60,7 @@ class _VehiclesMakeState extends State<VehiclesMake> {
   List<VehiclesMakeResult> makeList = [];
   List<Model> modelList = [];
   List<ModelTrim> trimList = [];
-  List<YearModel> yearList = [];
+  List<YearModelForIdName> yearList = [];
   List<IdNameModel> conditionList = [];
   List<IdNameModel> engineList = [];
   List<IdNameModel> doorList = [];
@@ -81,7 +79,7 @@ class _VehiclesMakeState extends State<VehiclesMake> {
   VehiclesMakeResult? selectedMake;
   Model? selectedModel;
   ModelTrim? selectedTrim;
-  YearModel? selectedYear;
+  YearModelForIdName? selectedYear;
   IdNameModel? selectedCondition;
   IdNameModel? selectedEngine;
   IdNameModel? selectedDoor;
@@ -184,7 +182,7 @@ class _VehiclesMakeState extends State<VehiclesMake> {
       'vehicle_ads_additional_detail_phone': phone.text,
       'vehicle_ads_additional_detail_description': description.text,
     };
-    Map<String, dynamic> files = {'vehicle_ads_upload_image': productPicture};
+    Map<String, dynamic> files = {'vehicle_ads_upload_image': productPicture ?? ''};
     print("request ------------------$data   $files");
     loader = true;
     setState(() {});
@@ -225,10 +223,9 @@ class _VehiclesMakeState extends State<VehiclesMake> {
           onTap: () {
             if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);
               setState(() {});
               _scrollToNextStep();
-
             } else {
               Navigator.pop(context);
             }
@@ -270,20 +267,6 @@ class _VehiclesMakeState extends State<VehiclesMake> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                /* _currentStepIndex <= index
-                                    ? SvgPicture.asset(
-                                        "assets/images/card_grey.svg",
-                                        height: 40,
-                                      )
-                                    : _currentStepIndex == index + 1
-                                        ? SvgPicture.asset(
-                                            'assets/images/card_orange.svg',
-                                            height: 45,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/card_green.svg',
-                                            height: 45,
-                                          ),*/
                                 _currentStepIndex <= index
                                     ? Image.asset(
                                         'assets/icons/ic_card.png',
@@ -532,40 +515,43 @@ class _VehiclesMakeState extends State<VehiclesMake> {
   Widget Modal() {
     return ListView.builder(
         itemCount: modelList.length,
-        itemBuilder: (context, index) => Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                    color: selectedModel == modelList[index]
-                        ? MyColors.primaryColor
-                        : Colors.grey.withOpacity(0.5)),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: ListTile(
-              leading: SquareRadio(
-                activeColor: MyColors.primaryColor,
-                value: modelList[index],
-                groupValue: selectedModel,
-                onChanged: (value) {
+        itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                      color: selectedModel == modelList[index]
+                          ? MyColors.primaryColor
+                          : Colors.grey.withOpacity(0.5)),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                leading: SquareRadio(
+                  activeColor: MyColors.primaryColor,
+                  value: modelList[index],
+                  groupValue: selectedModel,
+                  onChanged: (value) {
+                    setState(() {
+                      _currentStepIndex = 3;
+                      selectedModel = value;
+                      trimList = modelList[index].modelTrim ?? [];
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+                      _scrollToNextStep();
+                    });
+                  },
+                ),
+                title: Text('${modelList[index].name}'),
+                onTap: () {
                   setState(() {
                     _currentStepIndex = 3;
-                    selectedModel = value;
+                    selectedModel = modelList[index];
                     trimList = modelList[index].modelTrim ?? [];
                     title = _getTitleForIndex(_currentStepIndex - 1);
                     _scrollToNextStep();
                   });
                 },
-              ),
-              title: Text('${modelList[index].name}'),
-              onTap: () {
-                setState(() {
-                  _currentStepIndex = 3;
-                  selectedModel = modelList[index];
-                  trimList = modelList[index].modelTrim ?? [];
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  _scrollToNextStep();
-                });
-              },
-            )));
+              )),
+        ));
   }
 
   Widget Trim() {

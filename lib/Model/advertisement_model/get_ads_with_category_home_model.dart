@@ -61,6 +61,7 @@ class PostListDetails {
   String? adsUpdatedAt;
   String? adsDeletedAt;
   String? adsAdminStatus;
+  String? postFav;
   String? vehicleAdsDetailId;
   String? vehicleAdsDetailUserId;
   String? vehicleAdsDetailMakerId;
@@ -143,6 +144,8 @@ class PostListDetails {
   String? cityName;
   String? electronicsAdsId;
   String? electronicsAdsBrand;
+  String? electronicsAdsBrandModelId;
+  String? electronicsAdsBrandModelName;
   String? electronicsAdsStorage;
   String? electronicsAdsCondition;
   String? electronicsAdsWarranty;
@@ -203,9 +206,6 @@ class PostListDetails {
   String? plateTypeName;
   String? uploadVehiclesNumbers;
 
-
-  
-
   PostListDetails(
       {this.adsId,
         this.adsType,
@@ -216,6 +216,7 @@ class PostListDetails {
         this.adsUpdatedAt,
         this.adsDeletedAt,
         this.adsAdminStatus,
+        this.postFav,
         this.vehicleAdsDetailId,
         this.vehicleAdsDetailUserId,
         this.vehicleAdsDetailMakerId,
@@ -298,6 +299,8 @@ class PostListDetails {
         this.cityName,
         this.electronicsAdsId,
         this.electronicsAdsBrand,
+        this.electronicsAdsBrandModelId,
+        this.electronicsAdsBrandModelName,
         this.electronicsAdsStorage,
         this.electronicsAdsCondition,
         this.electronicsAdsWarranty,
@@ -369,6 +372,7 @@ class PostListDetails {
     adsUpdatedAt = json['ads_updated_at'];
     adsDeletedAt = json['ads_deleted_at'];
     adsAdminStatus = json['ads_admin_status'];
+    postFav = json['post_fav'];
     vehicleAdsDetailId = json['vehicle_ads_detail_id'];
     vehicleAdsDetailUserId = json['vehicle_ads_detail_user_id'];
     vehicleAdsDetailMakerId = json['vehicle_ads_detail_maker_id'];
@@ -459,6 +463,8 @@ class PostListDetails {
     realStateAdsDetailAdsPostId = json['real_state_ads_detail_ads_post_id'];
     electronicsAdsId = json['electronics_ads_id'];
     electronicsAdsBrand = json['electronics_ads_brand'];
+    electronicsAdsBrandModelId = json['electronics_ads_brand_model_id'];
+    electronicsAdsBrandModelName = json['electronics_ads_brand_model_name'];
     electronicsAdsStorage = json['electronics_ads_storage'];
     electronicsAdsCondition = json['electronics_ads_condition'];
     electronicsAdsWarranty = json['electronics_ads_warranty'];

@@ -1,25 +1,33 @@
 import 'dart:io';
 
+import 'package:ealaa_userr/Model/advertisement_model/get_ads_with_category_home_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Model/GeneralModel.dart';
 import '../../Model/advertisement_model/AnimalTypeModel.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/GlobalData.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
+import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../ad_bottom_bar.dart';
 
 class UpdateAnimalsAd extends StatefulWidget {
+  final String adType;
   final String advertisement_category_id;
   final String advertisement_sub_category_id;
+  final String ads_post_id;
+
   const UpdateAnimalsAd({super.key,
+    required this.adType,
     required this.advertisement_category_id,
-    required this.advertisement_sub_category_id});
+    required this.advertisement_sub_category_id,
+    required this.ads_post_id,});
 
   @override
   State<UpdateAnimalsAd> createState() => _UpdateAnimalsAdState();
@@ -34,7 +42,7 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
     'Gender',
     'Age',
     'Breed Origin',
-    'Governate',
+    'Governorate',
     'State',
     'City',
     'Upload Photos',
@@ -67,6 +75,8 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
 
+  PostListDetails? result;
+
   void _scrollToNextStep() {
     if (_currentStepIndex < topList.length) {
       double offset =
@@ -87,17 +97,107 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
       animalTypeResult = resdata.result!;
-
       typeList = animalTypeResult!.type ?? [];
       genderList = animalTypeResult!.gender ?? [];
       ageList = animalTypeResult!.age??[];
       breedList = animalTypeResult!.breedOrigin??[];
       governateList = animalTypeResult!.governorate??[];
       setState(() {});
+      getAdsPostDetails();
     } else {
       showSnackbar(context, resdata.message ?? '');
     }
   }
+
+  getAdsPostDetails() async {
+    var res = await Webservices.getMap(
+        "$baseUrl$get_ads_post_details?ads_post=${widget.adType}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
+    showProgressBar = false;
+    GetAdsPostDetailsModel getAdsPostDetailsModel =
+    GetAdsPostDetailsModel.fromJson(res);
+    setState(() {});
+    if (getAdsPostDetailsModel.result != null) {
+      result = getAdsPostDetailsModel.result!;
+      setState(() {});
+      price.text = result?.animalsAdsPrice ?? '';
+      phone.text = result?.animalsAdsPhone ?? '';
+      titlee.text = result?.animalsAdsDistanceTitle ?? '';
+      description.text = result?.animalsAdsDescription ?? '';
+
+      if (typeList.isNotEmpty) {
+        typeList.forEach((element) {
+          ///TODO DONE
+          if (element.typeId == result?.animalsAdsType) {
+            selectedType = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (genderList.isNotEmpty) {
+        genderList.forEach((element) {
+          ///TODO DONE
+          if (element.id == result?.animalsAdsGender) {
+            selectedGender = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (ageList.isNotEmpty) {
+        ageList.forEach((element) {
+          ///TODO DONE
+          if (element.ageId == result?.animalsAdsAge) {
+            selectedAge = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (breedList.isNotEmpty) {
+        breedList.forEach((element) {
+          ///TODO DONE
+          if (element.breedId == result?.animalsAdsBreedOrigin) {
+            selectedBreed = element;
+            setState(() {});
+          }
+        });
+      }
+
+
+      if (governateList.isNotEmpty) {
+        governateList.forEach((element) {
+          ///TODO DONE
+          if (element.governorateId == result?.animalsAdsGovernorate) {
+            selectedGovernrate = element;
+            setState(() {});
+            selectedGovernrate?.governorateState?.forEach((elementStateList) {
+              ///TODO DONE
+              if (elementStateList.stateId ==
+                  result?.animalsAdsState) {
+                selectedState = elementStateList;
+                setState(() {});
+                selectedState?.stateCity?.forEach((elementCityList) {
+                  ///TODO DONE
+                  if (elementCityList.cityId ==
+                      result?.animalsAdsCity) {
+                    selectedCity  = elementCityList;
+                    setState(() {});
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+      setState(() {});
+    } else {
+      showSnackbar(context, 'Something went wrong!');
+      showProgressBar = false;
+      setState(() {});
+    }
+  }
+
 
   String _getTitleForIndex(int index) {
     if (index == 1 || index < topList.length) {
@@ -109,31 +209,63 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
 
 
 
-  PostAnimalAd() async {
-    Map<String, dynamic> data = {
-      'category_id': widget.advertisement_category_id,
-      'sub_category_id': widget.advertisement_sub_category_id,
-      'animals_ads_user_id': userId,
-      'animals_ads_type': selectedType?.typeId ?? "",
-      'animals_ads_gender': selectedGender?.id ?? "",
-      'animals_ads_age': selectedAge?.ageId?? "",
-      'animals_ads_breed_origin': selectedBreed?.breedId??"",
-      'animals_ads_governorate': selectedGovernrate?.governorateId??"",
-      'animals_ads_state': selectedState?.stateId??"",
-      'animals_ads_city': selectedCity?.cityId??"",
-      'animals_ads_price': price.text.toString(),
-      'animals_ads_distance_title': titlee.text.toString(),
-      'animals_ads_phone':phone.text.toString(),
-      'animals_ads_description':description.text.toString()
-    };
-    Map<String, dynamic> files = {'animals_ads_image': productPicture};
-    print("request ------------------$data   $files");
-    loader = true;
-    setState(() {});
-    var res = await Webservices.postDataWithImageFunction(
-        body: data, files: files, context: context, apiUrl: upload_animals_sell);
-    loader = false;
-    setState(() {});
+  editAnimals() async {
+    Map<String, dynamic> data;
+    var res;
+    if(productPicture!=null){
+      data = {
+        'animals_ads_id': result?.animalsAdsId,
+        'animals_ads_type': selectedType?.typeId ?? "",
+        'animals_ads_gender': selectedGender?.id ?? "",
+        'animals_ads_age': selectedAge?.ageId?? "",
+        'animals_ads_breed_origin': selectedBreed?.breedId??"",
+        'animals_ads_governorate': selectedGovernrate?.governorateId??"",
+        'animals_ads_state': selectedState?.stateId??"",
+        'animals_ads_city': selectedCity?.cityId??"",
+        'animals_ads_price': price.text.toString(),
+        'animals_ads_distance_title': titlee.text.toString(),
+        'animals_ads_phone':phone.text.toString(),
+        'animals_ads_description':description.text.toString()
+      };
+      Map<String, dynamic> files = {'animals_ads_image': productPicture};
+      print("request ------------------$data   $files");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postDataWithImageFunction(
+          body: data,
+          files: files,
+          context: context,
+          apiUrl: edit_animals);
+      loader = false;
+      setState(() {});
+    }
+    else{
+      data = {
+        'animals_ads_image': "",
+        'animals_ads_id': result?.animalsAdsId,
+        'animals_ads_type': selectedType?.typeId ?? "",
+        'animals_ads_gender': selectedGender?.id ?? "",
+        'animals_ads_age': selectedAge?.ageId?? "",
+        'animals_ads_breed_origin': selectedBreed?.breedId??"",
+        'animals_ads_governorate': selectedGovernrate?.governorateId??"",
+        'animals_ads_state': selectedState?.stateId??"",
+        'animals_ads_city': selectedCity?.cityId??"",
+        'animals_ads_price': price.text.toString(),
+        'animals_ads_distance_title': titlee.text.toString(),
+        'animals_ads_phone':phone.text.toString(),
+        'animals_ads_description':description.text.toString()
+      };
+      print("request ------------------$data");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postData(
+          body: data,
+          context: context,
+          apiUrl:
+          edit_animals);
+      loader = false;
+      setState(() {});
+    }
     final resdata = GeneralModel.fromJson(res);
     if (res['status'] == "1") {
       showSnackbar(context, resdata.message!);
@@ -318,183 +450,292 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
         return TypeView();
     }
   }
-
   Widget TypeView() {
     return ListView.builder(
-        itemCount: typeList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: typeList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedType == typeList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: typeList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: typeList[index],
+              groupValue: selectedType,
+              onChanged: (value) {
+                _currentStepIndex = 2;
+                selectedType = typeList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${typeList[index].typeName}'),
-            groupValue: selectedType,
-            onChanged: (Type? value) {
+            onTap: () {
               _currentStepIndex = 2;
-              selectedType = value;
+              selectedType = typeList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget GenderView() {
     return ListView.builder(
-        itemCount: genderList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: genderList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGender == genderList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: genderList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: genderList[index],
+              groupValue: selectedGender,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedGender = genderList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${genderList[index].name}'),
-            groupValue: selectedGender,
-            onChanged: (Gender? value) {
+            onTap: () {
               _currentStepIndex = 3;
-              selectedGender = value;
+              selectedGender = genderList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget AgeView() {
     return ListView.builder(
-        itemCount: ageList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: ageList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedAge == ageList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: ageList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: ageList[index],
+              groupValue: selectedAge,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedAge = ageList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${ageList[index].ageName}'),
-            groupValue: selectedAge,
-            onFocusChange: (value) {
-              print("gdhjsgj...$value");
-            },
-            onChanged: (Age? value) {
+            onTap: () {
               _currentStepIndex = 4;
-              selectedAge = value;
+              selectedAge = ageList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget BreedView() {
     return ListView.builder(
-        itemCount: breedList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: breedList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedBreed == breedList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: breedList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: breedList[index],
+              groupValue: selectedBreed,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedBreed = breedList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${breedList[index].breedName}'),
-            groupValue: selectedBreed,
-            onChanged: (BreedOrigin? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedBreed = value;
+              selectedBreed = breedList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget GovernateView() {
     return ListView.builder(
-        itemCount: governateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: governateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGovernrate == governateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: governateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: governateList[index],
+              groupValue: selectedGovernrate,
+              onChanged: (value) {
+                _currentStepIndex = 6;
+                selectedGovernrate = governateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                stateList = governateList[index].governorateState ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${governateList[index].governorateName}'),
-            groupValue: selectedGovernrate,
-            onChanged: (Governorate? value) {
+            onTap: () {
               _currentStepIndex = 6;
-              selectedGovernrate = value;
+              selectedGovernrate = governateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              stateList = governateList[index].governorateState??[];
+              stateList = governateList[index].governorateState ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget StateView() {
     return ListView.builder(
-        itemCount: stateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: stateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedState == stateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: stateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: stateList[index],
+              groupValue: selectedState,
+              onChanged: (value) {
+                _currentStepIndex = 7;
+                selectedState = stateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                cityList = stateList[index].stateCity ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${stateList[index].stateName}'),
-            groupValue: selectedState,
-            onChanged: (GovernorateState? value) {
+            onTap: () {
               _currentStepIndex = 7;
-              selectedState = value;
+              selectedState = stateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              cityList = stateList[index].stateCity??[];
-
+              cityList = stateList[index].stateCity ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
+
   Widget CityView() {
     return ListView.builder(
-        itemCount: cityList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: cityList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCity == cityList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: cityList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: cityList[index],
+              groupValue: selectedCity,
+              onChanged: (value) {
+                _currentStepIndex = 8;
+                selectedCity = value;
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${cityList[index].cityName}'),
-            groupValue: selectedCity,
-            onChanged: (StateCity? value) {
+            onTap: () {
               _currentStepIndex = 8;
-              selectedCity = value;
+              selectedCity = cityList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
- }
+        ),
+      ),
+    );
+  }
 
   Widget UploadPhotos() {
-    return Column(
+    return ListView(
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -508,19 +749,22 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
                   _image_camera_dialog(context);
                 },
                 child: productPicture == null
-                    ? Center(child: uploadProductContainer())
+                    ? result?.animalsAdsImage != null &&
+                    result!.animalsAdsImage!.isNotEmpty
+                    ? Center(child: displayImageNetwork())
+                    : Center(child: uploadProductContainer())
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(
-          height: 50,
-        ),
+        SizedBox(height: 20),
         RoundButton(
           height: 45,
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null) {
+            if (productPicture != null ||
+                (result != null && result!.animalsAdsImage != null)) {
+              print(Uri.parse(result!.animalsAdsImage!).pathSegments.last);
               _currentStepIndex = 9;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -535,6 +779,7 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
       ],
     );
   }
+
 
   Widget AdditionalDetails() {
     return SingleChildScrollView(
@@ -628,8 +873,7 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else {
-                PostAnimalAd();
-
+                editAnimals();
               }
             },
           ),
@@ -735,6 +979,21 @@ class _UpdateAnimalsAdState extends State<UpdateAnimalsAd> {
             fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
+    } else {
+      return Text("No file is selected");
+    }
+  }
+
+  displayImageNetwork() {
+    if (result!.animalsAdsImage != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          result!.animalsAdsImage!,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ),
+      );
     } else {
       return Text("No file is selected");
     }

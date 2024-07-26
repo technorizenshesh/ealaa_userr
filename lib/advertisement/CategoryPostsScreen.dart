@@ -7,6 +7,9 @@ import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehiclePartsAndAccessoriesDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -81,7 +84,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: showProgressBar
             ? Center(
                 child: CircularProgressIndicator(
@@ -109,9 +112,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               builder: (context) {
                 return VehicleDetailScreen(
                   ads_post:
-                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
-                  ads_post_id:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                  ads_post_id:
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -126,9 +129,8 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             price: getAdsWithCategorySubCategoryResult[index]
                     .vehicleAdsAdditionalDetailPrice ??
                 '0',
-            firstText: '${getAdsWithCategorySubCategoryResult[index]
-                .vehicleAdsAdditionalDetailDistanceTravelled ??
-                '0' } km',
+            firstText:
+                '${getAdsWithCategorySubCategoryResult[index].vehicleAdsAdditionalDetailDistanceTravelled ?? '0'} km',
             secondText: getAdsWithCategorySubCategoryResult[index]
                     .vehicleAdsDetailOrigin ??
                 '',
@@ -151,8 +153,8 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                     ?.userName ??
                 '',
             secondIcon: 'assets/icons_for_car/ic_transmission.png',
-          firstIcon:  'assets/icons_for_car/ic_kilometer.png',
-            thirdIcon:  'assets/icons_for_car/ic_location.png',
+            firstIcon: 'assets/icons_for_car/ic_kilometer.png',
+            thirdIcon: 'assets/icons_for_car/ic_location.png',
           ),
         );
       } else if (widget.adsCategoryId == '3') {
@@ -162,44 +164,48 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               builder: (context) {
                 return VehiclePartsAndAccessoriesDetailScreen(
                   ads_post:
-                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
-                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
           },
           child: dataContainer(
             imageUrl:
-                getAdsWithCategorySubCategoryResult[index].vehiclePartImage ?? '',
+                getAdsWithCategorySubCategoryResult[index].vehiclePartImage ??
+                    '',
             name: getAdsWithCategorySubCategoryResult[index]
                     .vehiclePartDescription ??
                 'NA',
-            price: getAdsWithCategorySubCategoryResult[index].vehiclePartPrice ??
-                'NA',
-            firstText: getAdsWithCategorySubCategoryResult[index]
-                    .partName ??
-                'NA',
+            price:
+                getAdsWithCategorySubCategoryResult[index].vehiclePartPrice ??
+                    'NA',
+            firstText:
+                getAdsWithCategorySubCategoryResult[index].partName ?? 'NA',
             secondText:
                 getAdsWithCategorySubCategoryResult[index].cityName ?? '',
-            thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .modelTrimName ??
+            thirdText:
+                getAdsWithCategorySubCategoryResult[index].modelTrimName ??
+                    'NA',
+            callText: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.mobile ??
                 'NA',
-            callText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
-                    'NA',
             smsText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-            image:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
-                    'NA',
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ??
+                    '',
+            image: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.image ??
+                'NA',
             userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
                     ?.userName ??
                 'NA',
             secondIcon: 'assets/icons_for_car/ic_location.png',
-            firstIcon:  'assets/icons_for_car/ic_engine_size.png',
-            thirdIcon:  'assets/icons_for_car/ic_transmission.png',
+            firstIcon: 'assets/icons_for_car/ic_engine_size.png',
+            thirdIcon: 'assets/icons_for_car/ic_transmission.png',
           ),
         );
       } else if (widget.adsCategoryId == '4') {
@@ -209,9 +215,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               builder: (context) {
                 return VehicleNumberDetailScreen(
                   ads_post:
-                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
-                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -223,32 +229,34 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             name: getAdsWithCategorySubCategoryResult[index]
                     .vehicleNumberDescription ??
                 '',
-            price: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleNumberPrice ??
-                '0',
-            firstText: getAdsWithCategorySubCategoryResult[index]
-                    .plateTypeName ??
-                '',
+            price:
+                getAdsWithCategorySubCategoryResult[index].vehicleNumberPrice ??
+                    '0',
+            firstText:
+                getAdsWithCategorySubCategoryResult[index].plateTypeName ?? '',
             secondText:
                 getAdsWithCategorySubCategoryResult[index].cityName ?? '',
-            thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .governorateName ??
+            thirdText:
+                getAdsWithCategorySubCategoryResult[index].governorateName ??
+                    '',
+            callText: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.mobile ??
                 '',
-            callText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
-                    '',
             smsText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-            image:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ??
                     '',
+            image: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.image ??
+                '',
             userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
                     ?.userName ??
                 '',
             secondIcon: 'assets/icons_for_car/ic_location.png',
-            firstIcon:  'assets/icons_for_car/ic_ad.png',
-            thirdIcon:  'assets/icons_for_car/ic_transmission.png',
+            firstIcon: 'assets/icons_for_car/ic_ad.png',
+            thirdIcon: 'assets/icons_for_car/ic_transmission.png',
           ),
         );
       } else if (widget.adsCategoryId == '5' || widget.adsCategoryId == '6') {
@@ -258,9 +266,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               builder: (context) {
                 return RealEstateDetailScreen(
                   ads_post:
-                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
-                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
@@ -275,30 +283,30 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             price: getAdsWithCategorySubCategoryResult[index]
                     .realStateAdsAdditionalDetailPrice ??
                 '0',
-            firstText: '${getAdsWithCategorySubCategoryResult[index]
-                .realStateAdsAdditionalDetailLandArea ??
-                ''} SQM',
-            secondText: getAdsWithCategorySubCategoryResult[index]
-                    .cityName ??
+            firstText:
+                '${getAdsWithCategorySubCategoryResult[index].realStateAdsAdditionalDetailLandArea ?? ''} SQM',
+            secondText:
+                getAdsWithCategorySubCategoryResult[index].cityName ?? '',
+            thirdText:
+                getAdsWithCategorySubCategoryResult[index].parkingName ?? '',
+            callText: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.mobile ??
                 '',
-            thirdText: getAdsWithCategorySubCategoryResult[index]
-                      .parkingName ??
-                '',
-            callText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
-                    '',
             smsText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-            image:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ??
                     '',
+            image: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.image ??
+                '',
             userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
                     ?.userName ??
                 '',
             secondIcon: 'assets/icons_for_car/ic_location.png',
-            firstIcon:  'assets/icons_for_car/ic_ad.png',
-            thirdIcon:  'assets/icons_for_car/ic_ad.png',
+            firstIcon: 'assets/icons_for_car/ic_ad.png',
+            thirdIcon: 'assets/icons_for_car/ic_ad.png',
           ),
         );
       } else if (widget.adsCategoryId == '7' || widget.adsCategoryId == '8') {
@@ -308,47 +316,49 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               builder: (context) {
                 return ElectronicsDetailScreen(
                   ads_post:
-                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
-                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
           },
           child: dataContainer(
-            imageUrl:
-                getAdsWithCategorySubCategoryResult[index].electronicsAdsImage ??
-                    '',
+            imageUrl: getAdsWithCategorySubCategoryResult[index]
+                    .electronicsAdsImage ??
+                '',
             name: getAdsWithCategorySubCategoryResult[index]
                     .electronicsAdsDescription ??
                 '',
             price: getAdsWithCategorySubCategoryResult[index]
                     .electronicsAdsPrice ??
                 '0',
-            firstText: getAdsWithCategorySubCategoryResult[index]
-                    .subCategoryName ??
-                '',
-            secondText: getAdsWithCategorySubCategoryResult[index]
-                    .storageName ??
-                '',
-            thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .governorateName ??
-                '',
-            callText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
+            firstText:
+                getAdsWithCategorySubCategoryResult[index].subCategoryName ??
                     '',
+            secondText:
+                getAdsWithCategorySubCategoryResult[index].storageName ?? '',
+            thirdText:
+                getAdsWithCategorySubCategoryResult[index].governorateName ??
+                    '',
+            callText: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.mobile ??
+                '',
             smsText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-            image:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ??
                     '',
+            image: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.image ??
+                '',
             userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
                     ?.userName ??
                 '',
             secondIcon: 'assets/icons_for_car/ic_ad.png',
-            firstIcon:  'assets/icons_for_car/ic_ad.png',
-            thirdIcon:  'assets/icons_for_car/ic_ad.png',
+            firstIcon: 'assets/icons_for_car/ic_ad.png',
+            thirdIcon: 'assets/icons_for_car/ic_ad.png',
           ),
         );
       } else if (widget.adsCategoryId == '9') {
@@ -358,48 +368,52 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               builder: (context) {
                 return PhoneNumberDetailScreen(
                   ads_post:
-                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
-                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
           },
           child: dataContainer(
-            imageUrl:
-                getAdsWithCategorySubCategoryResult[index].phoneNumberAdsImage ??
-                    '',
+            imageUrl: getAdsWithCategorySubCategoryResult[index]
+                    .phoneNumberAdsImage ??
+                '',
+            imageUrlValue: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                        .phoneNumberAdsPhone ??
+                    ''),
             name: getAdsWithCategorySubCategoryResult[index]
                     .phoneNumberAdsDescription ??
                 '',
-            price:
-                getAdsWithCategorySubCategoryResult[index].phoneNumberAdsPrice ??
-                    '0',
-            firstText: getAdsWithCategorySubCategoryResult[index]
-                    .operatorsName ??
-                '',
-            secondText: getAdsWithCategorySubCategoryResult[index]
-                    .cityName ??
-                '',
-            thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .governorateName ??
-                '',
-            callText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
+            price: getAdsWithCategorySubCategoryResult[index]
+                    .phoneNumberAdsPrice ??
+                '0',
+            firstText:
+                getAdsWithCategorySubCategoryResult[index].operatorsName ?? '',
+            secondText:
+                getAdsWithCategorySubCategoryResult[index].cityName ?? '',
+            thirdText:
+                getAdsWithCategorySubCategoryResult[index].governorateName ??
                     '',
+            callText: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.mobile ??
+                '',
             smsText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-            image:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ??
                     '',
+            image: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.image ??
+                '',
             userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
                     ?.userName ??
                 '',
-
             secondIcon: 'assets/icons_for_car/ic_ad.png',
-            firstIcon:  'assets/icons_for_car/ic_ad.png',
-            thirdIcon:  'assets/icons_for_car/ic_ad.png',
+            firstIcon: 'assets/icons_for_car/ic_ad.png',
+            thirdIcon: 'assets/icons_for_car/ic_ad.png',
           ),
         );
       } else if (widget.adsCategoryId == '10') {
@@ -409,46 +423,47 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               builder: (context) {
                 return AnimalsAndSuppliesDetailScreen(
                   ads_post:
-                  getAdsWithCategorySubCategoryResult[index].adsId ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
-                  getAdsWithCategorySubCategoryResult[index].adsType ?? '',
+                      getAdsWithCategorySubCategoryResult[index].adsId ?? '',
                 );
               },
             ));
           },
           child: dataContainer(
             imageUrl:
-                getAdsWithCategorySubCategoryResult[index].animalsAdsImage ?? '',
+                getAdsWithCategorySubCategoryResult[index].animalsAdsImage ??
+                    '',
             name: getAdsWithCategorySubCategoryResult[index]
                     .animalsAdsDescription ??
                 '',
-            price:
-                getAdsWithCategorySubCategoryResult[index].animalsAdsPrice ?? '0',
-            firstText: getAdsWithCategorySubCategoryResult[index]
-                    .subCategoryName ??
-                '',
-            secondText: getAdsWithCategorySubCategoryResult[index]
-                    .breedName ??
-                '',
-            thirdText: getAdsWithCategorySubCategoryResult[index]
-                    .cityName ??
-                '',
-            callText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.mobile ??
+            price: getAdsWithCategorySubCategoryResult[index].animalsAdsPrice ??
+                '0',
+            firstText:
+                getAdsWithCategorySubCategoryResult[index].subCategoryName ??
                     '',
+            secondText:
+                getAdsWithCategorySubCategoryResult[index].breedName ?? '',
+            thirdText:
+                getAdsWithCategorySubCategoryResult[index].cityName ?? '',
+            callText: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.mobile ??
+                '',
             smsText:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ?? '',
-            image:
-                getAdsWithCategorySubCategoryResult[index].usersDetails?.image ??
+                getAdsWithCategorySubCategoryResult[index].usersDetails?.id ??
                     '',
+            image: getAdsWithCategorySubCategoryResult[index]
+                    .usersDetails
+                    ?.image ??
+                '',
             userName: getAdsWithCategorySubCategoryResult[index]
                     .usersDetails
                     ?.userName ??
                 '',
-
             secondIcon: 'assets/icons_for_car/ic_ad.png',
-            firstIcon:  'assets/icons_for_car/ic_ad.png',
-            thirdIcon:  'assets/icons_for_car/ic_location.png',
+            firstIcon: 'assets/icons_for_car/ic_ad.png',
+            thirdIcon: 'assets/icons_for_car/ic_location.png',
           ),
         );
       }
@@ -458,6 +473,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
 
   Widget dataContainer(
       {required String imageUrl,
+      TextEditingController? imageUrlValue,
       required String name,
       required String price,
       required String firstText,
@@ -470,36 +486,94 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
       required String smsText,
       required String userName,
       required String image}) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.45,
-      decoration:
-          BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Card(
-        color: Colors.white,
-        elevation: 5,
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            border: Border.all(color: Colors.grey.shade100),
+            color: Colors.white),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: Colors.white,
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                      child: CachedNetworkImage(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey.shade100
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: imageUrlValue != null &&
+                        imageUrlValue.text.trim().isNotEmpty
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 36),
+                            child: TextField(
+                              textAlign: TextAlign.center,
+
+                              cursorWidth: 0,
+                              cursorHeight: 0,
+                              cursorOpacityAnimates: false,
+                              maxLines: 1,
+                              maxLength: 8,
+                              autofocus: true,
+                              controller: imageUrlValue,
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 8),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.zero,
+                                counterText: '',
+                                fillColor: Color(0xff067445),
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                                disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                        BorderSide(color: Color(0xff067445))),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 20, right: 45),
+                            child: Image.asset(
+                              'assets/images/ic_number_plate_image_one.png',
+                              height: 40,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      )
+                    : CachedNetworkImage(
                         imageUrl: imageUrl,
                         fit: BoxFit.contain,
                         height: MediaQuery.of(context).size.height * .2,
                         placeholder: (context, url) => Center(
                           child: Shimmer.fromColors(
                             baseColor: MyColors.onSecondary.withOpacity(0.4),
-                            highlightColor: Theme.of(context).colorScheme.onSecondary,
+                            highlightColor:
+                                Theme.of(context).colorScheme.onSecondary,
                             child: Container(
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * 0.25,
@@ -509,152 +583,155 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                         ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black.withOpacity(0.7),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${price} OMR",
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          try {
+                            Uri uri = Uri.parse('qrImage');
+                            Share.shareUri(uri);
+                          } catch (e) {
+                            print('Share Error: $e');
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.1))),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.file_upload_outlined,
+                                color: Colors.black.withOpacity(0.5),
+                                size: 18,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                "Share",
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.5),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          firstIcon,
+                          color: Colors.black.withOpacity(0.4),
+                          height: 14,
+                          width: 14,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Divider(),
+                          ),
+                        ),
+                        Image.asset(
+                          secondIcon,
+                          color: Colors.black.withOpacity(0.4),
+                          height: 14,
+                          width: 14,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Divider(),
+                          ),
+                        ),
+                        Image.asset(
+                          thirdIcon,
+                          color: Colors.black.withOpacity(0.4),
+                          height: 14,
+                          width: 14,
+                        ),
+                      ],
                     ),
                   ),
+                  SizedBox(height: 4),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Row(
                       children: [
-                        Text(
-                          name,
-                          maxLines: 1,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black.withOpacity(0.7),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 10
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "${price} OMR",
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                try {
-                                  Uri uri = Uri.parse('qrImage');
-                                  Share.shareUri(uri);
-                                } catch (e) {
-                                  print('Share Error: $e');
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                        color: Colors.black.withOpacity(0.1))),
-                                padding:
-                                EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Icon(
-                                      Icons.file_upload_outlined,
-                                      color: Colors.black.withOpacity(0.5),
-                                      size: 18,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Text(
-                                      "Share",
-                                      style: TextStyle(
-                                          color: Colors.black.withOpacity(0.5),
-                                          fontSize: 14,fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                            height: 10
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 34.0),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                firstIcon,
-                                color:
-                                Colors.black.withOpacity(0.4),
-                                height: 18,
-                                width: 18,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Divider(),
-                                ),
-                              ),
-                              Image.asset(
-                                secondIcon,
-                                color:
-                                Colors.black.withOpacity(0.4),
-                                height: 18,
-                                width: 18,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Divider(),
-                                ),
-                              ),
-                              Image.asset(
-                                thirdIcon,
-                                color:
-                                Colors.black.withOpacity(0.4),
-                                height: 18,
-                                width: 18,
-                              ),
-                            ],
+                        Expanded(
+                          child: Text(
+                            firstText,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
-                        SizedBox(
-                            height: 4
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                firstText,
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
-                              ),
-                              Expanded(child: Divider(color: Colors.transparent,)),
-                              Text(
-                                secondText,
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
-                              ),
-                              Expanded(child: Divider(color: Colors.transparent,)),
-                              Text(
-                                thirdText,
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.5),fontWeight: FontWeight.w500),
-                              )
-                            ],
+                        Expanded(
+                          child: Text(
+                            secondText,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
+                        Expanded(
+                          child: Text(
+                            thirdText,
+                            textAlign: TextAlign.end,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontWeight: FontWeight.w500),
+                          ),
+                        )
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            Container(height: 0.4,color: Colors.grey,),
+            Divider(color: Colors.grey.shade100,height: 0,),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+              padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -673,9 +750,10 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
+                            color: Colors.white.withOpacity(0.8),
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.grey)),
+                            border:
+                                Border.all(color: Colors.orange, width: .2)),
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Row(
@@ -703,9 +781,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
@@ -725,9 +801,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.8),
-
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: Colors.grey)),
+                            border:
+                                Border.all(color: Colors.orange, width: .2)),
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Row(

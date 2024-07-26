@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../Model/GeneralModel.dart';
 import '../../Model/advertisement_model/VehiclePartsModel.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
+import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
@@ -15,13 +17,17 @@ import '../../common/common_widgets.dart';
 import '../ad_bottom_bar.dart';
 
 class UpdateVehiclesPartAdd extends StatefulWidget {
-  final String type;
   final String adType;
   final String advertisement_category_id;
+  final String advertisement_sub_category_id;
+  final String ads_post_id;
 
-  const UpdateVehiclesPartAdd({super.key, required this.advertisement_category_id,
+  const UpdateVehiclesPartAdd({super.key,
     required this.adType,
-    required this.type});
+    required this.advertisement_category_id,
+    required this.advertisement_sub_category_id,
+    required this.ads_post_id,
+  });
 
   @override
   State<UpdateVehiclesPartAdd> createState() => _UpdateVehiclesPartAddState();
@@ -63,6 +69,9 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
 
   String? selectedImage;
 
+  PostListDetails? result;
+
+
   bool loader = false;
   final imgPicker = ImagePicker();
   File? productPicture;
@@ -88,7 +97,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
   }
 
   getListData() async {
-    var res = await Webservices.getMap(widget.type == "Wanted"
+    var res = await Webservices.getMap(widget.adType == "Wanted"
         ? "$get_vehicles_parts_accessories_wanted"
         : "$get_vehicles_parts_accessories_for_sell");
     print("status from api ${res}");
@@ -100,8 +109,8 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
       partsList = vehiclePartsResult!.part ?? [];
       makerList = vehiclePartsResult!.maker ?? [];
       enginesizeList = vehiclePartsResult!.engineSize ?? [];
-
       setState(() {});
+      getAdsPostDetails();
     } else {
       showSnackbar(context, resdata.message ?? '');
     }
@@ -117,41 +126,69 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
 
 
 
-  PostRealStateAd() async {
-    Map<String, dynamic> data = {
-      'category_id': widget.advertisement_category_id,
-      'sub_category_id': '',
-      'vehicle_part_user_id': userId,
-      'vehicle_part_part_id': selectedSubpart?.partId ?? '',
-      'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
-      'vehicle_part_maker_id': selectedMaker?.id ?? '',
-      'vehicle_part_model_id': selectesModel?.id ?? '',
-      'vehicle_part_model_trim_id':selectedModeltrim?.id ?? '',
-      'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
-      'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
-      'vehicle_part_price': price.text.toString(),
-      'vehicle_part_quantity':quantity.text ?? '',
-      'vehicle_part_part_number': vehiclePartPartNumber.text,
-      'vehicle_part_english_title': englishTitle.text,
-      'vehicle_part_arabic_title': arabicTitle.text,
-      'vehicle_part_phone': phone.text.toString(),
-      'vehicle_part_description': description.text.toString(),
-    };
-    Map<String, dynamic> files = {
-      'vehicle_part_image': productPicture
-    };
-    print("request ------------------$data   $files");
-    loader = true;
-    setState(() {});
-    var res = await Webservices.postDataWithImageFunction(
-        body: data,
-        files: files,
-        context: context,
-        apiUrl: widget.type != "Wanted"
-            ? upload_vehicles_parts_accessories_sale
-            : upload_vehicles_parts_accessories_wanted);
-    loader = false;
-    setState(() {});
+  editVehiclePartAd() async {
+    Map<String, dynamic> data;
+    var res;
+    if(productPicture!=null){
+      data = {
+        'vehicle_part_ads_id': result?.vehiclePartAdsId,
+        'vehicle_part_part_id': selectedSubpart?.partId ?? '',
+        'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
+        'vehicle_part_maker_id': selectedMaker?.id ?? '',
+        'vehicle_part_model_id': selectesModel?.id ?? '',
+        'vehicle_part_model_trim_id':selectedModeltrim?.id ?? '',
+        'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
+        'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
+        'vehicle_part_price': price.text.toString(),
+        'vehicle_part_quantity':quantity.text ?? '',
+        'vehicle_part_part_number': vehiclePartPartNumber.text,
+        'vehicle_part_english_title': englishTitle.text,
+        'vehicle_part_arabic_title': arabicTitle.text,
+        'vehicle_part_phone': phone.text.toString(),
+        'vehicle_part_description': description.text.toString(),
+      };
+      Map<String, dynamic> files = {'vehicle_part_image': productPicture};
+      print("request ------------------$data   $files");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postDataWithImageFunction(
+          body: data,
+          files: files,
+          context: context,
+          apiUrl: edit_vehicle_part);
+      loader = false;
+      setState(() {});
+    }
+    else{
+      data = {
+        'vehicle_part_image': '',
+        'vehicle_part_ads_id': result?.vehiclePartAdsId,
+        'vehicle_part_part_id': selectedSubpart?.partId ?? '',
+        'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
+        'vehicle_part_maker_id': selectedMaker?.id ?? '',
+        'vehicle_part_model_id': selectesModel?.id ?? '',
+        'vehicle_part_model_trim_id':selectedModeltrim?.id ?? '',
+        'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
+        'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
+        'vehicle_part_price': price.text.toString(),
+        'vehicle_part_quantity':quantity.text ?? '',
+        'vehicle_part_part_number': vehiclePartPartNumber.text,
+        'vehicle_part_english_title': englishTitle.text,
+        'vehicle_part_arabic_title': arabicTitle.text,
+        'vehicle_part_phone': phone.text.toString(),
+        'vehicle_part_description': description.text.toString(),
+      };
+      print("request ------------------$data");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postData(
+          body: data,
+          context: context,
+          apiUrl:
+          edit_vehicle_part);
+      loader = false;
+      setState(() {});
+    }
     final resdata = GeneralModel.fromJson(res);
     if (res['status'] == "1") {
       showSnackbar(context, resdata.message!);
@@ -162,6 +199,89 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
           ));
     } else {
       showSnackbar(context, resdata.message!);
+    }
+  }
+
+
+  getAdsPostDetails() async {
+    var res = await Webservices.getMap(
+        "$baseUrl$get_ads_post_details?ads_post=${widget.adType}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
+    showProgressBar = false;
+    GetAdsPostDetailsModel getAdsPostDetailsModel = GetAdsPostDetailsModel.fromJson(res);
+    setState(() {});
+    if (getAdsPostDetailsModel.result != null) {
+      result = getAdsPostDetailsModel.result!;
+      setState(() {});
+      price.text = result?.vehiclePartPrice ?? '';
+      phone.text = result?.vehiclePartPhone ?? '';
+      description.text = result?.vehiclePartDescription ?? '';
+      if (partsList.isNotEmpty) {
+        partsList.forEach((element) {
+          ///TODO DONE
+          if (element.partId == result?.vehiclePartPartId) {
+            selectedPart = element;
+            setState(() {});
+          }
+          ///TODO DONE
+          if (element.subPartName != null && element.subPartName!.isNotEmpty) {
+            element.subPartName?.forEach((elementSubPartName) {
+              if (elementSubPartName.subPartId == result?.vehiclePartSubPartId) {
+                selectedSubpart = elementSubPartName;
+                setState(() {});
+              }
+            });
+          }
+        });
+      }
+      if (makerList.isNotEmpty) {
+        makerList.forEach((element) {
+          ///TODO DONE
+          if (element.id == result?.vehiclePartMakerId) {
+            selectedMaker = element;
+            setState(() {});
+          }
+          ///TODO DONE
+          if (element.model != null && element.model!.isNotEmpty) {
+            element.model?.forEach((elementModel) {
+              if (elementModel.id == result?.vehiclePartModelId) {
+                selectesModel = elementModel;
+                setState(() {});
+                selectesModel?.modelTrim?.forEach((elementModelTrim) {
+                  if (elementModelTrim.id ==
+                      result?.vehicleAdsDetailModelTrimId) {
+                    selectedModeltrim = elementModelTrim;
+                    setState(() {});
+                  }
+                });
+                selectesModel?.modelYear?.forEach((elementModelYear) {
+                  if (elementModelYear.yearId ==
+                      result?.vehiclePartModelYearId) {
+                    selectedModelyear = elementModelYear;
+                    setState(() {});
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+
+      if (enginesizeList.isNotEmpty) {
+        enginesizeList.forEach((element) {
+          ///TODO DONE
+          if (element.engineId == result?.vehiclePartEngineSizeId) {
+            selectedEnginesize = element;
+            setState(() {});
+          }
+        });
+      }
+
+
+      setState(() {});
+    } else {
+      showSnackbar(context, 'Something went wrong!');
+      showProgressBar = false;
+      setState(() {});
     }
   }
 
@@ -541,19 +661,22 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                   _image_camera_dialog(context);
                 },
                 child: productPicture == null
-                    ? Center(child: uploadProductContainer())
+                    ? result?.vehiclePartImage != null &&
+                    result!.vehiclePartImage!.isNotEmpty
+                    ? Center(child: displayImageNetwork())
+                    : Center(child: uploadProductContainer())
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(
-            height: 20
-        ),
+        SizedBox(height: 20),
         RoundButton(
           height: 45,
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null) {
+            if (productPicture != null ||
+                (result != null && result!.vehiclePartImage != null)) {
+              print(Uri.parse(result!.vehiclePartImage!).pathSegments.last);
               _currentStepIndex = 8;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -695,7 +818,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter description");
               } else {
-                   PostRealStateAd();
+                 editVehiclePartAd();
               }
             },
           ),
@@ -787,6 +910,21 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
       setState(() {});
     } else {
       print("no image is selected");
+    }
+  }
+
+  displayImageNetwork() {
+    if (result!.vehiclePartImage != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          result!.vehiclePartImage!,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ),
+      );
+    } else {
+      return Text("No file is selected");
     }
   }
 

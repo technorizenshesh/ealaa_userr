@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:ealaa_userr/Model/advertisement_model/get_ads_with_category_home_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Model/GeneralModel.dart';
 import '../../Model/advertisement_model/RealStateUseModel.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
@@ -18,12 +20,15 @@ class UpdateRealStateAd extends StatefulWidget {
   final String adType;
   final String advertisement_category_id;
   final String advertisement_sub_category_id;
+  final String ads_post_id;
 
-  const UpdateRealStateAd(
-      {super.key,
-      required this.advertisement_category_id,
-      required this.advertisement_sub_category_id,
-      required this.adType});
+  const UpdateRealStateAd({
+    super.key,
+    required this.adType,
+    required this.advertisement_category_id,
+    required this.advertisement_sub_category_id,
+    required this.ads_post_id,
+  });
 
   @override
   State<UpdateRealStateAd> createState() => _UpdateRealStateAdState();
@@ -39,7 +44,7 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
     'Land Type',
     'Position',
     'Parking',
-    'Governate',
+    'Governorate',
     'State',
     'City',
     'Upload Photos',
@@ -75,6 +80,8 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
 
+  PostListDetails? result;
+
   void _scrollToNextStep() {
     if (_currentStepIndex < topList.length) {
       double offset =
@@ -102,6 +109,7 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
       parkingList = realStateUseResult!.parking ?? [];
       governateList = realStateUseResult!.governorate ?? [];
       setState(() {});
+      getAdsPostDetails();
     } else {
       showSnackbar(context, resdata.message ?? '');
     }
@@ -115,45 +123,161 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
     }
   }
 
+  getAdsPostDetails() async {
+    var res = await Webservices.getMap(
+        "$baseUrl$get_ads_post_details?ads_post=${widget.adType}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
+    showProgressBar = false;
+    GetAdsPostDetailsModel getAdsPostDetailsModel =
+        GetAdsPostDetailsModel.fromJson(res);
+    setState(() {});
+    if (getAdsPostDetailsModel.result != null) {
+      result = getAdsPostDetailsModel.result!;
+      setState(() {});
+      price.text = result?.realStateAdsAdditionalDetailPrice ?? '';
+      phone.text = result?.realStateAdsAdditionalDetailPhone ?? '';
+      landArea.text = result?.realStateAdsAdditionalDetailLandArea ?? '';
+      description.text = result?.realStateAdsAdditionalDetailDescription ?? '';
+
+      if (useList.isNotEmpty) {
+        useList.forEach((element) {
+          ///TODO DONE
+          if (element.useId == result?.realStateAdsDetailUseId) {
+            selectedUse = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (wallList.isNotEmpty) {
+        wallList.forEach((element) {
+          ///TODO DONE
+          if (element.WallId == result?.realStateAdsDetailWallId) {
+            selectedWall = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (landTypeList.isNotEmpty) {
+        landTypeList.forEach((element) {
+          ///TODO DONE
+          if (element.landtypeId == result?.realStateAdsDetailLandtypeId) {
+            selectedLandType = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (positionList.isNotEmpty) {
+        positionList.forEach((element) {
+          ///TODO DONE
+          if (element.positionId == result?.realStateAdsDetailPositionId) {
+            selectedPosition = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (parkingList.isNotEmpty) {
+        parkingList.forEach((element) {
+          ///TODO DONE
+          if (element.parkingId == result?.realStateAdsDetailParkingId) {
+            selectedParking = element;
+            setState(() {});
+          }
+        });
+      }
+      if (governateList.isNotEmpty) {
+        governateList.forEach((element) {
+          ///TODO DONE
+          if (element.governorateId == result?.realStateAdsDetailGovernateId) {
+            selectedGovernate = element;
+            setState(() {});
+            selectedGovernate?.governorateState?.forEach((elementStateList) {
+              ///TODO DONE
+              if (elementStateList.stateId ==
+                  result?.realStateAdsDetailStateId) {
+                selectedState = elementStateList;
+                setState(() {});
+                selectedState?.stateCity?.forEach((elementCityList) {
+                  ///TODO DONE
+                  if (elementCityList.cityId ==
+                      result?.realStateAdsDetailCityId) {
+                    selectedCity  = elementCityList;
+                    setState(() {});
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+      setState(() {});
+    } else {
+      showSnackbar(context, 'Something went wrong!');
+      showProgressBar = false;
+      setState(() {});
+    }
+  }
+
+
   PostRealStateAd() async {
-    Map<String, dynamic> data = {
-      'category_id': widget.advertisement_category_id,
-      'sub_catgerory_id': widget.advertisement_sub_category_id,
-      'real_state_ads_detail_user_id': userId,
-      'real_state_ads_detail_ads_post_id': '',
-      'real_state_ads_detail_use_id': selectedUse?.useId.toString() ?? "",
-      'real_state_ads_detail_wall_id': selectedWall?.WallId.toString() ?? "",
-      'real_state_ads_detail_landtype_id':
-          selectedLandType?.landtypeId.toString() ?? "",
-      'real_state_ads_detail_position_id':
-          selectedPosition?.positionId.toString() ?? "",
-      'real_state_ads_detail_parking_id':
-          selectedParking?.parkingId.toString() ?? "",
-      'real_state_ads_detail_state_id': selectedState?.stateId.toString() ?? "",
-      'real_state_ads_detail_governate_id':
-          selectedGovernate?.governorateId.toString() ?? "",
-      'real_state_ads_additional_detail_price': price.text.toString(),
-      'real_state_ads_additional_detail_land_area': landArea.text.toString(),
-      'real_state_ads_additional_detail_phone': phone.text.toString(),
-      'real_state_ads_additional_detail_description':
-          description.text.toString(),
-      'real_state_ads_detail_city_id': selectedCity?.cityId.toString() ?? "",
-    };
-    Map<String, dynamic> files = {
-      'real_state_ads_upload_image': productPicture
-    };
-    print("request ------------------$data   $files");
-    loader = true;
-    setState(() {});
-    var res = await Webservices.postDataWithImageFunction(
-        body: data,
-        files: files,
-        context: context,
-        apiUrl: widget.adType == 'sell'
-            ? upload_real_state_sell
-            : upload_real_state_buy);
-    loader = false;
-    setState(() {});
+    Map<String, dynamic> data;
+    var res;
+    if(productPicture!=null){
+      data = {
+        'real_state_ads_detail_id': result?.realStateAdsDetailId ?? '',
+        'real_state_ads_detail_use_id': selectedUse?.useId.toString() ?? "",
+        'real_state_ads_detail_wall_id': selectedWall?.WallId.toString() ?? "",
+        'real_state_ads_detail_landtype_id': selectedLandType?.landtypeId.toString() ?? "",
+        'real_state_ads_detail_position_id': selectedPosition?.positionId.toString() ?? "",
+        'real_state_ads_detail_parking_id': selectedParking?.parkingId.toString() ?? "",
+        'real_state_ads_detail_state_id': selectedState?.stateId.toString() ?? "",
+        'real_state_ads_detail_governate_id': selectedGovernate?.governorateId.toString() ?? "",
+        'real_state_ads_additional_detail_price': price.text.toString(),
+        'real_state_ads_additional_detail_land_area': landArea.text.toString(),
+        'real_state_ads_additional_detail_phone': phone.text.toString(),
+        'real_state_ads_additional_detail_description': description.text.toString(),
+        'real_state_ads_detail_city_id': selectedCity?.cityId.toString() ?? "",
+      };
+      Map<String, dynamic> files = {'real_state_ads_upload_image': productPicture ?? ''};
+      print("request ------------------$data   $files");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postDataWithImageFunction(
+          body: data,
+          files: files,
+          context: context,
+          apiUrl:edit_real_state);
+      loader = false;
+      setState(() {});
+    }else{
+      data = {
+        'real_state_ads_upload_image': '',
+        'real_state_ads_detail_id': result?.realStateAdsDetailId ?? '',
+        'real_state_ads_detail_use_id': selectedUse?.useId.toString() ?? "",
+        'real_state_ads_detail_wall_id': selectedWall?.WallId.toString() ?? "",
+        'real_state_ads_detail_landtype_id': selectedLandType?.landtypeId.toString() ?? "",
+        'real_state_ads_detail_position_id': selectedPosition?.positionId.toString() ?? "",
+        'real_state_ads_detail_parking_id': selectedParking?.parkingId.toString() ?? "",
+        'real_state_ads_detail_state_id': selectedState?.stateId.toString() ?? "",
+        'real_state_ads_detail_governate_id': selectedGovernate?.governorateId.toString() ?? "",
+        'real_state_ads_additional_detail_price': price.text.toString(),
+        'real_state_ads_additional_detail_land_area': landArea.text.toString(),
+        'real_state_ads_additional_detail_phone': phone.text.toString(),
+        'real_state_ads_additional_detail_description': description.text.toString(),
+        'real_state_ads_detail_city_id': selectedCity?.cityId.toString() ?? "",
+      };
+      print("request ------------------$data");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postData(
+          body: data,
+          context: context,
+          apiUrl:edit_real_state);
+      loader = false;
+      setState(() {});
+    }
     final resdata = GeneralModel.fromJson(res);
     if (res['status'] == "1") {
       showSnackbar(context, resdata.message!);
@@ -551,7 +675,7 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
   }
 
   Widget UploadPhotos() {
-    return Column(
+    return ListView(
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -565,17 +689,22 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
                   _image_camera_dialog(context);
                 },
                 child: productPicture == null
-                    ? Center(child: uploadProductContainer())
+                    ? result?.realStateAdsUploadImage != null &&
+                    result!.realStateAdsUploadImage!.isNotEmpty
+                    ? Center(child: displayImageNetwork())
+                    : Center(child: uploadProductContainer())
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(height: 50),
+        SizedBox(height: 20),
         RoundButton(
           height: 45,
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null) {
+            if (productPicture != null ||
+                (result != null && result!.realStateAdsUploadImage != null)) {
+              print(Uri.parse(result!.realStateAdsUploadImage!).pathSegments.last);
               _currentStepIndex = 10;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -669,7 +798,7 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
             loading: loader,
             height: 45,
             borderRadius: 10,
-            title: 'All Set! Publish your Ad',
+            title: 'All Set! Update your Ad',
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
@@ -790,6 +919,22 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
             fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
+    } else {
+      return Text("No file is selected");
+    }
+  }
+
+
+  displayImageNetwork() {
+    if (result!.realStateAdsUploadImage != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          result!.realStateAdsUploadImage!,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ),
+      );
     } else {
       return Text("No file is selected");
     }

@@ -6,18 +6,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Model/GeneralModel.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
+import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/GlobalData.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
+import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../ad_bottom_bar.dart';
 
-class UpdatePhoneNumbersAd extends StatefulWidget {  final String advertisement_category_id;
+class UpdatePhoneNumbersAd extends StatefulWidget {
+
+  final String adType;
+  final String advertisement_category_id;
+  final String advertisement_sub_category_id;
+  final String ads_post_id;
 
   const UpdatePhoneNumbersAd({super.key,
-    required this.advertisement_category_id,});
+    required this.adType,
+    required this.advertisement_category_id,
+    required this.advertisement_sub_category_id,
+    required this.ads_post_id,
+  });
 
   @override
   State<UpdatePhoneNumbersAd> createState() => _UpdatePhoneNumbersAdState();
@@ -30,7 +42,7 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
   List<String> topList = [
     'Phone Number',
     'Operators',
-    'Governate',
+    'Governorate',
     'State',
     'City',
     'Upload Photos',
@@ -57,6 +69,8 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
 
+  PostListDetails? result;
+
   void _scrollToNextStep() {
     if (_currentStepIndex < topList.length) {
       double offset =
@@ -80,10 +94,68 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
       operatorsList = phoneOperatorResult!.operators ?? [];
        governateList = phoneOperatorResult!.governorate??[];
       setState(() {});
+      getAdsPostDetails();
     } else {
       showSnackbar(context, resdata.message ?? '');
     }
   }
+
+  getAdsPostDetails() async {
+    var res = await Webservices.getMap(
+        "$baseUrl$get_ads_post_details?ads_post=${widget.adType}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
+    showProgressBar = false;
+    GetAdsPostDetailsModel getAdsPostDetailsModel =
+    GetAdsPostDetailsModel.fromJson(res);
+    setState(() {});
+    if (getAdsPostDetailsModel.result != null) {
+      result = getAdsPostDetailsModel.result!;
+      setState(() {});
+      price.text = result?.phoneNumberAdsPrice ?? '';
+      phone.text = result?.phoneNumberAdsPhone ?? '';
+      description.text = result?.phoneNumberAdsDescription ?? '';
+      if (operatorsList.isNotEmpty) {
+        operatorsList.forEach((element) {
+          ///TODO DONE
+          if (element.operatorsId == result?.phoneNumberAdsOperators) {
+            selectedOperator = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (governateList.isNotEmpty) {
+        governateList.forEach((element) {
+          ///TODO DONE
+          if (element.governorateId == result?.phoneNumberAdsGovernorate) {
+            selectedGovernrate = element;
+            setState(() {});
+            selectedGovernrate?.governorateState?.forEach((elementStateList) {
+              ///TODO DONE
+              if (elementStateList.stateId ==
+                  result?.phoneNumberAdsState) {
+                selectedState = elementStateList;
+                setState(() {});
+                selectedState?.stateCity?.forEach((elementCityList) {
+                  ///TODO DONE
+                  if (elementCityList.cityId ==
+                      result?.phoneNumberAdsCity) {
+                    selectedCity  = elementCityList;
+                    setState(() {});
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+      setState(() {});
+    } else {
+      showSnackbar(context, 'Something went wrong!');
+      showProgressBar = false;
+      setState(() {});
+    }
+  }
+
 
   String _getTitleForIndex(int index) {
     if (index == 1 || index < topList.length) {
@@ -93,26 +165,55 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
     }
   }
 
+
   PostPhoneAd() async {
-    Map<String, dynamic> data = {
-      'category_id': widget.advertisement_category_id,
-      'phone_number_ads_user_id': userId,
-      'phone_number_ads_operators': selectedOperator?.operatorsId ?? "",
-      'phone_number_ads_governorate': selectedGovernrate?.governorateId ?? "",
-      'phone_number_ads_state': selectedState?.stateId ?? "",
-      'phone_number_ads_city': selectedCity?.cityId??"",
-      'phone_number_ads_phone': phone.text.toString(),
-      'phone_number_ads_price':price.text.toString(),
-      'phone_number_ads_description': description.text.toString(),
-    };
-    Map<String, dynamic> files = {'phone_number_ads_image': productPicture};
-    print("request ------------------$data   $files");
-    loader = true;
-    setState(() {});
-    var res = await Webservices.postDataWithImageFunction(
-        body: data, files: files, context: context, apiUrl: upload_phone_number_sell);
-    loader = false;
-    setState(() {});
+    Map<String, dynamic> data;
+    var res;
+    if(productPicture!=null){
+      data = {
+        'phone_number_ads_id': result?.phoneNumberAdsId ?? '',
+        'phone_number_ads_operators': selectedOperator?.operatorsId ?? "",
+        'phone_number_ads_governorate': selectedGovernrate?.governorateId ?? "",
+        'phone_number_ads_state': selectedState?.stateId ?? "",
+        'phone_number_ads_city': selectedCity?.cityId??"",
+        'phone_number_ads_phone': phone.text.toString(),
+        'phone_number_ads_price':price.text.toString(),
+        'phone_number_ads_description': description.text.toString(),
+      };
+      Map<String, dynamic> files = {'phone_number_ads_image': productPicture};
+      print("request ------------------$data   $files");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postDataWithImageFunction(
+          body: data,
+          files: files,
+          context: context,
+          apiUrl:edit_phone_number);
+      loader = false;
+      setState(() {});
+    }
+    else{
+      data = {
+        'phone_number_ads_image': '',
+        'phone_number_ads_id': result?.phoneNumberAdsId ?? '',
+        'phone_number_ads_operators': selectedOperator?.operatorsId ?? "",
+        'phone_number_ads_governorate': selectedGovernrate?.governorateId ?? "",
+        'phone_number_ads_state': selectedState?.stateId ?? "",
+        'phone_number_ads_city': selectedCity?.cityId??"",
+        'phone_number_ads_phone': phone.text.toString(),
+        'phone_number_ads_price':price.text.toString(),
+        'phone_number_ads_description': description.text.toString(),
+      };
+      print("request ------------------$data");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postData(
+          body: data,
+          context: context,
+          apiUrl:edit_phone_number);
+      loader = false;
+      setState(() {});
+    }
     final resdata = GeneralModel.fromJson(res);
     if (res['status'] == "1") {
       showSnackbar(context, resdata.message!);
@@ -140,14 +241,14 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex - 1);
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,
@@ -187,21 +288,6 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      /* _currentStepIndex <= index
-                                    ? SvgPicture.asset(
-                                        "assets/images/card_grey.svg",
-                                        height: 40,
-                                      )
-                                    : _currentStepIndex == index + 1
-                                        ? SvgPicture.asset(
-                                            'assets/images/card_orange.svg',
-                                            height: 45,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/card_green.svg',
-                                            height: 45,
-                                          ),*/
-
                       _currentStepIndex <= index
                           ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
                           : _currentStepIndex == index + 1
@@ -293,32 +379,59 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
         return PhoneNumberView();
     }
   }
+
+
   Widget PhoneNumberView() {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Text(
-                  "Phone",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                ),
+          SizedBox(height: 40),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 36),
+            child: TextField(
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              maxLength: 8,
+              autofocus: true,
+              cursorWidth: 0,
+              cursorHeight: 0,
+              cursorOpacityAnimates: false,
+              cursorColor: Color(0xff067445),
+              controller: phone,
+              keyboardType: TextInputType.number,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 8),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.zero,
+                counterText: '',
+                fillColor: Color(0xff067445),
+                filled: true,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Color(0xff067445))),
+                disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Color(0xff067445))),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Color(0xff067445))),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Color(0xff067445))),
               ),
-              commonTextFormField(
-                controller: phone,
-                hintText: 'Enter Phone',
-              ),
-              SizedBox(
-                height: 10,
-              ),
-            ],
+            ),
           ),
-          SizedBox(
-            height: 20,
+          Padding(
+            padding: EdgeInsets.only(left: 20, right: 45),
+            child: Image.asset(
+              'assets/images/ic_number_plate_image_one.png',
+              height: 40,
+            ),
           ),
+          SizedBox(height: 20),
           RoundButton(
             loading: loader,
             height: 45,
@@ -327,15 +440,13 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
-             if (phone.text.isEmpty) {
+              if (phone.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else {
-               _currentStepIndex = 2;
-               title = _getTitleForIndex(_currentStepIndex - 1);
-               _scrollToNextStep();
-               setState(() {
-
-               });
+                _currentStepIndex = 2;
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
               }
             },
           ),
@@ -343,105 +454,172 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
       ),
     );
   }
+
   Widget OperatorsView() {
     return ListView.builder(
-        itemCount: operatorsList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: operatorsList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedOperator == operatorsList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: operatorsList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: operatorsList[index],
+              groupValue: selectedOperator,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedOperator = operatorsList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${operatorsList[index].operatorsName}'),
-            groupValue: selectedOperator,
-            onChanged: (Operators? value) {
+            onTap: () {
               _currentStepIndex = 3;
-              selectedOperator = value;
+              selectedOperator = operatorsList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
+
   Widget GovernateView() {
     return ListView.builder(
-        itemCount: governateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: governateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGovernrate == governateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: governateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: governateList[index],
+              groupValue: selectedGovernrate,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedGovernrate = governateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                stateList = governateList[index].governorateState ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${governateList[index].governorateName}'),
-            groupValue: selectedGovernrate,
-            onChanged: (Governorate? value) {
+            onTap: () {
               _currentStepIndex = 4;
-              selectedGovernrate = value;
+              selectedGovernrate = governateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              stateList = governateList[index].governorateState??[];
+              stateList = governateList[index].governorateState ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget StateView() {
     return ListView.builder(
-        itemCount: stateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: stateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedState == stateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: stateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+                activeColor: MyColors.primaryColor,
+                value: stateList[index],
+                groupValue: selectedState,
+                onChanged: (value) {
+                  _currentStepIndex = 5;
+                  selectedState = stateList[index];
+                  title = _getTitleForIndex(_currentStepIndex - 1);
+                  cityList = stateList[index].stateCity ?? [];
+                  _scrollToNextStep();
+                  setState(() {});
+                }),
             title: Text('${stateList[index].stateName}'),
-            groupValue: selectedState,
-            onChanged: (GovernorateState? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedState = value;
+              selectedState = stateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              cityList = stateList[index].stateCity??[];
-
+              cityList = stateList[index].stateCity ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
+
   Widget CityView() {
     return ListView.builder(
-        itemCount: cityList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: cityList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCity == cityList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: cityList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: cityList[index],
+              groupValue: selectedCity,
+              onChanged: (value) {
+                _currentStepIndex = 6;
+                selectedCity = cityList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${cityList[index].cityName}'),
-            groupValue: selectedCity,
-            onChanged: (StateCity? value) {
+            onTap: () {
               _currentStepIndex = 6;
-              selectedCity = value;
+              selectedCity = cityList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget UploadPhotos() {
-    return Column(
+    return ListView(
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -455,19 +633,22 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
                   _image_camera_dialog(context);
                 },
                 child: productPicture == null
-                    ? Center(child: uploadProductContainer())
+                    ? result?.phoneNumberAdsImage != null &&
+                    result!.phoneNumberAdsImage!.isNotEmpty
+                    ? Center(child: displayImageNetwork())
+                    : Center(child: uploadProductContainer())
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(
-          height: 50,
-        ),
+        SizedBox(height: 20),
         RoundButton(
           height: 45,
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null) {
+            if (productPicture != null ||
+                (result != null && result!.phoneNumberAdsImage != null)) {
+              print(Uri.parse(result!.phoneNumberAdsImage!).pathSegments.last);
               _currentStepIndex = 7;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -507,7 +688,7 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Text(
-                  phone.text.toString(),
+                  'Enter Phone',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -540,7 +721,7 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
             loading: loader,
             height: 45,
             borderRadius: 10,
-            title: 'All Set! Publish your Ad',
+            title: 'All Set! Update your Ad',
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
@@ -698,5 +879,20 @@ class _UpdatePhoneNumbersAdState extends State<UpdatePhoneNumbersAd> {
         ),
       ),
     );
+  }
+
+  displayImageNetwork() {
+    if (result!.phoneNumberAdsImage != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          result!.phoneNumberAdsImage!,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ),
+      );
+    } else {
+      return Text("No file is selected");
+    }
   }
 }

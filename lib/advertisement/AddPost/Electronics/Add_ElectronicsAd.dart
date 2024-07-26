@@ -12,14 +12,17 @@ import '../../../View/Utils/CustomSnackBar.dart';
 import '../../../View/Utils/GlobalData.dart';
 import '../../../View/Utils/webService.dart';
 import '../../../common/common_widgets.dart';
+import '../../UpdatePosts/update_VehiclesMake.dart';
 import '../../ad_bottom_bar.dart';
 
 class AddElectronicsAd extends StatefulWidget {
   final String advertisement_category_id;
   final String advertisement_sub_category_id;
-  const AddElectronicsAd({super.key,
-    required this.advertisement_category_id,
-    required this.advertisement_sub_category_id});
+
+  const AddElectronicsAd(
+      {super.key,
+      required this.advertisement_category_id,
+      required this.advertisement_sub_category_id});
 
   @override
   State<AddElectronicsAd> createState() => _AddElectronicsAdState();
@@ -34,8 +37,8 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
     'Model',
     'Storage',
     'Condition',
-    'Warrenty',
-    'Governate',
+    'Warranty',
+    'Governorate',
     'State',
     'City',
     'Upload Photos',
@@ -93,9 +96,9 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
       electronicsBrandResult = resdata.result!;
       brandList = electronicsBrandResult!.brand ?? [];
       storageList = electronicsBrandResult!.storage ?? [];
-      conditionList = electronicsBrandResult!.condition??[];
-      warrentyList = electronicsBrandResult!.warranty??[];
-      governateList = electronicsBrandResult!.governorate??[];
+      conditionList = electronicsBrandResult!.condition ?? [];
+      warrentyList = electronicsBrandResult!.warranty ?? [];
+      governateList = electronicsBrandResult!.governorate ?? [];
       setState(() {});
     } else {
       showSnackbar(context, resdata.message ?? '');
@@ -117,10 +120,11 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
       'electronics_ads_user_id': userId,
       'electronics_ads_storage': selectedStorage?.storageId ?? '',
       'electronics_ads_brand': selectedBrand?.brandId ?? '',
+      'electronics_ads_brand_model_id': selectedModel?.modelId ?? '',
       'electronics_ads_condition': selectedCondition?.conditionId ?? '',
       'electronics_ads_warranty': selectedWarrenty?.warrantyId ?? '',
-      'electronics_ads_governorate': selectedGovernate?.governorateId ??'',
-      'electronics_ads_state': selectedState?.stateId ??'',
+      'electronics_ads_governorate': selectedGovernate?.governorateId ?? '',
+      'electronics_ads_state': selectedState?.stateId ?? '',
       'electronics_ads_city': selectedCity?.cityId ?? '',
       'electronics_ads_description': description.text,
       'electronics_ads_price': price.text,
@@ -131,7 +135,12 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
     loader = true;
     setState(() {});
     var res = await Webservices.postDataWithImageFunction(
-        body: data, files: files, context: context, apiUrl: widget.advertisement_category_id == '7'? uploadElectronics_sell : uploadElectronics_buy);
+        body: data,
+        files: files,
+        context: context,
+        apiUrl: widget.advertisement_category_id == '7'
+            ? uploadElectronics_sell
+            : uploadElectronics_buy);
     loader = false;
     setState(() {});
     final resdata = GeneralModel.fromJson(res);
@@ -161,14 +170,14 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,
@@ -188,108 +197,105 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
       ),
       body: showProgressBar
           ? Center(
-        child: CircularProgressIndicator(
-          color: MyColors.primaryColor,
-        ),
-      )
+              child: CircularProgressIndicator(
+                color: MyColors.primaryColor,
+              ),
+            )
           : electronicsBrandResult == null
-          ? Image.asset("assets/images/NoDataFound.png")
-          : Column(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-              child: Row(
-                children: List.generate(topList.length, (index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      /* _currentStepIndex <= index
-                                    ? SvgPicture.asset(
-                                        "assets/images/card_grey.svg",
-                                        height: 40,
+              ? Image.asset("assets/images/NoDataFound.png")
+              : Column(
+                  children: [
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                        child: Row(
+                          children: List.generate(topList.length, (index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                _currentStepIndex <= index
+                                    ? Image.asset(
+                                        'assets/icons/ic_card.png',
+                                        height: 28,
+                                        width: 28,
                                       )
                                     : _currentStepIndex == index + 1
-                                        ? SvgPicture.asset(
-                                            'assets/images/card_orange.svg',
-                                            height: 45,
+                                        ? Image.asset(
+                                            'assets/icons/ic_card_orange.png',
+                                            height: 40,
+                                            width: 40,
                                           )
-                                        : SvgPicture.asset(
-                                            'assets/images/card_green.svg',
-                                            height: 45,
-                                          ),*/
-
-                      _currentStepIndex <= index
-                          ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
-                          : _currentStepIndex == index + 1
-                          ? Image.asset('assets/icons/ic_card_orange.png',height: 40,width: 40,)
-                          : Image.asset('assets/icons/ic_card_green.png',height: 40,width: 40,),
-                      SizedBox(width: 14),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            topList[index],
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          if (_getSelectedValueForIndex(index)
-                              .isNotEmpty)
-                            Text(
-                              _getSelectedValueForIndex(index),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                              ),
-                            ),
-                        ],
+                                        : Image.asset(
+                                            'assets/icons/ic_card_green.png',
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                SizedBox(width: 14),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      topList[index],
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    if (_getSelectedValueForIndex(index)
+                                        .isNotEmpty)
+                                      Text(
+                                        _getSelectedValueForIndex(index),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                SizedBox(width: 7),
+                                if (index != topList.length - 1)
+                                  SizedBox(
+                                      width: 20,
+                                      child: Divider(
+                                        color: Colors.grey.withOpacity(.2),
+                                        thickness: 2,
+                                      )),
+                                if (index != topList.length - 1)
+                                  SizedBox(width: 7),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
-                      SizedBox(width: 7),
-                      if (index != topList.length - 1)
-                        SizedBox(
-                            width: 20,
-                            child: Divider(
-                              color: Colors.grey.withOpacity(.2),
-                              thickness: 2,
-                            )),
-                      if (index != topList.length - 1)
-                        SizedBox(width: 7),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xfff8f2ee),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14),
-                  topRight: Radius.circular(14),
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color(0xfff8f2ee),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(14),
+                            topRight: Radius.circular(14),
+                          ),
+                        ),
+                        height: MediaQuery.of(context).size.height - 200,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: tabsScreens(_currentStepIndex),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              height: MediaQuery.of(context).size.height - 200,
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: tabsScreens(_currentStepIndex),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -322,201 +328,326 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
 
   Widget BrandView() {
     return ListView.builder(
-        itemCount: brandList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: brandList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedBrand == brandList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: brandList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: brandList[index],
+              groupValue: selectedBrand,
+              onChanged: (value) {
+                _currentStepIndex = 2;
+                selectedBrand = brandList[index];
+                modelList = brandList[index].brandModel ?? [];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${brandList[index].name}'),
-            groupValue: selectedBrand,
-            onChanged: (Brand? value) {
+            onTap: () {
               _currentStepIndex = 2;
-              selectedBrand = value;
-              modelList = brandList[index].brandModel??[];
+              selectedBrand = brandList[index];
+              modelList = brandList[index].brandModel ?? [];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget Models() {
     return ListView.builder(
-        itemCount: modelList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: modelList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModel == modelList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: modelList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: modelList[index],
+              groupValue: selectedModel,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedModel = modelList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${modelList[index].modelName}'),
-            groupValue: selectedModel,
-            onChanged: (BrandModel? value) {
+            onTap: () {
               _currentStepIndex = 3;
-              selectedModel = value;
+              selectedModel = modelList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget StorageView() {
     return ListView.builder(
-        itemCount: storageList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: storageList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedStorage == storageList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: storageList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: storageList[index],
+              groupValue: selectedStorage,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedStorage = storageList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${storageList[index].storageName}'),
-            groupValue: selectedStorage,
-            onFocusChange: (value) {
-              print("gdhjsgj...$value");
-            },
-            onChanged: (Storage? value) {
-              _currentStepIndex = 5;
-              selectedStorage = value;
+            onTap: () {
+              _currentStepIndex = 4;
+              selectedStorage = storageList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget ConditionView() {
     return ListView.builder(
-        itemCount: conditionList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: conditionList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCondition == conditionList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: conditionList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: conditionList[index],
+              groupValue: selectedCondition,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedCondition = conditionList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${conditionList[index].conditionName}'),
-            groupValue: selectedCondition,
-            onChanged: (Condition? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedCondition = value;
+              selectedCondition = conditionList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget WarrentyView() {
     return ListView.builder(
         itemCount: warrentyList.length,
-        itemBuilder: (context, index) => Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: warrentyList[index],
-            title: Text('${warrentyList[index].warrantyName}'),
-            groupValue: selectedWarrenty,
-            onChanged: (Warranty? value) {
-              _currentStepIndex = 6;
-              selectedWarrenty = value;
-              title = _getTitleForIndex(_currentStepIndex - 1);
-              _scrollToNextStep();
-              setState(() {});
-            },
-          ),
-        ));
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: selectedWarrenty == warrentyList[index]
+                            ? MyColors.primaryColor
+                            : Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: ListTile(
+                  leading: SquareRadio(
+                    activeColor: MyColors.primaryColor,
+                    value: warrentyList[index],
+                    groupValue: selectedWarrenty,
+                    onChanged: (value) {
+                      _currentStepIndex = 6;
+                      selectedWarrenty = warrentyList[index];
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+                      _scrollToNextStep();
+                      setState(() {});
+                    },
+                  ),
+                  title: Text('${warrentyList[index].warrantyName}'),
+                  onTap: () {
+                    _currentStepIndex = 6;
+                    selectedWarrenty = warrentyList[index];
+                    title = _getTitleForIndex(_currentStepIndex - 1);
+                    _scrollToNextStep();
+                    setState(() {});
+                  },
+                ),
+              ),
+            ));
   }
 
   Widget GovernateView() {
     return ListView.builder(
-        itemCount: governateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: governateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGovernate == governateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: governateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+                activeColor: MyColors.primaryColor,
+                value: governateList[index],
+                groupValue: selectedGovernate,
+                onChanged: (value) {
+                  _currentStepIndex = 7;
+                  selectedGovernate = value;
+                  title = _getTitleForIndex(_currentStepIndex - 1);
+                  stateList = governateList[index].governorateState ?? [];
+                  _scrollToNextStep();
+                  setState(() {});
+                }),
             title: Text('${governateList[index].governorateName}'),
-            groupValue: selectedGovernate,
-            onChanged: (Governorate? value) {
+            onTap: () {
               _currentStepIndex = 7;
-              selectedGovernate = value;
+              selectedGovernate = governateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              stateList = governateList[index].governorateState??[];
+              stateList = governateList[index].governorateState ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget State() {
     return ListView.builder(
-        itemCount: stateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: stateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedState == stateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: stateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: stateList[index],
+              groupValue: selectedState,
+              onChanged: (value) {
+                _currentStepIndex = 8;
+                selectedState = stateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                cityList = stateList[index].stateCity ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${stateList[index].stateName}'),
-            groupValue: selectedState,
-            onChanged: (GovernorateState? value) {
+            onTap: () {
               _currentStepIndex = 8;
-              selectedState = value;
+              selectedState = stateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              cityList = stateList[index].stateCity??[];
-
+              cityList = stateList[index].stateCity ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
+
   Widget City() {
     return ListView.builder(
-        itemCount: cityList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: cityList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCity == cityList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: cityList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: cityList[index],
+              groupValue: selectedCity,
+              onChanged: (value) {
+                _currentStepIndex = 9;
+                selectedCity = cityList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${cityList[index].cityName}'),
-            groupValue: selectedCity,
-            onChanged: (StateCity? value) {
+            onTap: () {
               _currentStepIndex = 9;
-              selectedCity = value;
+              selectedCity = cityList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget UploadPhotos() {
@@ -590,7 +721,6 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
               SizedBox(
                 height: 10,
               ),
-
               Text(
                 "Phone",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
@@ -630,7 +760,7 @@ class _AddElectronicsAdState extends State<AddElectronicsAd> {
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
-               if (price.text.isEmpty) {
+              if (price.text.isEmpty) {
                 showSnackbar(context, "Enter price");
               } else if (phone.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");

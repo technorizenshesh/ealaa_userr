@@ -25,7 +25,7 @@ class VehiclesMakeResult {
   String? type;
   String? categoryId;
   List<Model>? model;
-  List<YearModel>? year;
+  List<YearModelForIdName>? year;
   List<IdNameModel>? condition;
   List<IdNameModel>? engineSize;
   List<IdNameModel>? doors;
@@ -79,9 +79,9 @@ class VehiclesMakeResult {
       });
     }
     if (json['year'] != null) {
-      year = <YearModel>[];
+      year = <YearModelForIdName>[];
       json['year'].forEach((v) {
-        year!.add(new YearModel.fromJson(v));
+        year!.add(new YearModelForIdName.fromJson(v));
       });
     }
     if (json['condition'] != null) {
@@ -231,6 +231,8 @@ class Model {
   }
 }
 
+
+
 class ModelTrim {
   String? id;
   String? name;
@@ -296,13 +298,13 @@ class ModelYear {
   }
 }
 
-class YearModel {
+class YearModelForIdName {
   String? id;
   String? year;
 
-  YearModel({this.id, this.year});
+  YearModelForIdName({this.id, this.year});
 
-  YearModel.fromJson(Map<String, dynamic> json) {
+  YearModelForIdName.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     year = json['year'];
   }

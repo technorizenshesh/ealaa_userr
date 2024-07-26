@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:ealaa_userr/common/common_widgets.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 

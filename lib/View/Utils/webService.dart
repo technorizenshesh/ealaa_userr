@@ -248,14 +248,14 @@ class Webservices {
     print('The request body is $body');
     var url = Uri.parse(apiUrl);
     log(apiUrl);
-
     try {
       var request = http.MultipartRequest("POST", url);
+
       body.forEach((key, value) {
         request.fields[key] = value;
       });
 
-      if (files != null && files.isNotEmpty) {
+      if (files.isNotEmpty) {
         for (var key in files.keys) {
           request.files.add(await http.MultipartFile.fromPath(key, files[key].path));
         }

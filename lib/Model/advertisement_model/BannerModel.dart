@@ -16,38 +16,22 @@ class AdsBannerModel {
     status = json['status'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.result != null) {
-      data['result'] = this.result!.map((v) => v.toJson()).toList();
-    }
-    data['message'] = this.message;
-    data['status'] = this.status;
-    return data;
-  }
 }
 
 class AdsBannerResult {
   String? id;
   String? type;
   String? image;
+  String? urlLink;
   String? dateTime;
 
-  AdsBannerResult({this.id, this.type, this.image, this.dateTime});
+  AdsBannerResult({this.id, this.type, this.image,this.urlLink, this.dateTime});
 
   AdsBannerResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
     image = json['image'];
     dateTime = json['date_time'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['type'] = this.type;
-    data['image'] = this.image;
-    data['date_time'] = this.dateTime;
-    return data;
+    urlLink = json['url_link'];
   }
 }

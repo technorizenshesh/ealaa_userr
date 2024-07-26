@@ -31,7 +31,7 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
     'Letter',
     'Vehicle Number',
     'Plate Type',
-    'Governate',
+    'Governorate',
     'Upload Photos',
     'Additional Details',
   ];
@@ -149,14 +149,14 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,
@@ -181,21 +181,21 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
               ),
             )
           : lettersList.isEmpty
-          ? Image.asset("assets/images/NoDataFound.png")
-          : Column(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-              child: Row(
-                children: List.generate(topList.length, (index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      /* _currentStepIndex <= index
+              ? Image.asset("assets/images/NoDataFound.png")
+              : Column(
+                  children: [
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                        child: Row(
+                          children: List.generate(topList.length, (index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                /* _currentStepIndex <= index
                                     ? SvgPicture.asset(
                                         "assets/images/card_grey.svg",
                                         height: 40,
@@ -209,74 +209,86 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
                                             'assets/images/card_green.svg',
                                             height: 45,
                                           ),*/
-                      _currentStepIndex <= index
-                          ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
-                          : _currentStepIndex == index + 1
-                          ? Image.asset('assets/icons/ic_card_orange.png',height: 40,width: 40,)
-                          : Image.asset('assets/icons/ic_card_green.png',height: 40,width: 40,),
-                      SizedBox(width: 14),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            topList[index],
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          if (_getSelectedValueForIndex(index)
-                              .isNotEmpty)
-                            Text(
-                              _getSelectedValueForIndex(index),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                              ),
-                            ),
-                        ],
+                                _currentStepIndex <= index
+                                    ? Image.asset(
+                                        'assets/icons/ic_card.png',
+                                        height: 28,
+                                        width: 28,
+                                      )
+                                    : _currentStepIndex == index + 1
+                                        ? Image.asset(
+                                            'assets/icons/ic_card_orange.png',
+                                            height: 40,
+                                            width: 40,
+                                          )
+                                        : Image.asset(
+                                            'assets/icons/ic_card_green.png',
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                SizedBox(width: 14),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      topList[index],
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    if (_getSelectedValueForIndex(index)
+                                        .isNotEmpty)
+                                      Text(
+                                        _getSelectedValueForIndex(index),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                SizedBox(width: 7),
+                                if (index != topList.length - 1)
+                                  SizedBox(
+                                      width: 20,
+                                      child: Divider(
+                                        color: Colors.grey.withOpacity(.2),
+                                        thickness: 2,
+                                      )),
+                                if (index != topList.length - 1)
+                                  SizedBox(width: 7),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
-                      SizedBox(width: 7),
-                      if (index != topList.length - 1)
-                        SizedBox(
-                            width: 20,
-                            child: Divider(
-                              color: Colors.grey.withOpacity(.2),
-                              thickness: 2,
-                            )),
-                      if (index != topList.length - 1)
-                        SizedBox(width: 7),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xfff8f2ee),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14),
-                  topRight: Radius.circular(14),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xfff8f2ee),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(14),
+                            topRight: Radius.circular(14),
+                          ),
+                        ),
+                        height: MediaQuery.of(context).size.height - 200,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: tabsScreens(_currentStepIndex),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              height: MediaQuery.of(context).size.height - 200,
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: tabsScreens(_currentStepIndex),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -300,28 +312,102 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
   }
 
   Widget LetterScreen() {
-    return ListView.builder(
-        itemCount: lettersList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: lettersList[index],
-                title: Text('${lettersList[index].letterNameArabic}'),
-                subtitle: Text('${lettersList[index].letterNameEnglish}'),
-                groupValue: selectedLetter,
-                onChanged: (Letters? value) {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36),
+              child: TextField(
+                textAlign: TextAlign.center,
+                cursorWidth: 0,
+                cursorHeight: 0,
+                cursorOpacityAnimates: false,
+                maxLines: 1,
+                maxLength: 8,
+                autofocus: true,
+                controller: phone,
+                keyboardType: TextInputType.number,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 8),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.zero,
+                  counterText: '',
+                  fillColor: Color(0xfffff200),
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Color(0xffffb700))),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Color(0xffffb700))),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Color(0xffffb700))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Color(0xffffb700))),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 45),
+              child: Image.asset(
+                'assets/images/ic_number_plate_image_one.png',
+                height: 40,
+              ),
+            ),
+            SizedBox(height: 20),
+            RoundButton(
+              loading: loader,
+              height: 45,
+              borderRadius: 10,
+              title: 'Next',
+              fontsize: 18,
+              fontweight: FontWeight.w500,
+              onTap: () {
+                if (phone.text.isEmpty) {
+                  showSnackbar(context, "Enter phone number");
+                } else {
                   _currentStepIndex = 2;
-                  selectedLetter = value;
                   title = _getTitleForIndex(_currentStepIndex - 1);
                   _scrollToNextStep();
                   setState(() {});
-                },
-              ),
-            ));
+                }
+              },
+            ),
+          ],
+        ),
+        /*ListView.builder(
+          shrinkWrap: true,
+          itemCount: lettersList.length,
+          itemBuilder: (context, index) => Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.withOpacity(0.5)),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            margin: EdgeInsets.only(bottom: 15),
+            child: RadioListTile(
+              activeColor: MyColors.primaryColor,
+              value: lettersList[index],
+              title: Text('${lettersList[index].letterNameArabic}'),
+              subtitle: Text('${lettersList[index].letterNameEnglish}'),
+              groupValue: selectedLetter,
+              onChanged: (Letters? value) {
+                _currentStepIndex = 2;
+                selectedLetter = value;
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+          ),
+        ),*/
+      ],
+    );
   }
 
   Widget VehicleNumberScreen() {

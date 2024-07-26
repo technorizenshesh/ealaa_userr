@@ -22,6 +22,7 @@ class MyImages {
   static const mobile = 'assets/images/Mobile Number@2x.png';
   static const hide = 'assets/images/Hide-Password@2x.png';
   static const home = 'assets/images/Home-Active.png';
+  static const homeAds = 'assets/images/Home-ads.png';
   static const order = 'assets/images/Order.png';
   static const searchOrder = 'assets/images/searchIcon.png';
   static const wish = 'assets/images/WishListIcon.png';

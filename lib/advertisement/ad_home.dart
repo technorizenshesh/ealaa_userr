@@ -15,6 +15,7 @@ import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../View/Utils/ApiConstants.dart';
@@ -254,28 +255,41 @@ class _AdHomeState extends State<AdHome> {
               ),
               itemCount: adsBannerList.length,
               itemBuilder: (context, int index, int realIndex) {
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: adsBannerList[index].image!,
-                      fit: BoxFit.fill,
-                      placeholder: (context, url) => Center(
-                        child: Shimmer.fromColors(
-                          baseColor: MyColors.onSecondary.withOpacity(0.4),
-                          highlightColor:
-                              Theme.of(context).colorScheme.onSecondary,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height * 0.2,
-                            color: MyColors.onSecondary.withOpacity(0.4),
+                return GestureDetector(
+                  onTap: () async {
+                    final Uri url = Uri.parse(adsBannerList[index].urlLink ?? 'https://i.pinimg.com/originals/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.png');
+                    print('Attempting to launch $url');
+                    if (await canLaunchUrl(url)) {
+                      print('Launching $url');
+                      await launchUrl(url);
+                    } else {
+                      print('Could not launch $url');
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        imageUrl: adsBannerList[index].image!,
+                        fit: BoxFit.fill,
+                        placeholder: (context, url) => Center(
+                          child: Shimmer.fromColors(
+                            baseColor: MyColors.onSecondary.withOpacity(0.4),
+                            highlightColor:
+                                Theme.of(context).colorScheme.onSecondary,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              color: MyColors.onSecondary.withOpacity(0.4),
+                            ),
                           ),
                         ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
                 );
@@ -552,11 +566,11 @@ class _AdHomeState extends State<AdHome> {
                         return VehicleDetailScreen(
                           ads_post: getAdsWithCategoryHomeResult[index]
                                   .postListDetails?[j]
-                                  .adsId ??
+                                  .adsType ??
                               '',
                           ads_post_id: getAdsWithCategoryHomeResult[index]
                                   .postListDetails?[j]
-                                  .adsType ??
+                                  .adsId  ??
                               '',
                         );
                       },
@@ -597,11 +611,11 @@ class _AdHomeState extends State<AdHome> {
                         return VehiclePartsAndAccessoriesDetailScreen(
                           ads_post: getAdsWithCategoryHomeResult[index]
                               .postListDetails?[j]
-                              .adsId ??
+                              .adsType  ??
                               '',
                           ads_post_id: getAdsWithCategoryHomeResult[index]
                               .postListDetails?[j]
-                              .adsType ??
+                              .adsId ??
                               '',
                         );
                       },
@@ -642,11 +656,11 @@ class _AdHomeState extends State<AdHome> {
                         return VehicleNumberDetailScreen(
                           ads_post: getAdsWithCategoryHomeResult[index]
                               .postListDetails?[j]
-                              .adsId ??
+                              .adsType  ??
                               '',
                           ads_post_id: getAdsWithCategoryHomeResult[index]
                               .postListDetails?[j]
-                              .adsType ??
+                              .adsId ??
                               '',
                         );
                       },
@@ -688,11 +702,11 @@ class _AdHomeState extends State<AdHome> {
                         return RealEstateDetailScreen(
                           ads_post: getAdsWithCategoryHomeResult[index]
                                   .postListDetails?[j]
-                                  .adsId ??
+                                  .adsType  ??
                               '',
                           ads_post_id: getAdsWithCategoryHomeResult[index]
                                   .postListDetails?[j]
-                                  .adsType ??
+                                  .adsId ??
                               '',
                         );
                       },
@@ -734,11 +748,11 @@ class _AdHomeState extends State<AdHome> {
                         return ElectronicsDetailScreen(
                           ads_post: getAdsWithCategoryHomeResult[index]
                               .postListDetails?[j]
-                              .adsId ??
+                              .adsType ??
                               '',
                           ads_post_id: getAdsWithCategoryHomeResult[index]
                               .postListDetails?[j]
-                              .adsType ??
+                              . adsId ??
                               '',
                         );
                       },
@@ -779,11 +793,11 @@ class _AdHomeState extends State<AdHome> {
                         return PhoneNumberDetailScreen(
                           ads_post: getAdsWithCategoryHomeResult[index]
                                   .postListDetails![j]
-                                  .adsId ??
+                                  .adsType  ??
                               '',
                           ads_post_id: getAdsWithCategoryHomeResult[index]
                                   .postListDetails![j]
-                                  .adsType ??
+                                  .adsId ??
                               '',
                         );
                       },
@@ -824,11 +838,11 @@ class _AdHomeState extends State<AdHome> {
                         return AnimalsAndSuppliesDetailScreen(
                           ads_post: getAdsWithCategoryHomeResult[index]
                                   .postListDetails?[j]
-                                  .adsId ??
+                                  .adsType ??
                               '',
                           ads_post_id: getAdsWithCategoryHomeResult[index]
                                   .postListDetails?[j]
-                                  .adsType ??
+                                  . adsId??
                               '',
                         );
                       },

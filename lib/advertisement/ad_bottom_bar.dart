@@ -51,7 +51,7 @@ class AdBottomBarState extends State<AdBottomBar> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: ImageIcon(
-                AssetImage(MyImages.home),
+                AssetImage(MyImages.homeAds),
                 size: 22,
               ),
               label: 'Home',

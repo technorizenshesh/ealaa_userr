@@ -1,5 +1,7 @@
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
+import 'package:ealaa_userr/advertisement/UpdatePosts/update_PhonenumbersAd.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,7 +41,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
 
   getAdsPostDetails() async {
     var res = await Webservices.getMap(
-        "$baseUrl$get_ads_post_details?ads_post=${widget.ads_post_id}&ads_post_id=${widget.ads_post}");
+        "$baseUrl$get_ads_post_details?ads_post=${widget.ads_post}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
     showProgressBar = false;
     GetAdsPostDetailsModel getAdsPostDetailsModel =
         GetAdsPostDetailsModel.fromJson(res);
@@ -51,6 +53,13 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
       showProgressBar = false;
       setState(() {});
     }
+  }
+
+  adsPostDetailsFavourite() async {
+    await Webservices.getMap(
+        "$baseUrl$ads_post_details_favourite?ads_details_id=${result?.phoneNumberAdsId}&type=${widget.ads_post}&user_id=$userId");
+    setState(() {});
+    getAdsPostDetails();
   }
 
   @override
@@ -77,21 +86,47 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
             color: Colors.white,
           ),
         ),
-        /* actions: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.white)),
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-            margin: EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.file_upload_outlined,
-              color: Colors.white,
-              size: 25,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              try {
+                Uri uri = Uri.parse('qrImage');
+                Share.shareUri(uri);
+              } catch (e) {
+                print('Share Error: $e');
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.white)),
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              margin: EdgeInsets.only(right: 20),
+              child: Icon(
+                Icons.file_upload_outlined,
+                color: Colors.white,
+                size: 25,
+              ),
             ),
           ),
-        ],*/
-      ),
+          GestureDetector(
+            onTap: () {
+              adsPostDetailsFavourite();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.white)),
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              margin: EdgeInsets.only(right: 20),
+              child: Icon(
+                Icons.star,
+                color: result?.postFav == 'yes' ? Colors.yellow : Colors.white,
+                size: 25,
+              ),
+            ),
+          ),
+        ],      ),
       bottomNavigationBar: widget.user_id_value==userId?null:Material(
         elevation: 30,
         child: Padding(
@@ -221,7 +256,62 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 40),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 60),
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              readOnly: true,
+                              maxLines: 1,
+                              maxLength: 8,
+                              autofocus: true,
+                              controller: TextEditingController(text: result?.phoneNumberAdsPhone ?? ''),
+                              keyboardType: TextInputType.number,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 8),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.zero,
+                                counterText: '',
+                                fillColor: Color(0xff067445),
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                    BorderSide(color: Color(0xff067445))),
+                                disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                    BorderSide(color: Color(0xff067445))),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                    BorderSide(color: Color(0xff067445))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide:
+                                    BorderSide(color: Color(0xff067445))),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Image.asset(
+                              'assets/images/ic_number_plate_image_two.png',
+                              height: 80,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+                      /*Container(
                         width: width,
                         child: CachedNetworkImage(
                           imageUrl: result?.phoneNumberAdsImage ?? '',
@@ -243,7 +333,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
                         ),
-                      ),
+                      ),*/
                       SizedBox(
                         height: 20,
                       ),
@@ -320,6 +410,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                                           children: [
                                             Text(
                                               "${detailElements[index]['title']}",
+                                              maxLines: 1,
                                               style: TextStyle(
                                                   color: Colors.black
                                                       .withOpacity(0.5),
@@ -336,6 +427,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                                         ),
                                         Text(
                                           getTextMethod(index: index),
+                                          maxLines: 1,
                                           style: TextStyle(
                                             color:
                                                 Colors.black.withOpacity(0.7),
@@ -387,7 +479,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                           borderRadius: 10,
                           title: 'Update your post',
                           onTap: () {
-
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePhoneNumbersAd(adType: result?.adsType ?? '', advertisement_category_id: result?.adsCategoryId ?? '', advertisement_sub_category_id: result?.adsSubCategoryId ?? '', ads_post_id: widget.ads_post_id ?? '',)));
                           },
                           fontsize: 18,
                           fontweight: FontWeight.w500,

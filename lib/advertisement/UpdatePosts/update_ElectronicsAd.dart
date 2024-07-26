@@ -1,25 +1,34 @@
 import 'dart:io';
 
 import 'package:ealaa_userr/Model/advertisement_model/ElectronicsBrandModel.dart';
+import 'package:ealaa_userr/Model/advertisement_model/get_ads_with_category_home_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Model/GeneralModel.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/GlobalData.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
+import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../ad_bottom_bar.dart';
 
 class UpdateElectronicsAd extends StatefulWidget {
+  final String adType;
   final String advertisement_category_id;
   final String advertisement_sub_category_id;
+  final String ads_post_id;
+
   const UpdateElectronicsAd({super.key,
+    required this.adType,
     required this.advertisement_category_id,
-    required this.advertisement_sub_category_id});
+    required this.advertisement_sub_category_id,
+    required this.ads_post_id,
+  });
 
   @override
   State<UpdateElectronicsAd> createState() => _UpdateElectronicsAdState();
@@ -34,8 +43,8 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
     'Model',
     'Storage',
     'Condition',
-    'Warrenty',
-    'Governate',
+    'Warranty',
+    'Governorate',
     'State',
     'City',
     'Upload Photos',
@@ -71,6 +80,8 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
 
+  PostListDetails? result;
+
   void _scrollToNextStep() {
     if (_currentStepIndex < topList.length) {
       double offset =
@@ -97,6 +108,7 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
       warrentyList = electronicsBrandResult!.warranty??[];
       governateList = electronicsBrandResult!.governorate??[];
       setState(() {});
+      getAdsPostDetails();
     } else {
       showSnackbar(context, resdata.message ?? '');
     }
@@ -110,30 +122,62 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
     }
   }
 
+
+
+
   ElectronicsAd() async {
-    Map<String, dynamic> data = {
-      'category_id': widget.advertisement_category_id,
-      'sub_category_id': widget.advertisement_sub_category_id,
-      'electronics_ads_user_id': userId,
-      'electronics_ads_storage': selectedStorage?.storageId ?? '',
-      'electronics_ads_brand': selectedBrand?.brandId ?? '',
-      'electronics_ads_condition': selectedCondition?.conditionId ?? '',
-      'electronics_ads_warranty': selectedWarrenty?.warrantyId ?? '',
-      'electronics_ads_governorate': selectedGovernate?.governorateId ??'',
-      'electronics_ads_state': selectedState?.stateId ??'',
-      'electronics_ads_city': selectedCity?.cityId ?? '',
-      'electronics_ads_description': description.text,
-      'electronics_ads_price': price.text,
-      'electronics_ads_post_id': '',
-    };
-    Map<String, dynamic> files = {'electronics_ads_image': productPicture};
-    print("request ------------------$data   $files");
-    loader = true;
-    setState(() {});
-    var res = await Webservices.postDataWithImageFunction(
-        body: data, files: files, context: context, apiUrl: widget.advertisement_category_id == '7'? uploadElectronics_sell : uploadElectronics_buy);
-    loader = false;
-    setState(() {});
+    Map<String, dynamic> data;
+    var res;
+    if(productPicture!=null){
+      Map<String, dynamic> data = {
+        'electronics_ads_id': result?.electronicsAdsId,
+        'electronics_ads_storage': selectedStorage?.storageId ?? '',
+        'electronics_ads_brand': selectedBrand?.brandId ?? '',
+        'electronics_ads_brand_model_id': selectedModel?.modelId ?? '',
+        'electronics_ads_condition': selectedCondition?.conditionId ?? '',
+        'electronics_ads_warranty': selectedWarrenty?.warrantyId ?? '',
+        'electronics_ads_governorate': selectedGovernate?.governorateId ??'',
+        'electronics_ads_state': selectedState?.stateId ??'',
+        'electronics_ads_city': selectedCity?.cityId ?? '',
+        'electronics_ads_description': description.text,
+        'electronics_ads_price': price.text,
+      };
+      Map<String, dynamic> files = {'electronics_ads_image': productPicture};
+      print("request ------------------$data   $files");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postDataWithImageFunction(
+          body: data,
+          files: files,
+          context: context,
+          apiUrl:edit_electronics);
+      loader = false;
+      setState(() {});
+    }else{
+      Map<String, dynamic> data = {
+        'electronics_ads_image': '',
+        'electronics_ads_id': result?.electronicsAdsId,
+        'electronics_ads_storage': selectedStorage?.storageId ?? '',
+        'electronics_ads_brand': selectedBrand?.brandId ?? '',
+        'electronics_ads_brand_model_id': selectedModel?.modelId ?? '',
+        'electronics_ads_condition': selectedCondition?.conditionId ?? '',
+        'electronics_ads_warranty': selectedWarrenty?.warrantyId ?? '',
+        'electronics_ads_governorate': selectedGovernate?.governorateId ??'',
+        'electronics_ads_state': selectedState?.stateId ??'',
+        'electronics_ads_city': selectedCity?.cityId ?? '',
+        'electronics_ads_description': description.text,
+        'electronics_ads_price': price.text,
+      };
+      print("request ------------------$data");
+      loader = true;
+      setState(() {});
+      res = await Webservices.postData(
+          body: data,
+          context: context,
+          apiUrl:edit_electronics);
+      loader = false;
+      setState(() {});
+    }
     final resdata = GeneralModel.fromJson(res);
     if (res['status'] == "1") {
       showSnackbar(context, resdata.message!);
@@ -146,6 +190,102 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
       showSnackbar(context, resdata.message!);
     }
   }
+
+
+
+  getAdsPostDetails() async {
+    var res = await Webservices.getMap(
+        "$baseUrl$get_ads_post_details?ads_post=${widget.adType}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
+    showProgressBar = false;
+    GetAdsPostDetailsModel getAdsPostDetailsModel =
+    GetAdsPostDetailsModel.fromJson(res);
+    setState(() {});
+    if (getAdsPostDetailsModel.result != null) {
+      result = getAdsPostDetailsModel.result!;
+      setState(() {});
+      price.text = result?.electronicsAdsPrice ?? '';
+      //phone.text = result?.electronics ?? '';
+      description.text = result?.electronicsAdsDescription ?? '';
+      if (brandList.isNotEmpty) {
+        brandList.forEach((element) {
+          ///TODO DONE
+          if (element.brandId == result?.electronicsAdsBrand) {
+            selectedBrand = element;
+            setState(() {});
+            selectedBrand?.brandModel?.forEach((elementBrandModel) {
+              ///TODO DONE
+              if (elementBrandModel.modelId == result?.electronicsAdsBrandModelId) {
+                selectedModel = elementBrandModel;
+                setState(() {});
+              }
+            });
+          }
+        });
+      }
+
+      if (storageList.isNotEmpty) {
+        storageList.forEach((element) {
+          ///TODO DONE
+          if (element.storageId == result?.electronicsAdsStorage) {
+            selectedStorage = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (conditionList.isNotEmpty) {
+        conditionList.forEach((element) {
+          ///TODO DONE
+          if (element.conditionId == result?.electronicsAdsCondition) {
+            selectedCondition = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (warrentyList.isNotEmpty) {
+        warrentyList.forEach((element) {
+          ///TODO DONE
+          if (element.warrantyId == result?.electronicsAdsWarranty) {
+            selectedWarrenty = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (governateList.isNotEmpty) {
+        governateList.forEach((element) {
+          ///TODO DONE
+          if (element.governorateId == result?.electronicsAdsGovernorate) {
+            selectedGovernate = element;
+            setState(() {});
+            selectedGovernate?.governorateState?.forEach((elementStateList) {
+              ///TODO DONE
+              if (elementStateList.stateId ==
+                  result?.electronicsAdsState) {
+                selectedState = elementStateList;
+                setState(() {});
+                selectedState?.stateCity?.forEach((elementCityList) {
+                  ///TODO DONE
+                  if (elementCityList.cityId ==
+                      result?.electronicsAdsCity) {
+                    selectedCity  = elementCityList;
+                    setState(() {});
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+      setState(() {});
+    } else {
+      showSnackbar(context, 'Something went wrong!');
+      showProgressBar = false;
+      setState(() {});
+    }
+  }
+
 
   @override
   void initState() {
@@ -320,226 +460,362 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
     }
   }
 
+
   Widget BrandView() {
     return ListView.builder(
-        itemCount: brandList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: brandList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedBrand == brandList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: brandList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: brandList[index],
+              groupValue: selectedBrand,
+              onChanged: (value) {
+                _currentStepIndex = 2;
+                selectedBrand = brandList[index];
+                modelList = brandList[index].brandModel ?? [];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${brandList[index].name}'),
-            groupValue: selectedBrand,
-            onChanged: (Brand? value) {
+            onTap: () {
               _currentStepIndex = 2;
-              selectedBrand = value;
-              modelList = brandList[index].brandModel??[];
+              selectedBrand = brandList[index];
+              modelList = brandList[index].brandModel ?? [];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget Models() {
     return ListView.builder(
-        itemCount: modelList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: modelList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModel == modelList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: modelList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: modelList[index],
+              groupValue: selectedModel,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedModel = modelList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${modelList[index].modelName}'),
-            groupValue: selectedModel,
-            onChanged: (BrandModel? value) {
+            onTap: () {
               _currentStepIndex = 3;
-              selectedModel = value;
+              selectedModel = modelList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget StorageView() {
     return ListView.builder(
-        itemCount: storageList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: storageList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedStorage == storageList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: storageList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: storageList[index],
+              groupValue: selectedStorage,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedStorage = storageList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${storageList[index].storageName}'),
-            groupValue: selectedStorage,
-            onFocusChange: (value) {
-              print("gdhjsgj...$value");
-            },
-            onChanged: (Storage? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedStorage = value;
+              selectedStorage = storageList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget ConditionView() {
     return ListView.builder(
-        itemCount: conditionList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: conditionList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCondition == conditionList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: conditionList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: conditionList[index],
+              groupValue: selectedCondition,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedCondition = conditionList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${conditionList[index].conditionName}'),
-            groupValue: selectedCondition,
-            onChanged: (Condition? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedCondition = value;
+              selectedCondition = conditionList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget WarrentyView() {
     return ListView.builder(
         itemCount: warrentyList.length,
-        itemBuilder: (context, index) => Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: warrentyList[index],
-            title: Text('${warrentyList[index].warrantyName}'),
-            groupValue: selectedWarrenty,
-            onChanged: (Warranty? value) {
-              _currentStepIndex = 6;
-              selectedWarrenty = value;
-              title = _getTitleForIndex(_currentStepIndex - 1);
-              _scrollToNextStep();
-              setState(() {});
-            },
+        itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                    color: selectedWarrenty == warrentyList[index]
+                        ? MyColors.primaryColor
+                        : Colors.grey.withOpacity(0.5)),
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: ListTile(
+              leading: SquareRadio(
+                activeColor: MyColors.primaryColor,
+                value: warrentyList[index],
+                groupValue: selectedWarrenty,
+                onChanged: (value) {
+                  _currentStepIndex = 6;
+                  selectedWarrenty = warrentyList[index];
+                  title = _getTitleForIndex(_currentStepIndex - 1);
+                  _scrollToNextStep();
+                  setState(() {});
+                },
+              ),
+              title: Text('${warrentyList[index].warrantyName}'),
+              onTap: () {
+                _currentStepIndex = 6;
+                selectedWarrenty = warrentyList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
           ),
         ));
   }
 
   Widget GovernateView() {
     return ListView.builder(
-        itemCount: governateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: governateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGovernate == governateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: governateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+                activeColor: MyColors.primaryColor,
+                value: governateList[index],
+                groupValue: selectedGovernate,
+                onChanged: (value) {
+                  _currentStepIndex = 7;
+                  selectedGovernate = value;
+                  title = _getTitleForIndex(_currentStepIndex - 1);
+                  stateList = governateList[index].governorateState ?? [];
+                  _scrollToNextStep();
+                  setState(() {});
+                }),
             title: Text('${governateList[index].governorateName}'),
-            groupValue: selectedGovernate,
-            onChanged: (Governorate? value) {
+            onTap: () {
               _currentStepIndex = 7;
-              selectedGovernate = value;
+              selectedGovernate = governateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              stateList = governateList[index].governorateState??[];
+              stateList = governateList[index].governorateState ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget State() {
     return ListView.builder(
-        itemCount: stateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: stateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedState == stateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: stateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: stateList[index],
+              groupValue: selectedState,
+              onChanged: (value) {
+                _currentStepIndex = 8;
+                selectedState = stateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                cityList = stateList[index].stateCity ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${stateList[index].stateName}'),
-            groupValue: selectedState,
-            onChanged: (GovernorateState? value) {
+            onTap: () {
               _currentStepIndex = 8;
-              selectedState = value;
+              selectedState = stateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              cityList = stateList[index].stateCity??[];
-
+              cityList = stateList[index].stateCity ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
+
   Widget City() {
     return ListView.builder(
-        itemCount: cityList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: cityList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCity == cityList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: cityList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: cityList[index],
+              groupValue: selectedCity,
+              onChanged: (value) {
+                _currentStepIndex = 9;
+                selectedCity = cityList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${cityList[index].cityName}'),
-            groupValue: selectedCity,
-            onChanged: (StateCity? value) {
+            onTap: () {
               _currentStepIndex = 9;
-              selectedCity = value;
+              selectedCity = cityList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget UploadPhotos() {
-    return Column(
+    return ListView(
       children: [
-        Center(
-          child: GestureDetector(
-              onTap: () {
-                _image_camera_dialog(context);
-              },
-              child: productPicture == null
-                  ? Center(child: uploadProductContainer())
-                  : Center(child: displayImage())),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Center(
+            child: GestureDetector(
+                onTap: () {
+                  _image_camera_dialog(context);
+                },
+                child: productPicture == null
+                    ? result?.electronicsAdsImage != null &&
+                    result!.electronicsAdsImage!.isNotEmpty
+                    ? Center(child: displayImageNetwork())
+                    : Center(child: uploadProductContainer())
+                    : Center(child: displayImage())),
+          ),
         ),
-        SizedBox(
-          height: 50,
-        ),
+        SizedBox(height: 20),
         RoundButton(
           height: 45,
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null) {
+            if (productPicture != null ||
+                (result != null && result!.electronicsAdsImage != null)) {
+              print(Uri.parse(result!.electronicsAdsImage!).pathSegments.last);
               _currentStepIndex = 10;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -745,6 +1021,22 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
             fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
+    } else {
+      return Text("No file is selected");
+    }
+  }
+
+
+  displayImageNetwork() {
+    if (result!.electronicsAdsImage != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          result!.electronicsAdsImage!,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ),
+      );
     } else {
       return Text("No file is selected");
     }

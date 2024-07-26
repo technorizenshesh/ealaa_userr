@@ -1,6 +1,8 @@
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
+import 'package:ealaa_userr/advertisement/UpdatePosts/update_AnimalsAd.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -44,7 +46,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
 
   getAdsPostDetails() async {
     var res = await Webservices.getMap(
-        "$baseUrl$get_ads_post_details?ads_post=${widget.ads_post_id}&ads_post_id=${widget.ads_post}");
+        "$baseUrl$get_ads_post_details?ads_post=${widget.ads_post}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
     showProgressBar = false;
     GetAdsPostDetailsModel getAdsPostDetailsModel =
         GetAdsPostDetailsModel.fromJson(res);
@@ -57,6 +59,13 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
       showProgressBar = false;
       setState(() {});
     }
+  }
+
+  adsPostDetailsFavourite() async {
+    await Webservices.getMap(
+        "$baseUrl$ads_post_details_favourite?ads_details_id=${result?.animalsAdsId}&type=${widget.ads_post}&user_id=$userId");
+    setState(() {});
+    getAdsPostDetails();
   }
 
   @override
@@ -85,18 +94,65 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
           ),
         ),
          actions: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.white)),
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-            margin: EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.file_upload_outlined,
-              color: Colors.white,
-              size: 25,
+          GestureDetector(
+            onTap: () {
+              try {
+                Uri uri = Uri.parse('qrImage');
+                Share.shareUri(uri);
+              } catch (e) {
+                print('Share Error: $e');
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.white)),
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              margin: EdgeInsets.only(right: 20),
+              child: Icon(
+                Icons.file_upload_outlined,
+                color: Colors.white,
+                size: 25,
+              ),
             ),
           ),
+           /*GestureDetector(
+             onTap: () {
+               adsPostDetailsFavourite();
+             },
+             child: Container(
+               decoration: BoxDecoration(
+                   color: Colors.white.withOpacity(.9),
+                   borderRadius: BorderRadius.circular(8),
+                   border: Border.all(color: Colors.white)),
+               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+               margin: EdgeInsets.only(right: 20),
+               child: Image.asset(
+                 result?.postFav == 'yes'
+                     ? 'assets/images/ic_fav_active.png'
+                     : 'assets/images/ic_fav_inactive.png',
+                 height: 24,
+                 width: 24,
+               ),
+             ),
+           ),*/
+           GestureDetector(
+             onTap: () {
+               adsPostDetailsFavourite();
+             },
+             child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.white)),
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              margin: EdgeInsets.only(right: 20),
+              child: Icon(
+                Icons.star,
+                color: result?.postFav == 'yes' ? Colors.yellow : Colors.white,
+                size: 25,
+              ),
+             ),
+           ),
         ],
       ),
       bottomNavigationBar: widget.user_id_value == userId ?null:Material(
@@ -402,7 +458,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                           borderRadius: 10,
                           title: 'Update your post',
                           onTap: () {
-
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateAnimalsAd(adType: result?.adsType ?? '', advertisement_category_id: result?.adsCategoryId ?? '', advertisement_sub_category_id: result?.adsSubCategoryId ?? '', ads_post_id: widget.ads_post_id ?? '')));
                           },
                           fontsize: 18,
                           fontweight: FontWeight.w500,

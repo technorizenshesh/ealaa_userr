@@ -12,14 +12,17 @@ import '../../../View/Utils/CustomSnackBar.dart';
 import '../../../View/Utils/GlobalData.dart';
 import '../../../View/Utils/webService.dart';
 import '../../../common/common_widgets.dart';
+import '../../UpdatePosts/update_VehiclesMake.dart';
 import '../../ad_bottom_bar.dart';
 
 class Add_AnimalsAd extends StatefulWidget {
   final String advertisement_category_id;
   final String advertisement_sub_category_id;
-  const Add_AnimalsAd({super.key,
-    required this.advertisement_category_id,
-    required this.advertisement_sub_category_id});
+
+  const Add_AnimalsAd(
+      {super.key,
+      required this.advertisement_category_id,
+      required this.advertisement_sub_category_id});
 
   @override
   State<Add_AnimalsAd> createState() => _Add_AnimalsAdState();
@@ -78,6 +81,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
       );
     }
   }
+
   //
   getListData() async {
     var res = await Webservices.getMap("$get_animals");
@@ -90,9 +94,9 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
 
       typeList = animalTypeResult!.type ?? [];
       genderList = animalTypeResult!.gender ?? [];
-      ageList = animalTypeResult!.age??[];
-      breedList = animalTypeResult!.breedOrigin??[];
-      governateList = animalTypeResult!.governorate??[];
+      ageList = animalTypeResult!.age ?? [];
+      breedList = animalTypeResult!.breedOrigin ?? [];
+      governateList = animalTypeResult!.governorate ?? [];
       setState(() {});
     } else {
       showSnackbar(context, resdata.message ?? '');
@@ -107,8 +111,6 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
     }
   }
 
-
-
   PostAnimalAd() async {
     Map<String, dynamic> data = {
       'category_id': widget.advertisement_category_id,
@@ -116,22 +118,25 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
       'animals_ads_user_id': userId,
       'animals_ads_type': selectedType?.typeId ?? "",
       'animals_ads_gender': selectedGender?.id ?? "",
-      'animals_ads_age': selectedAge?.ageId?? "",
-      'animals_ads_breed_origin': selectedBreed?.breedId??"",
-      'animals_ads_governorate': selectedGovernrate?.governorateId??"",
-      'animals_ads_state': selectedState?.stateId??"",
-      'animals_ads_city': selectedCity?.cityId??"",
+      'animals_ads_age': selectedAge?.ageId ?? "",
+      'animals_ads_breed_origin': selectedBreed?.breedId ?? "",
+      'animals_ads_governorate': selectedGovernrate?.governorateId ?? "",
+      'animals_ads_state': selectedState?.stateId ?? "",
+      'animals_ads_city': selectedCity?.cityId ?? "",
       'animals_ads_price': price.text.toString(),
       'animals_ads_distance_title': titlee.text.toString(),
-      'animals_ads_phone':phone.text.toString(),
-      'animals_ads_description':description.text.toString()
+      'animals_ads_phone': phone.text.toString(),
+      'animals_ads_description': description.text.toString()
     };
     Map<String, dynamic> files = {'animals_ads_image': productPicture};
     print("request ------------------$data   $files");
     loader = true;
     setState(() {});
     var res = await Webservices.postDataWithImageFunction(
-        body: data, files: files, context: context, apiUrl: upload_animals_sell);
+        body: data,
+        files: files,
+        context: context,
+        apiUrl: upload_animals_sell);
     loader = false;
     setState(() {});
     final resdata = GeneralModel.fromJson(res);
@@ -161,14 +166,14 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,
@@ -186,111 +191,107 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
           textAlign: TextAlign.center,
         ),
       ),
-      body:
-      showProgressBar
+      body: showProgressBar
           ? Center(
-        child: CircularProgressIndicator(
-          color: MyColors.primaryColor,
-        ),
-      )
+              child: CircularProgressIndicator(
+                color: MyColors.primaryColor,
+              ),
+            )
           : animalTypeResult == null
-          ? Image.asset("assets/images/NoDataFound.png")
-          : Column(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-              child: Row(
-                children: List.generate(topList.length, (index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      /* _currentStepIndex <= index
-                                    ? SvgPicture.asset(
-                                        "assets/images/card_grey.svg",
-                                        height: 40,
+              ? Image.asset("assets/images/NoDataFound.png")
+              : Column(
+                  children: [
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                        child: Row(
+                          children: List.generate(topList.length, (index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                _currentStepIndex <= index
+                                    ? Image.asset(
+                                        'assets/icons/ic_card.png',
+                                        height: 28,
+                                        width: 28,
                                       )
                                     : _currentStepIndex == index + 1
-                                        ? SvgPicture.asset(
-                                            'assets/images/card_orange.svg',
-                                            height: 45,
+                                        ? Image.asset(
+                                            'assets/icons/ic_card_orange.png',
+                                            height: 40,
+                                            width: 40,
                                           )
-                                        : SvgPicture.asset(
-                                            'assets/images/card_green.svg',
-                                            height: 45,
-                                          ),*/
-
-                      _currentStepIndex <= index
-                          ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
-                          : _currentStepIndex == index + 1
-                          ? Image.asset('assets/icons/ic_card_orange.png',height: 40,width: 40,)
-                          : Image.asset('assets/icons/ic_card_green.png',height: 40,width: 40,),
-                      SizedBox(width: 14),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            topList[index],
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          if (_getSelectedValueForIndex(index)
-                              .isNotEmpty)
-                            Text(
-                              _getSelectedValueForIndex(index),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                              ),
-                            ),
-                        ],
+                                        : Image.asset(
+                                            'assets/icons/ic_card_green.png',
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                SizedBox(width: 14),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      topList[index],
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    if (_getSelectedValueForIndex(index)
+                                        .isNotEmpty)
+                                      Text(
+                                        _getSelectedValueForIndex(index),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                SizedBox(width: 7),
+                                if (index != topList.length - 1)
+                                  SizedBox(
+                                      width: 20,
+                                      child: Divider(
+                                        color: Colors.grey.withOpacity(.2),
+                                        thickness: 2,
+                                      )),
+                                if (index != topList.length - 1)
+                                  SizedBox(width: 7),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
-                      SizedBox(width: 7),
-                      if (index != topList.length - 1)
-                        SizedBox(
-                            width: 20,
-                            child: Divider(
-                              color: Colors.grey.withOpacity(.2),
-                              thickness: 2,
-                            )),
-                      if (index != topList.length - 1)
-                        SizedBox(width: 7),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xfff8f2ee),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14),
-                  topRight: Radius.circular(14),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xfff8f2ee),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(14),
+                            topRight: Radius.circular(14),
+                          ),
+                        ),
+                        height: MediaQuery.of(context).size.height - 200,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: tabsScreens(_currentStepIndex),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              height: MediaQuery.of(context).size.height - 200,
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: tabsScreens(_currentStepIndex),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -321,177 +322,287 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
 
   Widget TypeView() {
     return ListView.builder(
-        itemCount: typeList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: typeList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedType == typeList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: typeList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: typeList[index],
+              groupValue: selectedType,
+              onChanged: (value) {
+                _currentStepIndex = 2;
+                selectedType = typeList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${typeList[index].typeName}'),
-            groupValue: selectedType,
-            onChanged: (Type? value) {
+            onTap: () {
               _currentStepIndex = 2;
-              selectedType = value;
+              selectedType = typeList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget GenderView() {
     return ListView.builder(
-        itemCount: genderList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: genderList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGender == genderList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: genderList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: genderList[index],
+              groupValue: selectedGender,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedGender = genderList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${genderList[index].name}'),
-            groupValue: selectedGender,
-            onChanged: (Gender? value) {
+            onTap: () {
               _currentStepIndex = 3;
-              selectedGender = value;
+              selectedGender = genderList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget AgeView() {
     return ListView.builder(
-        itemCount: ageList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: ageList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedAge == ageList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: ageList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: ageList[index],
+              groupValue: selectedAge,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedAge = ageList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${ageList[index].ageName}'),
-            groupValue: selectedAge,
-            onFocusChange: (value) {
-              print("gdhjsgj...$value");
-            },
-            onChanged: (Age? value) {
+            onTap: () {
               _currentStepIndex = 4;
-              selectedAge = value;
+              selectedAge = ageList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget BreedView() {
     return ListView.builder(
-        itemCount: breedList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: breedList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedBreed == breedList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: breedList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: breedList[index],
+              groupValue: selectedBreed,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedBreed = breedList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${breedList[index].breedName}'),
-            groupValue: selectedBreed,
-            onChanged: (BreedOrigin? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedBreed = value;
+              selectedBreed = breedList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget GovernateView() {
     return ListView.builder(
-        itemCount: governateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: governateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGovernrate == governateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: governateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: governateList[index],
+              groupValue: selectedGovernrate,
+              onChanged: (value) {
+                _currentStepIndex = 6;
+                selectedGovernrate = governateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                stateList = governateList[index].governorateState ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${governateList[index].governorateName}'),
-            groupValue: selectedGovernrate,
-            onChanged: (Governorate? value) {
+            onTap: () {
               _currentStepIndex = 6;
-              selectedGovernrate = value;
+              selectedGovernrate = governateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              stateList = governateList[index].governorateState??[];
+              stateList = governateList[index].governorateState ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget StateView() {
     return ListView.builder(
-        itemCount: stateList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: stateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedState == stateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: stateList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: stateList[index],
+              groupValue: selectedState,
+              onChanged: (value) {
+                _currentStepIndex = 7;
+                selectedState = stateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                cityList = stateList[index].stateCity ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${stateList[index].stateName}'),
-            groupValue: selectedState,
-            onChanged: (GovernorateState? value) {
+            onTap: () {
               _currentStepIndex = 7;
-              selectedState = value;
+              selectedState = stateList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              cityList = stateList[index].stateCity??[];
-
+              cityList = stateList[index].stateCity ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
+
   Widget CityView() {
     return ListView.builder(
-        itemCount: cityList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: cityList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCity == cityList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: cityList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: cityList[index],
+              groupValue: selectedCity,
+              onChanged: (value) {
+                _currentStepIndex = 8;
+                selectedCity = value;
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${cityList[index].cityName}'),
-            groupValue: selectedCity,
-            onChanged: (StateCity? value) {
+            onTap: () {
               _currentStepIndex = 8;
-              selectedCity = value;
+              selectedCity = cityList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
- }
+        ),
+      ),
+    );
+  }
 
   Widget UploadPhotos() {
     return Column(
@@ -512,9 +623,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(
-          height: 50,
-        ),
+        SizedBox(height: 50),
         RoundButton(
           height: 45,
           borderRadius: 10,
@@ -578,7 +687,6 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
                 SizedBox(
                   height: 10,
                 ),
-
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Text(
@@ -629,7 +737,6 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
                 showSnackbar(context, "Enter phone number");
               } else {
                 PostAnimalAd();
-
               }
             },
           ),
@@ -652,7 +759,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
         return selectedGovernrate?.governorateName ?? "";
       case 5:
         return selectedState?.stateName ?? "";
-      case 6 :
+      case 6:
         return selectedCity?.cityName ?? "";
       case 7:
         return selectedImage ?? "";

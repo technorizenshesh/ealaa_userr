@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:ealaa_userr/Model/advertisement_model/VehicleLetterModel.dart';
+import 'package:ealaa_userr/Model/advertisement_model/get_ads_with_category_home_model.dart';
 import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../Model/GeneralModel.dart';
+import '../../Model/advertisement_model/get_ads_post_details_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
@@ -15,9 +17,18 @@ import '../../common/common_widgets.dart';
 import '../ad_bottom_bar.dart';
 
 class UpdateVehicleNumbers extends StatefulWidget {
-  final String type;
+  final String adType;
+  final String advertisement_category_id;
+  final String advertisement_sub_category_id;
+  final String ads_post_id;
 
-  const UpdateVehicleNumbers({super.key, required this.type});
+  const UpdateVehicleNumbers({
+    super.key,
+    required this.adType,
+    required this.advertisement_category_id,
+    required this.advertisement_sub_category_id,
+    required this.ads_post_id,
+  });
 
   @override
   State<UpdateVehicleNumbers> createState() => _UpdateVehicleNumbersState();
@@ -31,7 +42,7 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
     'Letter',
     'Vehicle Number',
     'Plate Type',
-    'Governate',
+    'Governorate',
     'Upload Photos',
     'Additional Details',
   ];
@@ -54,6 +65,8 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
   TextEditingController vehicleNumber = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
+
+  PostListDetails? result;
 
   void _scrollToNextStep() {
     if (_currentStepIndex < topList.length) {
@@ -79,10 +92,74 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
       plateTypeList = vehicleLetterResult?.plateTypes ?? [];
       governateList = vehicleLetterResult?.governorate ?? [];
       setState(() {});
+      getAdsPostDetails();
     } else {
       showSnackbar(context, resdata.message ?? '');
     }
   }
+
+
+  getAdsPostDetails() async {
+    var res = await Webservices.getMap(
+        "$baseUrl$get_ads_post_details?ads_post=${widget.adType}&ads_post_id=${widget.ads_post_id}&user_id=$userId");
+    showProgressBar = false;
+    GetAdsPostDetailsModel getAdsPostDetailsModel =
+    GetAdsPostDetailsModel.fromJson(res);
+    setState(() {});
+    if (getAdsPostDetailsModel.result != null) {
+      result = getAdsPostDetailsModel.result!;
+      setState(() {});
+      price.text = result?.vehicleNumberPrice ?? '';
+      phone.text = result?.vehicleNumberPhone ?? '';
+      description.text = result?.vehicleNumberDescription ?? '';
+
+      if (lettersList.isNotEmpty) {
+        lettersList.forEach((element) {
+          ///TODO DONE
+          if (element.letterId == result?.vehicleNumberLetterId) {
+            selectedLetter = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (lettersList.isNotEmpty) {
+        lettersList.forEach((element) {
+          ///TODO DONE
+          if (element.letterId == result?.vehicleNumberLetterId) {
+            selectedLetter = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (plateTypeList.isNotEmpty) {
+        plateTypeList.forEach((element) {
+          ///TODO DONE
+          if (element.plateTypeId == result?.vehicleNumberPlateTypeId) {
+            selectedPlateType = element;
+            setState(() {});
+          }
+        });
+      }
+
+      if (governateList.isNotEmpty) {
+        governateList.forEach((element) {
+          ///TODO DONE
+          if (element.governorateId == result?.vehicleNumberGovernorateId) {
+            selectedgovernate = element;
+            setState(() {});
+          }
+        });
+      }
+      setState(() {});
+    } else {
+      showSnackbar(context, 'Something went wrong!');
+      showProgressBar = false;
+      setState(() {});
+    }
+  }
+
 
   String _getTitleForIndex(int index) {
     if (index == 1 || index < topList.length) {
@@ -92,19 +169,19 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
     }
   }
 
-  PostRealStateAd() async {
+  editVehiclesNumbers() async {
     Map<String, dynamic> data = {
+      'vehicle_number_id': result?.vehicleNumberId ?? "",
       'vehicle_number_letter_id': selectedLetter?.letterId ?? "",
       'vehicle_number_plate_type_id': selectedPlateType?.plateTypeId ?? "",
       'vehicle_number_governorate_id': selectedgovernate?.governorateId ?? "",
-      'vehicle_number_ads_user_id': userId,
       'vehicle_number_state_id': "",
       'vehicle_number_city_id': "",
       'vehicle_number_price': price.text.toString(),
       'vehicle_number_english_title': '',
       'vehicle_number_arabic_title': '',
       'upload_vehicles_numbers': phone.text.toString(),
-      'vehicle_number': vehicleNumber.text.toString(),
+      'vehicle_number_phone': vehicleNumber.text.toString(),
       'vehicle_number_description': description.text.toString(),
     };
     Map<String, dynamic> files = {'vehicle_number_image': productPicture};
@@ -115,11 +192,7 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
         body: data,
         files: files,
         context: context,
-        apiUrl: (widget.type == 'For Sale')
-            ? upload_vehicles_numbers_for_sale
-            : (widget.type == 'For Rent')
-                ? upload_vehicles_numbers_for_rent
-                : upload_vehicles_numbers_for_wanted);
+        apiUrl: edit_vehicles_numbers);
     loader = false;
     setState(() {});
     final resdata = GeneralModel.fromJson(res);
@@ -195,20 +268,6 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      /* _currentStepIndex <= index
-                                    ? SvgPicture.asset(
-                                        "assets/images/card_grey.svg",
-                                        height: 40,
-                                      )
-                                    : _currentStepIndex == index + 1
-                                        ? SvgPicture.asset(
-                                            'assets/images/card_orange.svg',
-                                            height: 45,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/card_green.svg',
-                                            height: 45,
-                                          ),*/
                       _currentStepIndex <= index
                           ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
                           : _currentStepIndex == index + 1
@@ -422,7 +481,7 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
   }
 
   Widget UploadPhotos() {
-    return Column(
+    return ListView(
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -436,19 +495,22 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
                   _image_camera_dialog(context);
                 },
                 child: productPicture == null
-                    ? Center(child: uploadProductContainer())
+                    ? result?.vehicleNumberImage != null &&
+                    result!.vehicleNumberImage!.isNotEmpty
+                    ? Center(child: displayImageNetwork())
+                    : Center(child: uploadProductContainer())
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(
-          height: 50,
-        ),
+        SizedBox(height: 20),
         RoundButton(
           height: 45,
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null) {
+            if (productPicture != null ||
+                (result != null && result!.vehicleNumberImage != null)) {
+              print(Uri.parse(result!.vehicleNumberImage!).pathSegments.last);
               _currentStepIndex = 6;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -520,7 +582,7 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
             loading: loader,
             height: 45,
             borderRadius: 10,
-            title: 'All Set! Publish your Ad',
+            title: 'All Set! Update your Ad',
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
@@ -531,7 +593,7 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else {
-                PostRealStateAd();
+                editVehiclesNumbers();
               }
             },
           ),
@@ -631,6 +693,21 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
             fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
+    } else {
+      return Text("No file is selected");
+    }
+  }
+
+  displayImageNetwork() {
+    if (result!.vehicleNumberImage != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          result!.vehicleNumberImage!,
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+        ),
+      );
     } else {
       return Text("No file is selected");
     }
