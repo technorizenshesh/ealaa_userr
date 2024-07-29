@@ -462,7 +462,7 @@ class _UpdateVehiclesMakeState extends State<UpdateVehiclesMake> {
           onTap: () {
             if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);;
               setState(() {});
               _scrollToNextStep();
             } else {

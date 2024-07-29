@@ -37,7 +37,7 @@ class _Add_AnimalsAdState extends State<Add_AnimalsAd> {
     'Gender',
     'Age',
     'Breed Origin',
-    'Governate',
+    'Governorate',
     'State',
     'City',
     'Upload Photos',

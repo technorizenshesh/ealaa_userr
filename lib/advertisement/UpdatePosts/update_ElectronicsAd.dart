@@ -301,14 +301,14 @@ class _UpdateElectronicsAdState extends State<UpdateElectronicsAd> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);;
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,

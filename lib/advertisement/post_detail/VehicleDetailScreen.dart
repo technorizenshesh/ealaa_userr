@@ -119,7 +119,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
           GestureDetector(
             onTap: () {
               try {
-                Uri uri = Uri.parse('qrImage');
+                Uri uri = Uri.parse('https://11way.solutions');
                 Share.shareUri(uri);
               } catch (e) {
                 print('Share Error: $e');
@@ -359,10 +359,10 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                             ),
                             GridView.builder(
                                 gridDelegate:
-                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
                                   childAspectRatio: 100,
                                   maxCrossAxisExtent: 200,
-                                  mainAxisExtent: 70,
+                                  mainAxisExtent: 60,
                                   mainAxisSpacing: 10,
                                   crossAxisSpacing: 10,
                                 ),
@@ -376,32 +376,30 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color:
-                                                Colors.grey.withOpacity(0.3)),
+                                            Colors.grey.withOpacity(0.3)),
                                         borderRadius:
-                                            BorderRadius.circular(10)),
+                                        BorderRadius.circular(10)),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "${detailElements[index]['title']}",
                                               style: TextStyle(
                                                   color: Colors.black
-                                                      .withOpacity(0.6),
-                                                  fontSize: 15),
+                                                      .withOpacity(0.5),
+                                                  fontSize: 12),
                                             ),
                                             Image.asset(
                                               "${detailElements[index]['Image']}",
                                               color:
-                                                  Colors.black.withOpacity(0.4),
-                                              height: 25,
-                                              width: 25,
+                                              Colors.black.withOpacity(0.5),
+                                              height: 14,
+                                              width: 14,
                                             )
                                           ],
                                         ),
@@ -409,16 +407,15 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                           getTextMethod(index: index),
                                           maxLines: 1,
                                           style: TextStyle(
-                                              color:
-                                                  Colors.black.withOpacity(0.6),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                            color:
+                                            Colors.black.withOpacity(0.7),
+                                            fontSize: 12,
+                                          ),
                                         )
                                       ],
                                     ),
                                   );
-                                })
-                          ],
+                                })                          ],
                         ),
                       ),
                       SizedBox(height: 10),

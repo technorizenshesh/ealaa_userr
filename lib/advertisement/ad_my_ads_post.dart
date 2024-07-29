@@ -325,11 +325,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                     ''),
             vehicleNumber: TextEditingController(
                 text: getAdsWithCategorySubCategoryResult[index]
-                        .uploadVehiclesNumbers ??
+                        .vehicleNumberPhone ??
                     ''),
             vehicleNumber1: TextEditingController(
                 text: getAdsWithCategorySubCategoryResult[index]
-                        .vehicleNumberImage ??
+                        .letterNameEnglish ??
                     ''),
             name: getAdsWithCategorySubCategoryResult[index]
                     .vehicleNumberDescription ??
@@ -776,7 +776,7 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                       InkWell(
                         onTap: () {
                           try {
-                            Uri uri = Uri.parse('qrImage');
+                            Uri uri = Uri.parse('https://11way.solutions');
                             Share.shareUri(uri);
                           } catch (e) {
                             print('Share Error: $e');

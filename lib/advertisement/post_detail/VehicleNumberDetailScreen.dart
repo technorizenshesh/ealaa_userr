@@ -94,7 +94,7 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
           GestureDetector(
             onTap: () {
               try {
-                Uri uri = Uri.parse('qrImage');
+                Uri uri = Uri.parse('https://11way.solutions');
                 Share.shareUri(uri);
               } catch (e) {
                 print('Share Error: $e');
@@ -265,7 +265,57 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      Column(
+                        children: [
+                          SizedBox(height: 40),
+                          Padding(
+                            padding:
+                            const EdgeInsets.symmetric(horizontal: 36),
+                            child: Container(
+                              padding: EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xffff9900),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: textFieldView(
+                                          controller: TextEditingController(text: result?.vehicleNumberPhone ?? ''),
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              bottomLeft:
+                                              Radius.circular(10)))),
+                                  Expanded(
+                                      child: textFieldView(
+                                          controller: TextEditingController(text: result?.letterNameEnglish ?? ''),
+                                          borderRadius: BorderRadius.zero)),
+                                  Expanded(
+                                    child: textFieldView(
+                                      controller: TextEditingController(
+                                          text: 'عُمان'),
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 20, right: 45),
+                            child: Image.asset(
+                              'assets/images/ic_number_plate_image_one.png',
+                              height: 40,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+
+                      /* Container(
                         width: width,
                         child: CachedNetworkImage(
                           imageUrl: result?.vehicleNumberImage ?? '',
@@ -287,7 +337,7 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
                         ),
-                      ),
+                      ),*/
                       SizedBox(
                         height: 20,
                       ),
@@ -337,7 +387,7 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
                                   childAspectRatio: 100,
                                   maxCrossAxisExtent: 200,
-                                  mainAxisExtent: 70,
+                                  mainAxisExtent: 60,
                                   mainAxisSpacing: 10,
                                   crossAxisSpacing: 10,
                                 ),
@@ -367,14 +417,14 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                                               style: TextStyle(
                                                   color: Colors.black
                                                       .withOpacity(0.5),
-                                                  fontSize: 16),
+                                                  fontSize: 12),
                                             ),
                                             Image.asset(
                                               "${detailElements[index]['Image']}",
                                               color:
                                                   Colors.black.withOpacity(0.5),
-                                              height: 18,
-                                              width: 18,
+                                              height: 14,
+                                              width: 14,
                                             )
                                           ],
                                         ),
@@ -384,7 +434,7 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                                           style: TextStyle(
                                             color:
                                                 Colors.black.withOpacity(0.7),
-                                            fontSize: 16,
+                                            fontSize: 12,
                                           ),
                                         )
                                       ],
@@ -395,7 +445,7 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -547,5 +597,47 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
       default:
         return 'test';
     }
+  }
+
+  Widget textFieldView(
+      {required TextEditingController controller,
+        BorderRadius? borderRadius,
+        bool? readOnly,
+        bool? autofocus,
+        int? maxLength}) {
+    return TextField(
+      readOnly: readOnly ?? true,
+      textAlign: TextAlign.center,
+      cursorWidth: 0,
+      autofocus: autofocus ?? false,
+      cursorHeight: 0,
+      cursorOpacityAnimates: false,
+      maxLines: 1,
+      maxLength: maxLength ?? 8,
+      controller: controller,
+      keyboardType: TextInputType.number,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w900,
+      ),
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        counterText: '',
+        fillColor: Color(0xffffd500),
+        filled: true,
+        border: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+      ),
+    );
   }
 }

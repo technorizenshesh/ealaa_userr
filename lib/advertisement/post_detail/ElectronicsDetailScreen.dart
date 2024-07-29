@@ -93,7 +93,7 @@ class _ElectronicsDetailScreenState extends State<ElectronicsDetailScreen> {
           GestureDetector(
             onTap: () {
               try {
-                Uri uri = Uri.parse('qrImage');
+                Uri uri = Uri.parse('https://11way.solutions');
                 Share.shareUri(uri);
               } catch (e) {
                 print('Share Error: $e');
@@ -329,12 +329,12 @@ class _ElectronicsDetailScreenState extends State<ElectronicsDetailScreen> {
                             ),
                             GridView.builder(
                                 gridDelegate:
-                                    const SliverGridDelegateWithMaxCrossAxisExtent(
-                                      childAspectRatio: 100,
-                                      maxCrossAxisExtent: 200,
-                                      mainAxisExtent: 70,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  childAspectRatio: 100,
+                                  maxCrossAxisExtent: 200,
+                                  mainAxisExtent: 60,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
                                 ),
                                 physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
@@ -346,31 +346,30 @@ class _ElectronicsDetailScreenState extends State<ElectronicsDetailScreen> {
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color:
-                                                Colors.grey.withOpacity(0.3)),
+                                            Colors.grey.withOpacity(0.3)),
                                         borderRadius:
-                                            BorderRadius.circular(10)),
+                                        BorderRadius.circular(10)),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "${detailElements[index]['title']}",
-                                              maxLines: 1,
                                               style: TextStyle(
                                                   color: Colors.black
                                                       .withOpacity(0.5),
-                                                  fontSize: 16),
+                                                  fontSize: 12),
                                             ),
                                             Image.asset(
                                               "${detailElements[index]['Image']}",
                                               color:
-                                                  Colors.black.withOpacity(0.5),
-                                              height: 18,
-                                              width: 18,
+                                              Colors.black.withOpacity(0.5),
+                                              height: 14,
+                                              width: 14,
                                             )
                                           ],
                                         ),
@@ -379,15 +378,14 @@ class _ElectronicsDetailScreenState extends State<ElectronicsDetailScreen> {
                                           maxLines: 1,
                                           style: TextStyle(
                                             color:
-                                                Colors.black.withOpacity(0.7),
-                                            fontSize: 16,
+                                            Colors.black.withOpacity(0.7),
+                                            fontSize: 12,
                                           ),
                                         )
                                       ],
                                     ),
                                   );
-                                })
-                          ],
+                                })                          ],
                         ),
                       ),
                       SizedBox(

@@ -106,7 +106,7 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
       'vehicle_number_english_title': '',
       'vehicle_number_arabic_title': '',
       'upload_vehicles_numbers': phone.text.toString(),
-      'vehicle_number': vehicleNumber.text.toString(),
+      'vehicle_number_phone': vehicleNumber.text.toString(),
       'vehicle_number_description': description.text.toString(),
     };
     Map<String, dynamic> files = {'vehicle_number_image': productPicture};

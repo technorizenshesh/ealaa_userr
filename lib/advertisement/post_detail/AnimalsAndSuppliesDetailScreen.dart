@@ -97,7 +97,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
           GestureDetector(
             onTap: () {
               try {
-                Uri uri = Uri.parse('qrImage');
+                Uri uri = Uri.parse('https://11way.solutions');
                 Share.shareUri(uri);
               } catch (e) {
                 print('Share Error: $e');
@@ -116,26 +116,6 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
               ),
             ),
           ),
-           /*GestureDetector(
-             onTap: () {
-               adsPostDetailsFavourite();
-             },
-             child: Container(
-               decoration: BoxDecoration(
-                   color: Colors.white.withOpacity(.9),
-                   borderRadius: BorderRadius.circular(8),
-                   border: Border.all(color: Colors.white)),
-               padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-               margin: EdgeInsets.only(right: 20),
-               child: Image.asset(
-                 result?.postFav == 'yes'
-                     ? 'assets/images/ic_fav_active.png'
-                     : 'assets/images/ic_fav_inactive.png',
-                 height: 24,
-                 width: 24,
-               ),
-             ),
-           ),*/
            GestureDetector(
              onTap: () {
                adsPostDetailsFavourite();
@@ -353,12 +333,12 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                             ),
                             GridView.builder(
                                 gridDelegate:
-                                    const SliverGridDelegateWithMaxCrossAxisExtent(
-                                      childAspectRatio: 100,
-                                      maxCrossAxisExtent: 200,
-                                      mainAxisExtent: 70,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  childAspectRatio: 100,
+                                  maxCrossAxisExtent: 200,
+                                  mainAxisExtent: 60,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
                                 ),
                                 physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
@@ -370,48 +350,46 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color:
-                                                Colors.grey.withOpacity(0.3)),
+                                            Colors.grey.withOpacity(0.3)),
                                         borderRadius:
-                                            BorderRadius.circular(10)),
+                                        BorderRadius.circular(10)),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "${detailElements[index]['title']}",
                                               style: TextStyle(
                                                   color: Colors.black
-                                                      .withOpacity(0.6),
-                                                  fontSize: 15),
+                                                      .withOpacity(0.5),
+                                                  fontSize: 12),
                                             ),
                                             Image.asset(
                                               "${detailElements[index]['Image']}",
                                               color:
-                                                  Colors.black.withOpacity(0.4),
-                                              height: 25,
-                                              width: 25,
+                                              Colors.black.withOpacity(0.5),
+                                              height: 14,
+                                              width: 14,
                                             )
                                           ],
                                         ),
                                         Text(
                                           getTextMethod(index: index),
+                                          maxLines: 1,
                                           style: TextStyle(
                                             color:
-                                                Colors.black.withOpacity(0.6),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold
+                                            Colors.black.withOpacity(0.7),
+                                            fontSize: 12,
                                           ),
                                         )
                                       ],
                                     ),
                                   );
-                                })
-                          ],
+                                })                          ],
                         ),
                       ),
                       SizedBox(

@@ -224,10 +224,22 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
           },
           child: dataContainer(
             imageUrl:
-                getAdsWithCategorySubCategoryResult[index].vehicleNumberImage ??
-                    '',
+            getAdsWithCategorySubCategoryResult[index].vehicleNumberImage ??
+                '',
+            imageUrlValue: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                    .vehicleNumberImage ??
+                    ''),
+            vehicleNumber: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                    .vehicleNumberPhone ??
+                    ''),
+            vehicleNumber1: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                    .letterNameEnglish ??
+                    ''),
             name: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleNumberDescription ??
+                .vehicleNumberDescription ??
                 '',
             price:
                 getAdsWithCategorySubCategoryResult[index].vehicleNumberPrice ??
@@ -473,8 +485,11 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
 
   Widget dataContainer(
       {required String imageUrl,
-      TextEditingController? imageUrlValue,
-      required String name,
+
+        TextEditingController? imageUrlValue,
+        TextEditingController? vehicleNumber,
+        TextEditingController? vehicleNumber1,
+        required String name,
       required String price,
       required String firstText,
       required String secondText,
@@ -500,89 +515,140 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
           children: [
             Container(
               width: double.infinity,
+              height: MediaQuery.of(context).size.height * .2,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey.shade100
-              ),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.grey.shade100),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: imageUrlValue != null &&
-                        imageUrlValue.text.trim().isNotEmpty
+                    imageUrlValue.text.trim().isNotEmpty
+                    ? ((vehicleNumber != null &&
+                    vehicleNumber.text.isNotEmpty) ||
+                    (vehicleNumber1 != null &&
+                        vehicleNumber1.text.isNotEmpty))
                     ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 36),
-                            child: TextField(
-                              textAlign: TextAlign.center,
-
-                              cursorWidth: 0,
-                              cursorHeight: 0,
-                              cursorOpacityAnimates: false,
-                              maxLines: 1,
-                              maxLength: 8,
-                              autofocus: true,
-                              controller: imageUrlValue,
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: 8),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.zero,
-                                counterText: '',
-                                fillColor: Color(0xff067445),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
-                                disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
+                  children: [
+                    SizedBox(height: 20),
+                    Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 36),
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xffff9900),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: textFieldView(
+                                    controller: vehicleNumber!,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft:
+                                        Radius.circular(10)))),
+                            Expanded(
+                                child: textFieldView(
+                                    controller: vehicleNumber1!,
+                                    borderRadius: BorderRadius.zero)),
+                            Expanded(
+                              child: textFieldView(
+                                controller: TextEditingController(
+                                    text: 'عُمان'),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20, right: 45),
-                            child: Image.asset(
-                              'assets/images/ic_number_plate_image_one.png',
-                              height: 40,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      )
-                    : CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        fit: BoxFit.contain,
-                        height: MediaQuery.of(context).size.height * .2,
-                        placeholder: (context, url) => Center(
-                          child: Shimmer.fromColors(
-                            baseColor: MyColors.onSecondary.withOpacity(0.4),
-                            highlightColor:
-                                Theme.of(context).colorScheme.onSecondary,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.25,
-                              color: MyColors.onSecondary.withOpacity(0.4),
-                            ),
-                          ),
+                          ],
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, right: 45),
+                      child: Image.asset(
+                        'assets/images/ic_number_plate_image_one.png',
+                        height: 40,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                )
+                    : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 20),
+                    Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 36),
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        readOnly: true,
+                        maxLines: 1,
+                        maxLength: 8,
+                        autofocus: true,
+                        controller: imageUrlValue,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 8),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          counterText: '',
+                          fillColor: Color(0xff067445),
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                  color: Color(0xff067445))),
+                          disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                  color: Color(0xff067445))),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                  color: Color(0xff067445))),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                  color: Color(0xff067445))),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, right: 45),
+                      child: Image.asset(
+                        'assets/images/ic_number_plate_image_one.png',
+                        height: 40,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                )
+                    : CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.contain,
+                  height: MediaQuery.of(context).size.height * .2,
+                  placeholder: (context, url) => Center(
+                    child: Shimmer.fromColors(
+                      baseColor: MyColors.onSecondary.withOpacity(0.4),
+                      highlightColor:
+                      Theme.of(context).colorScheme.onSecondary,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        color: MyColors.onSecondary.withOpacity(0.4),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
             ),
             Padding(
@@ -612,7 +678,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       InkWell(
                         onTap: () {
                           try {
-                            Uri uri = Uri.parse('qrImage');
+                            Uri uri = Uri.parse('https://11way.solutions');
                             Share.shareUri(uri);
                           } catch (e) {
                             print('Share Error: $e');
@@ -836,6 +902,48 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget textFieldView(
+      {required TextEditingController controller,
+        BorderRadius? borderRadius,
+        bool? readOnly,
+        bool? autofocus,
+        int? maxLength}) {
+    return TextField(
+      readOnly: readOnly ?? true,
+      textAlign: TextAlign.center,
+      cursorWidth: 0,
+      autofocus: autofocus ?? false,
+      cursorHeight: 0,
+      cursorOpacityAnimates: false,
+      maxLines: 1,
+      maxLength: maxLength ?? 8,
+      controller: controller,
+      keyboardType: TextInputType.number,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w900,
+      ),
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        counterText: '',
+        fillColor: Color(0xffffd500),
+        filled: true,
+        border: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
       ),
     );
   }

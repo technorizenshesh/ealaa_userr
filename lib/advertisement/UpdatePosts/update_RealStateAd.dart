@@ -14,6 +14,7 @@ import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/GlobalData.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
+import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../ad_bottom_bar.dart';
 
 class UpdateRealStateAd extends StatefulWidget {
@@ -305,14 +306,14 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);;
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,
@@ -351,21 +352,6 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                /* _currentStepIndex <= index
-                                    ? SvgPicture.asset(
-                                        "assets/images/card_grey.svg",
-                                        height: 40,
-                                      )
-                                    : _currentStepIndex == index + 1
-                                        ? SvgPicture.asset(
-                                            'assets/images/card_orange.svg',
-                                            height: 45,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/card_green.svg',
-                                            height: 45,
-                                          ),*/
-
                                 _currentStepIndex <= index
                                     ? Image.asset(
                                         'assets/icons/ic_card.png',
@@ -478,204 +464,327 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
 
   Widget Use() {
     return ListView.builder(
-        itemCount: useList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: useList[index],
-                title: Text('${useList[index].useName}'),
-                groupValue: selectedUse,
-                onChanged: (UseList? value) {
-                  _currentStepIndex = 2;
-                  selectedUse = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: useList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedUse == useList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: useList[index],
+              groupValue: selectedUse,
+              onChanged: (value) {
+                _currentStepIndex = 2;
+                selectedUse = useList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${useList[index].useName}'),
+            onTap: () {
+              _currentStepIndex = 2;
+              selectedUse = useList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Widget Wall() {
     return ListView.builder(
-        itemCount: wallList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: wallList[index],
-                title: Text('${wallList[index].WallName}'),
-                groupValue: selectedWall,
-                onChanged: (WallList? value) {
-                  _currentStepIndex = 3;
-                  selectedWall = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: wallList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedWall == wallList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: wallList[index],
+              groupValue: selectedWall,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedWall = wallList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${wallList[index].WallName}'),
+            onTap: () {
+              _currentStepIndex = 3;
+              selectedWall = wallList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Widget LandType() {
     return ListView.builder(
-        itemCount: landTypeList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: landTypeList[index],
-                title: Text('${landTypeList[index].landtypeName}'),
-                groupValue: selectedLandType,
-                onFocusChange: (value) {
-                  print("gdhjsgj...$value");
-                },
-                onChanged: (Landtype? value) {
-                  _currentStepIndex = 4;
-                  selectedLandType = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: landTypeList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedLandType == landTypeList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: landTypeList[index],
+              groupValue: selectedLandType,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedLandType = landTypeList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${landTypeList[index].landtypeName}'),
+            onTap: () {
+              _currentStepIndex = 4;
+              selectedLandType = landTypeList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Widget Position() {
     return ListView.builder(
-        itemCount: positionList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
+      itemCount: positionList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedPosition == positionList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+              leading: SquareRadio(
                 activeColor: MyColors.primaryColor,
                 value: positionList[index],
-                title: Text('${positionList[index].positionName}'),
                 groupValue: selectedPosition,
-                onChanged: (PositionList? value) {
+                onChanged: (value) {
                   _currentStepIndex = 5;
-                  selectedPosition = value;
+                  selectedPosition = positionList[index];
                   title = _getTitleForIndex(_currentStepIndex - 1);
                   _scrollToNextStep();
                   setState(() {});
                 },
               ),
-            ));
+              title: Text('${positionList[index].positionName}'),
+              onTap: () {
+                _currentStepIndex = 5;
+                selectedPosition = positionList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              }
+          ),
+        ),
+      ),
+    );
   }
 
   Widget ParkingView() {
     return ListView.builder(
-        itemCount: parkingList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
+      itemCount: parkingList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedParking == parkingList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+              leading: SquareRadio(
                 activeColor: MyColors.primaryColor,
                 value: parkingList[index],
-                title: Text('${parkingList[index].parkingName}'),
                 groupValue: selectedParking,
-                onChanged: (Parking? value) {
+                onChanged: (value) {
                   _currentStepIndex = 6;
-                  selectedParking = value;
+                  selectedParking = parkingList[index];
                   title = _getTitleForIndex(_currentStepIndex - 1);
                   _scrollToNextStep();
                   setState(() {});
                 },
               ),
-            ));
+              title: Text('${parkingList[index].parkingName}'),
+              onTap: () {
+                _currentStepIndex = 6;
+                selectedParking = parkingList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              }
+          ),
+        ),
+      ),
+    );
   }
 
   Widget GovernateView() {
     return ListView.builder(
-        itemCount: governateList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: governateList[index],
-                title: Text('${governateList[index].governorateName}'),
-                groupValue: selectedGovernate,
-                onChanged: (Governorate? value) {
-                  _currentStepIndex = 7;
-                  selectedGovernate = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  stateList = governateList[index].governorateState ?? [];
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: governateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedGovernate == governateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: governateList[index],
+              groupValue: selectedGovernate,
+              onChanged: (value) {
+                _currentStepIndex = 7;
+                selectedGovernate = governateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                stateList = governateList[index].governorateState ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${governateList[index].governorateName}'),
+            onTap: () {
+              _currentStepIndex = 7;
+              selectedGovernate = governateList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              stateList = governateList[index].governorateState ?? [];
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),);
   }
 
   Widget State() {
     return ListView.builder(
-        itemCount: stateList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: stateList[index],
-                title: Text('${stateList[index].stateName}'),
-                groupValue: selectedState,
-                onChanged: (GovernorateState? value) {
-                  _currentStepIndex = 8;
-                  selectedState = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  cityList = stateList[index].stateCity ?? [];
-
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: stateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedState == stateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: stateList[index],
+              groupValue: selectedState,
+              onChanged: (value) {
+                _currentStepIndex = 8;
+                selectedState = stateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                cityList = stateList[index].stateCity ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${stateList[index].stateName}'),
+            onTap: () {
+              _currentStepIndex = 8;
+              selectedState = stateList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              cityList = stateList[index].stateCity ?? [];
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),);
   }
 
   Widget City() {
     return ListView.builder(
-        itemCount: cityList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: cityList[index],
-                title: Text('${cityList[index].cityName}'),
-                groupValue: selectedCity,
-                onChanged: (StateCity? value) {
-                  _currentStepIndex = 9;
-                  selectedCity = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: cityList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedCity == cityList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: cityList[index],
+              groupValue: selectedCity,
+              onChanged: (value) {
+                _currentStepIndex = 9;
+                selectedCity = cityList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${cityList[index].cityName}'),
+            onTap: () {
+              _currentStepIndex = 9;
+              selectedCity = cityList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),);
   }
 
   Widget UploadPhotos() {
-    return ListView(
+    return Column(
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
@@ -689,22 +798,17 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
                   _image_camera_dialog(context);
                 },
                 child: productPicture == null
-                    ? result?.realStateAdsUploadImage != null &&
-                    result!.realStateAdsUploadImage!.isNotEmpty
-                    ? Center(child: displayImageNetwork())
-                    : Center(child: uploadProductContainer())
+                    ? Center(child: uploadProductContainer())
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 50),
         RoundButton(
           height: 45,
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null ||
-                (result != null && result!.realStateAdsUploadImage != null)) {
-              print(Uri.parse(result!.realStateAdsUploadImage!).pathSegments.last);
+            if (productPicture != null) {
               _currentStepIndex = 10;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -798,7 +902,7 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
             loading: loader,
             height: 45,
             borderRadius: 10,
-            title: 'All Set! Update your Ad',
+            title: 'All Set! Publish your Ad',
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
@@ -919,22 +1023,6 @@ class _UpdateRealStateAdState extends State<UpdateRealStateAd> {
             fit: BoxFit.contain,
             filterQuality: FilterQuality.high,
           ));
-    } else {
-      return Text("No file is selected");
-    }
-  }
-
-
-  displayImageNetwork() {
-    if (result!.realStateAdsUploadImage != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Image.network(
-          result!.realStateAdsUploadImage!,
-          fit: BoxFit.contain,
-          filterQuality: FilterQuality.high,
-        ),
-      );
     } else {
       return Text("No file is selected");
     }

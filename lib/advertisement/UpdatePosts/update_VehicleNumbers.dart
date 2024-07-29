@@ -114,7 +114,7 @@ class _UpdateVehicleNumbersState extends State<UpdateVehicleNumbers> {
       price.text = result?.vehicleNumberPrice ?? '';
       phone.text = result?.vehicleNumberPhone ?? '';
       description.text = result?.vehicleNumberDescription ?? '';
-      vehicleNumber.text = result?.uploadVehiclesNumbers ?? '';
+      vehicleNumber.text = result?.vehicleNumberPhone ?? '';
 
       if (lettersList.isNotEmpty) {
         lettersList.forEach((element) {

@@ -12,6 +12,7 @@ import '../../../View/Utils/CommonMethods.dart';
 import '../../../View/Utils/CustomSnackBar.dart';
 import '../../../View/Utils/webService.dart';
 import '../../../common/common_widgets.dart';
+import '../../UpdatePosts/update_VehiclesMake.dart';
 import '../../ad_bottom_bar.dart';
 
 class AdVehiclesPartAdd extends StatefulWidget {
@@ -19,9 +20,11 @@ class AdVehiclesPartAdd extends StatefulWidget {
   final String adType;
   final String advertisement_category_id;
 
-  const AdVehiclesPartAdd({super.key, required this.advertisement_category_id,
-    required this.adType,
-    required this.type});
+  const AdVehiclesPartAdd(
+      {super.key,
+      required this.advertisement_category_id,
+      required this.adType,
+      required this.type});
 
   @override
   State<AdVehiclesPartAdd> createState() => _AdVehiclesPartAddState();
@@ -52,11 +55,10 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
   List<ModelTrim> trimList = [];
   List<EngineSize> enginesizeList = [];
 
-
   Part? selectedPart;
   SubPartName? selectedSubpart;
   Maker? selectedMaker;
-  Model? selectesModel;
+  Model? selectedModel;
   ModelYear? selectedModelyear;
   ModelTrim? selectedModeltrim;
   EngineSize? selectedEnginesize;
@@ -115,8 +117,6 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
     }
   }
 
-
-
   PostRealStateAd() async {
     Map<String, dynamic> data = {
       'category_id': widget.advertisement_category_id,
@@ -125,21 +125,19 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
       'vehicle_part_part_id': selectedSubpart?.partId ?? '',
       'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
       'vehicle_part_maker_id': selectedMaker?.id ?? '',
-      'vehicle_part_model_id': selectesModel?.id ?? '',
-      'vehicle_part_model_trim_id':selectedModeltrim?.id ?? '',
-      'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
-      'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
+      'vehicle_part_model_id': selectedModel?.id ?? '',
+      'vehicle_part_model_trim_id': selectedModeltrim?.id ?? '',
+      'vehicle_part_model_year_id': selectedModelyear?.yearId ?? "",
+      'vehicle_part_engine_size_id': selectedEnginesize?.engineId ?? "",
       'vehicle_part_price': price.text.toString(),
-      'vehicle_part_quantity':quantity.text ?? '',
+      'vehicle_part_quantity': quantity.text ?? '',
       'vehicle_part_part_number': vehiclePartPartNumber.text,
       'vehicle_part_english_title': englishTitle.text,
       'vehicle_part_arabic_title': arabicTitle.text,
       'vehicle_part_phone': phone.text.toString(),
       'vehicle_part_description': description.text.toString(),
     };
-    Map<String, dynamic> files = {
-      'vehicle_part_image': productPicture
-    };
+    Map<String, dynamic> files = {'vehicle_part_image': productPicture};
     print("request ------------------$data   $files");
     loader = true;
     setState(() {});
@@ -179,14 +177,15 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              ;
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,
@@ -211,21 +210,21 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
               ),
             )
           : vehiclePartsResult == null
-          ? Image.asset("assets/images/NoDataFound.png")
-          : Column(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
-              child: Row(
-                children: List.generate(topList.length, (index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      /* _currentStepIndex <= index
+              ? Image.asset("assets/images/NoDataFound.png")
+              : Column(
+                  children: [
+                    SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+                        child: Row(
+                          children: List.generate(topList.length, (index) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                /* _currentStepIndex <= index
                                     ? SvgPicture.asset(
                                         "assets/images/card_grey.svg",
                                         height: 40,
@@ -240,74 +239,86 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                                             height: 45,
                                           ),*/
 
-                      _currentStepIndex <= index
-                          ? Image.asset('assets/icons/ic_card.png',height: 28,width: 28,)
-                          : _currentStepIndex == index + 1
-                          ? Image.asset('assets/icons/ic_card_orange.png',height: 40,width: 40,)
-                          : Image.asset('assets/icons/ic_card_green.png',height: 40,width: 40,),
-                      SizedBox(width: 14),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            topList[index],
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          if (_getSelectedValueForIndex(index)
-                              .isNotEmpty)
-                            Text(
-                              _getSelectedValueForIndex(index),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: _currentStepIndex <= index
-                                    ? Colors.grey
-                                    : Colors.black,
-                              ),
-                            ),
-                        ],
+                                _currentStepIndex <= index
+                                    ? Image.asset(
+                                        'assets/icons/ic_card.png',
+                                        height: 28,
+                                        width: 28,
+                                      )
+                                    : _currentStepIndex == index + 1
+                                        ? Image.asset(
+                                            'assets/icons/ic_card_orange.png',
+                                            height: 40,
+                                            width: 40,
+                                          )
+                                        : Image.asset(
+                                            'assets/icons/ic_card_green.png',
+                                            height: 40,
+                                            width: 40,
+                                          ),
+                                SizedBox(width: 14),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      topList[index],
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    if (_getSelectedValueForIndex(index)
+                                        .isNotEmpty)
+                                      Text(
+                                        _getSelectedValueForIndex(index),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: _currentStepIndex <= index
+                                              ? Colors.grey
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                SizedBox(width: 7),
+                                if (index != topList.length - 1)
+                                  SizedBox(
+                                      width: 20,
+                                      child: Divider(
+                                        color: Colors.grey.withOpacity(.2),
+                                        thickness: 2,
+                                      )),
+                                if (index != topList.length - 1)
+                                  SizedBox(width: 7),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
-                      SizedBox(width: 7),
-                      if (index != topList.length - 1)
-                        SizedBox(
-                            width: 20,
-                            child: Divider(
-                              color: Colors.grey.withOpacity(.2),
-                              thickness: 2,
-                            )),
-                      if (index != topList.length - 1)
-                        SizedBox(width: 7),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xfff8f2ee),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14),
-                  topRight: Radius.circular(14),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xfff8f2ee),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(14),
+                            topRight: Radius.circular(14),
+                          ),
+                        ),
+                        height: MediaQuery.of(context).size.height - 200,
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: tabsScreens(_currentStepIndex),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              height: MediaQuery.of(context).size.height - 200,
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: tabsScreens(_currentStepIndex),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -340,14 +351,13 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
         itemBuilder: (context, index) => Column(
               children: [
                 GestureDetector(
-                  onTap: (){
-                    subPartList = partsList[index].subPartName??[];
+                  onTap: () {
+                    subPartList = partsList[index].subPartName ?? [];
                     setState(() {});
-                    if(selectedIndex!=index){
+                    if (selectedIndex != index) {
                       selectedIndex = index;
                       setState(() {});
-                    }
-                    else{
+                    } else {
                       selectedIndex = -1;
                       setState(() {});
                     }
@@ -358,172 +368,272 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     margin: EdgeInsets.only(bottom: 15),
                     child: ListTile(
-                      leading: Icon(selectedIndex == index?Icons.expand_less:Icons.expand_more,color: MyColors.primaryColor,size: 30,),
+                      leading: Icon(
+                        selectedIndex == index
+                            ? Icons.expand_less
+                            : Icons.expand_more,
+                        color: MyColors.primaryColor,
+                        size: 30,
+                      ),
                       title: Text('${partsList[index].partName}'),
-                      trailing: SvgPicture.asset("assets/images/EngineIcon.svg",height: 30,),
-                    ),
-                  ),
-                ),
-                if(selectedIndex==index)
-                  SizedBox(
-                  height: 10,
-                ),
-                if(selectedIndex==index)
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: subPartList.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      margin: EdgeInsets.only(bottom: 15),
-                      child: RadioListTile(
-                        activeColor: MyColors.primaryColor,
-                        value: subPartList[index],
-                        title: Text('${subPartList[index].subPartName}'),
-                        groupValue: selectedSubpart,
-                        onChanged: (SubPartName? value) {
-                          _currentStepIndex = 2;
-                          selectedSubpart = value;
-                          title = _getTitleForIndex(_currentStepIndex - 1);
-                          _scrollToNextStep();
-                          setState(() {});
-                        },
+                      trailing: SvgPicture.asset(
+                        "assets/images/EngineIcon.svg",
+                        height: 30,
                       ),
                     ),
                   ),
-                )
+                ),
+                if (selectedIndex == index) SizedBox(height: 10),
+                if (selectedIndex == index)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: subPartList.length,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, i) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: selectedSubpart == subPartList[i]
+                                  ? MyColors.primaryColor
+                                  : Colors.grey.withOpacity(0.5),
+                            ),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10))),
+                        child: ListTile(
+                          leading: SquareRadio(
+                            activeColor: MyColors.primaryColor,
+                            value: subPartList[i],
+                            groupValue: selectedSubpart,
+                            onChanged: (value) {
+                              _currentStepIndex = 2;
+                              selectedSubpart = subPartList[i];
+                              title = _getTitleForIndex(_currentStepIndex - 1);
+                              _scrollToNextStep();
+                              setState(() {});
+                            },
+                          ),
+                          title: Text('${subPartList[i].subPartName}'),
+                          onTap: () {
+                            _currentStepIndex = 2;
+                            selectedSubpart = subPartList[i];
+                            title = _getTitleForIndex(_currentStepIndex - 1);
+                            _scrollToNextStep();
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                    ),
+                  )
               ],
             ));
   }
 
   Widget MakesView() {
     return ListView.builder(
-        itemCount: makerList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: makerList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedMaker == makerList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: makerList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: makerList[index],
+              groupValue: selectedMaker,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedMaker = makerList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                modelList = selectedMaker?.model ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${makerList[index].name}'),
-            groupValue: selectedMaker,
-            onChanged: (Maker? value) {
+            onTap: () {
               _currentStepIndex = 3;
-              selectedMaker = value;
+              selectedMaker = makerList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              modelList = selectedMaker?.model??[];
+              modelList = selectedMaker?.model ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget ModelsView() {
     return ListView.builder(
-        itemCount: modelList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: modelList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModel == modelList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: modelList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: modelList[index],
+              groupValue: selectedModel,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedModel = modelList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                yearList = selectedModel?.modelYear ?? [];
+                trimList = selectedModel?.modelTrim ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${modelList[index].name}'),
-            groupValue: selectesModel,
-            onFocusChange: (value) {
-              print("gdhjsgj...$value");
-            },
-            onChanged: (Model? value) {
+            onTap: () {
               _currentStepIndex = 4;
-              selectesModel = value;
+              selectedModel = modelList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              yearList = selectesModel?.modelYear??[];
-              trimList = selectesModel?.modelTrim??[];
+              yearList = selectedModel?.modelYear ?? [];
+              trimList = selectedModel?.modelTrim ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget YearsView() {
     return ListView.builder(
-        itemCount: yearList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: yearList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModelyear == yearList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: yearList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: yearList[index],
+              groupValue: selectedModelyear,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedModelyear = yearList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${yearList[index].yearName}'),
-            groupValue: selectedModelyear,
-            onChanged: (ModelYear? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedModelyear = value;
+              selectedModelyear = yearList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget TrimView() {
     return ListView.builder(
-        itemCount: trimList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: trimList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModeltrim == trimList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: trimList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: trimList[index],
+              groupValue: selectedModeltrim,
+              onChanged: (value) {
+                _currentStepIndex = 6;
+                selectedModeltrim = trimList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${trimList[index].name}'),
-            groupValue: selectedModeltrim,
-            onChanged: (ModelTrim? value) {
+            onTap: () {
               _currentStepIndex = 6;
-              selectedModeltrim = value;
+              selectedModeltrim = trimList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget SizeView() {
     return ListView.builder(
         itemCount: enginesizeList.length,
-        itemBuilder: (context, index) => Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: enginesizeList[index],
-            title: Text('${enginesizeList[index].engineValue}'),
-            groupValue: selectedEnginesize,
-            onChanged: (EngineSize? value) {
-              _currentStepIndex = 7;
-              selectedEnginesize = value;
-              title = _getTitleForIndex(_currentStepIndex - 1);
-              _scrollToNextStep();
-              setState(() {});
-            },
-          ),
-        ));
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: selectedEnginesize == enginesizeList[index]
+                            ? MyColors.primaryColor
+                            : Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: ListTile(
+                  leading: SquareRadio(
+                    activeColor: MyColors.primaryColor,
+                    value: enginesizeList[index],
+                    groupValue: selectedEnginesize,
+                    onChanged: (value) {
+                      _currentStepIndex = 7;
+                      selectedEnginesize = enginesizeList[index];
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+                      _scrollToNextStep();
+                      setState(() {});
+                    },
+                  ),
+                  title: Text('${enginesizeList[index].engineValue}'),
+                  onTap: () {
+                    _currentStepIndex = 7;
+                    selectedEnginesize = enginesizeList[index];
+                    title = _getTitleForIndex(_currentStepIndex - 1);
+                    _scrollToNextStep();
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+    );
   }
 
   Widget UploadPhotos() {
@@ -545,9 +655,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                     : Center(child: displayImage())),
           ),
         ),
-        SizedBox(
-            height: 20
-        ),
+        SizedBox(height: 20),
         RoundButton(
           height: 45,
           borderRadius: 10,
@@ -584,16 +692,12 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 controller: price,
                 hintText: 'Enter Price',
               ),
-              SizedBox(
-                height: 10
-              ),
+              SizedBox(height: 10),
               Text(
                 "Quantity",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: quantity,
                 hintText: 'Enter quantity',
@@ -605,9 +709,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 "Part Number (Optional)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: vehiclePartPartNumber,
                 hintText: 'Enter part number',
@@ -619,9 +721,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 "English Title",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: englishTitle,
                 hintText: 'Enter english title',
@@ -633,9 +733,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 "Arabic Title",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: arabicTitle,
                 hintText: 'Enter arabic title',
@@ -647,9 +745,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 "Phone",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: phone,
                 hintText: 'Enter Phone',
@@ -661,9 +757,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
                 "Description",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 maxLines: null,
                 controller: description,
@@ -682,20 +776,20 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
-               if (price.text.isEmpty) {
+              if (price.text.isEmpty) {
                 showSnackbar(context, "Enter price");
               } else if (quantity.text.isEmpty) {
                 showSnackbar(context, "Enter quantity");
-              }else if (englishTitle.text.isEmpty) {
+              } else if (englishTitle.text.isEmpty) {
                 showSnackbar(context, "Enter english title");
-              }else if (arabicTitle.text.isEmpty) {
+              } else if (arabicTitle.text.isEmpty) {
                 showSnackbar(context, "Enter arabic title");
               } else if (phone.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter description");
               } else {
-                   PostRealStateAd();
+                PostRealStateAd();
               }
             },
           ),
@@ -711,7 +805,7 @@ class _AdVehiclesPartAddState extends State<AdVehiclesPartAdd> {
       case 1:
         return selectedMaker?.name ?? "";
       case 2:
-        return selectesModel?.name ?? "";
+        return selectedModel?.name ?? "";
       case 3:
         return selectedModelyear?.yearName ?? "";
       case 4:

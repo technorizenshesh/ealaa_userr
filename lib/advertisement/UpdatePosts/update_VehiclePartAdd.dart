@@ -14,6 +14,7 @@ import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
+import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../ad_bottom_bar.dart';
 
 class UpdateVehiclesPartAdd extends StatefulWidget {
@@ -62,7 +63,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
   Part? selectedPart;
   SubPartName? selectedSubpart;
   Maker? selectedMaker;
-  Model? selectesModel;
+  Model? selectedModel;
   ModelYear? selectedModelyear;
   ModelTrim? selectedModeltrim;
   EngineSize? selectedEnginesize;
@@ -135,7 +136,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
         'vehicle_part_part_id': selectedSubpart?.partId ?? '',
         'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
         'vehicle_part_maker_id': selectedMaker?.id ?? '',
-        'vehicle_part_model_id': selectesModel?.id ?? '',
+        'vehicle_part_model_id': selectedModel?.id ?? '',
         'vehicle_part_model_trim_id':selectedModeltrim?.id ?? '',
         'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
         'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
@@ -166,7 +167,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
         'vehicle_part_part_id': selectedSubpart?.partId ?? '',
         'vehicle_part_sub_part_id': selectedSubpart?.subPartId ?? '',
         'vehicle_part_maker_id': selectedMaker?.id ?? '',
-        'vehicle_part_model_id': selectesModel?.id ?? '',
+        'vehicle_part_model_id': selectedModel?.id ?? '',
         'vehicle_part_model_trim_id':selectedModeltrim?.id ?? '',
         'vehicle_part_model_year_id':selectedModelyear?.yearId ?? "",
         'vehicle_part_engine_size_id':selectedEnginesize?.engineId ?? "",
@@ -244,16 +245,16 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
           if (element.model != null && element.model!.isNotEmpty) {
             element.model?.forEach((elementModel) {
               if (elementModel.id == result?.vehiclePartModelId) {
-                selectesModel = elementModel;
+                selectedModel = elementModel;
                 setState(() {});
-                selectesModel?.modelTrim?.forEach((elementModelTrim) {
+                selectedModel?.modelTrim?.forEach((elementModelTrim) {
                   if (elementModelTrim.id ==
                       result?.vehicleAdsDetailModelTrimId) {
                     selectedModeltrim = elementModelTrim;
                     setState(() {});
                   }
                 });
-                selectesModel?.modelYear?.forEach((elementModelYear) {
+                selectedModel?.modelYear?.forEach((elementModelYear) {
                   if (elementModelYear.yearId ==
                       result?.vehiclePartModelYearId) {
                     selectedModelyear = elementModelYear;
@@ -299,14 +300,14 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
-            if (_currentStepIndex > 0) {
+            if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = topList[_currentStepIndex];
+              title = _getTitleForIndex(_currentStepIndex-1);;
               setState(() {});
+              _scrollToNextStep();
             } else {
               Navigator.pop(context);
             }
-            _scrollToNextStep();
           },
           child: const Icon(
             Icons.arrow_back,
@@ -458,192 +459,291 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
     return ListView.builder(
         itemCount: partsList.length,
         itemBuilder: (context, index) => Column(
-              children: [
-                GestureDetector(
-                  onTap: (){
-                    subPartList = partsList[index].subPartName??[];
-                    setState(() {});
-                    if(selectedIndex!=index){
-                      selectedIndex = index;
-                      setState(() {});
-                    }
-                    else{
-                      selectedIndex = -1;
-                      setState(() {});
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    margin: EdgeInsets.only(bottom: 15),
-                    child: ListTile(
-                      leading: Icon(selectedIndex == index?Icons.expand_less:Icons.expand_more,color: MyColors.primaryColor,size: 30,),
-                      title: Text('${partsList[index].partName}'),
-                      trailing: SvgPicture.asset("assets/images/EngineIcon.svg",height: 30,),
-                    ),
+          children: [
+            GestureDetector(
+              onTap: () {
+                subPartList = partsList[index].subPartName ?? [];
+                setState(() {});
+                if (selectedIndex != index) {
+                  selectedIndex = index;
+                  setState(() {});
+                } else {
+                  selectedIndex = -1;
+                  setState(() {});
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                margin: EdgeInsets.only(bottom: 15),
+                child: ListTile(
+                  leading: Icon(
+                    selectedIndex == index
+                        ? Icons.expand_less
+                        : Icons.expand_more,
+                    color: MyColors.primaryColor,
+                    size: 30,
+                  ),
+                  title: Text('${partsList[index].partName}'),
+                  trailing: SvgPicture.asset(
+                    "assets/images/EngineIcon.svg",
+                    height: 30,
                   ),
                 ),
-                if(selectedIndex==index)
-                  SizedBox(
-                  height: 10,
-                ),
-                if(selectedIndex==index)
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: subPartList.length,
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      margin: EdgeInsets.only(bottom: 15),
-                      child: RadioListTile(
+              ),
+            ),
+            if (selectedIndex == index) SizedBox(height: 10),
+            if (selectedIndex == index)
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: subPartList.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, i) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: selectedSubpart == subPartList[i]
+                              ? MyColors.primaryColor
+                              : Colors.grey.withOpacity(0.5),
+                        ),
+                        borderRadius:
+                        const BorderRadius.all(Radius.circular(10))),
+                    child: ListTile(
+                      leading: SquareRadio(
                         activeColor: MyColors.primaryColor,
-                        value: subPartList[index],
-                        title: Text('${subPartList[index].subPartName}'),
+                        value: subPartList[i],
                         groupValue: selectedSubpart,
-                        onChanged: (SubPartName? value) {
+                        onChanged: (value) {
                           _currentStepIndex = 2;
-                          selectedSubpart = value;
+                          selectedSubpart = subPartList[i];
                           title = _getTitleForIndex(_currentStepIndex - 1);
                           _scrollToNextStep();
                           setState(() {});
                         },
                       ),
+                      title: Text('${subPartList[i].subPartName}'),
+                      onTap: () {
+                        _currentStepIndex = 2;
+                        selectedSubpart = subPartList[i];
+                        title = _getTitleForIndex(_currentStepIndex - 1);
+                        _scrollToNextStep();
+                        setState(() {});
+                      },
                     ),
                   ),
-                )
-              ],
-            ));
+                ),
+              )
+          ],
+        ));
   }
 
   Widget MakesView() {
     return ListView.builder(
-        itemCount: makerList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: makerList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedMaker == makerList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: makerList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: makerList[index],
+              groupValue: selectedMaker,
+              onChanged: (value) {
+                _currentStepIndex = 3;
+                selectedMaker = makerList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                modelList = selectedMaker?.model ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${makerList[index].name}'),
-            groupValue: selectedMaker,
-            onChanged: (Maker? value) {
+            onTap: () {
               _currentStepIndex = 3;
-              selectedMaker = value;
+              selectedMaker = makerList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              modelList = selectedMaker?.model??[];
+              modelList = selectedMaker?.model ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget ModelsView() {
     return ListView.builder(
-        itemCount: modelList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: modelList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModel == modelList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: modelList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: modelList[index],
+              groupValue: selectedModel,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedModel = modelList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                yearList = selectedModel?.modelYear ?? [];
+                trimList = selectedModel?.modelTrim ?? [];
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${modelList[index].name}'),
-            groupValue: selectesModel,
-            onFocusChange: (value) {
-              print("gdhjsgj...$value");
-            },
-            onChanged: (Model? value) {
+            onTap: () {
               _currentStepIndex = 4;
-              selectesModel = value;
+              selectedModel = modelList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-              yearList = selectesModel?.modelYear??[];
-              trimList = selectesModel?.modelTrim??[];
+              yearList = selectedModel?.modelYear ?? [];
+              trimList = selectedModel?.modelTrim ?? [];
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget YearsView() {
     return ListView.builder(
-        itemCount: yearList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: yearList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModelyear == yearList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: yearList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: yearList[index],
+              groupValue: selectedModelyear,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedModelyear = yearList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${yearList[index].yearName}'),
-            groupValue: selectedModelyear,
-            onChanged: (ModelYear? value) {
+            onTap: () {
               _currentStepIndex = 5;
-              selectedModelyear = value;
+              selectedModelyear = yearList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
-
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget TrimView() {
     return ListView.builder(
-        itemCount: trimList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: trimList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedModeltrim == trimList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: trimList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: trimList[index],
+              groupValue: selectedModeltrim,
+              onChanged: (value) {
+                _currentStepIndex = 6;
+                selectedModeltrim = trimList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${trimList[index].name}'),
-            groupValue: selectedModeltrim,
-            onChanged: (ModelTrim? value) {
+            onTap: () {
               _currentStepIndex = 6;
-              selectedModeltrim = value;
+              selectedModeltrim = trimList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget SizeView() {
     return ListView.builder(
-        itemCount: enginesizeList.length,
-        itemBuilder: (context, index) => Container(
+      itemCount: enginesizeList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedEnginesize == enginesizeList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          margin: EdgeInsets.only(bottom: 15),
-          child: RadioListTile(
-            activeColor: MyColors.primaryColor,
-            value: enginesizeList[index],
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: enginesizeList[index],
+              groupValue: selectedEnginesize,
+              onChanged: (value) {
+                _currentStepIndex = 7;
+                selectedEnginesize = enginesizeList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
             title: Text('${enginesizeList[index].engineValue}'),
-            groupValue: selectedEnginesize,
-            onChanged: (EngineSize? value) {
+            onTap: () {
               _currentStepIndex = 7;
-              selectedEnginesize = value;
+              selectedEnginesize = enginesizeList[index];
               title = _getTitleForIndex(_currentStepIndex - 1);
               _scrollToNextStep();
               setState(() {});
             },
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget UploadPhotos() {
@@ -661,10 +761,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                   _image_camera_dialog(context);
                 },
                 child: productPicture == null
-                    ? result?.vehiclePartImage != null &&
-                    result!.vehiclePartImage!.isNotEmpty
-                    ? Center(child: displayImageNetwork())
-                    : Center(child: uploadProductContainer())
+                    ? Center(child: uploadProductContainer())
                     : Center(child: displayImage())),
           ),
         ),
@@ -674,9 +771,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
           borderRadius: 10,
           title: 'Complete the final step',
           onTap: () {
-            if (productPicture != null ||
-                (result != null && result!.vehiclePartImage != null)) {
-              print(Uri.parse(result!.vehiclePartImage!).pathSegments.last);
+            if (productPicture != null) {
               _currentStepIndex = 8;
               selectedImage = "1 image";
               title = _getTitleForIndex(_currentStepIndex - 1);
@@ -707,16 +802,12 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                 controller: price,
                 hintText: 'Enter Price',
               ),
-              SizedBox(
-                height: 10
-              ),
+              SizedBox(height: 10),
               Text(
                 "Quantity",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: quantity,
                 hintText: 'Enter quantity',
@@ -728,9 +819,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                 "Part Number (Optional)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: vehiclePartPartNumber,
                 hintText: 'Enter part number',
@@ -742,9 +831,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                 "English Title",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: englishTitle,
                 hintText: 'Enter english title',
@@ -756,9 +843,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                 "Arabic Title",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: arabicTitle,
                 hintText: 'Enter arabic title',
@@ -770,9 +855,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                 "Phone",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: phone,
                 hintText: 'Enter Phone',
@@ -784,9 +867,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
                 "Description",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                  height: 10
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 maxLines: null,
                 controller: description,
@@ -805,20 +886,20 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
             fontsize: 18,
             fontweight: FontWeight.w500,
             onTap: () {
-               if (price.text.isEmpty) {
+              if (price.text.isEmpty) {
                 showSnackbar(context, "Enter price");
               } else if (quantity.text.isEmpty) {
                 showSnackbar(context, "Enter quantity");
-              }else if (englishTitle.text.isEmpty) {
+              } else if (englishTitle.text.isEmpty) {
                 showSnackbar(context, "Enter english title");
-              }else if (arabicTitle.text.isEmpty) {
+              } else if (arabicTitle.text.isEmpty) {
                 showSnackbar(context, "Enter arabic title");
               } else if (phone.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter description");
               } else {
-                 editVehiclePartAd();
+                editVehiclePartAd();
               }
             },
           ),
@@ -834,7 +915,7 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
       case 1:
         return selectedMaker?.name ?? "";
       case 2:
-        return selectesModel?.name ?? "";
+        return selectedModel?.name ?? "";
       case 3:
         return selectedModelyear?.yearName ?? "";
       case 4:
@@ -910,21 +991,6 @@ class _UpdateVehiclesPartAddState extends State<UpdateVehiclesPartAdd> {
       setState(() {});
     } else {
       print("no image is selected");
-    }
-  }
-
-  displayImageNetwork() {
-    if (result!.vehiclePartImage != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Image.network(
-          result!.vehiclePartImage!,
-          fit: BoxFit.contain,
-          filterQuality: FilterQuality.high,
-        ),
-      );
-    } else {
-      return Text("No file is selected");
     }
   }
 

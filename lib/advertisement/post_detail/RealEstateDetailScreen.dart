@@ -102,7 +102,7 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
           GestureDetector(
             onTap: () {
               try {
-                Uri uri = Uri.parse('qrImage');
+                Uri uri = Uri.parse('https://11way.solutions');
                 Share.shareUri(uri);
               } catch (e) {
                 print('Share Error: $e');
@@ -341,7 +341,7 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
                       const SliverGridDelegateWithMaxCrossAxisExtent(
                         childAspectRatio: 100,
                         maxCrossAxisExtent: 200,
-                        mainAxisExtent: 70,
+                        mainAxisExtent: 60,
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10,
                       ),
@@ -365,38 +365,36 @@ class _RealEstateDetailScreenState extends State<RealEstateDetailScreen> {
                               Row(
                                 mainAxisAlignment:
                                 MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "${detailElements[index]['title']}",
                                     style: TextStyle(
                                         color: Colors.black
-                                            .withOpacity(0.6),
-                                        fontSize: 15),
+                                            .withOpacity(0.5),
+                                        fontSize: 12),
                                   ),
                                   Image.asset(
                                     "${detailElements[index]['Image']}",
                                     color:
-                                    Colors.black.withOpacity(0.4),
-                                    height: 25,
-                                    width: 25,
+                                    Colors.black.withOpacity(0.5),
+                                    height: 14,
+                                    width: 14,
                                   )
                                 ],
                               ),
                               Text(
                                 getTextMethod(index: index),
+                                maxLines: 1,
                                 style: TextStyle(
-                                    color:
-                                    Colors.black.withOpacity(0.6),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold
+                                  color:
+                                  Colors.black.withOpacity(0.7),
+                                  fontSize: 12,
                                 ),
                               )
                             ],
                           ),
                         );
-                      })
-                ],
+                      })                ],
               ),
             ),
             SizedBox(
