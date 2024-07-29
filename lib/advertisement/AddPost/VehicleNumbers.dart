@@ -12,6 +12,7 @@ import '../../View/Utils/CommonMethods.dart';
 import '../../View/Utils/CustomSnackBar.dart';
 import '../../View/Utils/webService.dart';
 import '../../common/common_widgets.dart';
+import '../UpdatePosts/update_VehiclesMake.dart';
 import '../ad_bottom_bar.dart';
 
 class VehicleNumbers extends StatefulWidget {
@@ -52,6 +53,7 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
   File? productPicture;
   TextEditingController price = TextEditingController();
   TextEditingController vehicleNumber = TextEditingController();
+  TextEditingController vehicleNumber1 = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController description = TextEditingController();
 
@@ -92,7 +94,7 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
     }
   }
 
-  PostRealStateAd() async {
+  VehicleNumbersAd() async {
     Map<String, dynamic> data = {
       'vehicle_number_letter_id': selectedLetter?.letterId ?? "",
       'vehicle_number_plate_type_id': selectedPlateType?.plateTypeId ?? "",
@@ -151,7 +153,7 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
           onTap: () {
             if (_currentStepIndex > 1) {
               _currentStepIndex--;
-              title = _getTitleForIndex(_currentStepIndex-1);
+              title = _getTitleForIndex(_currentStepIndex - 1);
               setState(() {});
               _scrollToNextStep();
             } else {
@@ -195,20 +197,6 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                /* _currentStepIndex <= index
-                                    ? SvgPicture.asset(
-                                        "assets/images/card_grey.svg",
-                                        height: 40,
-                                      )
-                                    : _currentStepIndex == index + 1
-                                        ? SvgPicture.asset(
-                                            'assets/images/card_orange.svg',
-                                            height: 45,
-                                          )
-                                        : SvgPicture.asset(
-                                            'assets/images/card_green.svg',
-                                            height: 45,
-                                          ),*/
                                 _currentStepIndex <= index
                                     ? Image.asset(
                                         'assets/icons/ic_card.png',
@@ -319,38 +307,173 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
             SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 36),
-              child: TextField(
-                textAlign: TextAlign.center,
-                cursorWidth: 0,
-                cursorHeight: 0,
-                cursorOpacityAnimates: false,
-                maxLines: 1,
-                maxLength: 8,
-                autofocus: true,
-                controller: phone,
-                keyboardType: TextInputType.number,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 8),
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.zero,
-                  counterText: '',
-                  fillColor: Color(0xfffff200),
-                  filled: true,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xffffb700))),
-                  disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xffffb700))),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xffffb700))),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color(0xffffb700))),
+              child: Container(
+                padding: EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xffff9900),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: textFieldView(
+                            controller: vehicleNumber,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)))),
+                    Expanded(
+                        child: textFieldView(
+                            controller: vehicleNumber1,
+                            borderRadius: BorderRadius.zero)),
+                    Expanded(
+                      child: textFieldView(
+                        controller: TextEditingController(text: 'عُمان'),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 45),
+              child: Image.asset(
+                'assets/images/ic_number_plate_image_one.png',
+                height: 40,
+              ),
+            ),
+            SizedBox(height: 20),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: lettersList.length,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color: selectedLetter == lettersList[index]
+                              ? MyColors.primaryColor
+                              : Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: ListTile(
+                    leading: SquareRadio(
+                      activeColor: MyColors.primaryColor,
+                      value: lettersList[index],
+                      groupValue: selectedLetter,
+                      onChanged: (value) {
+                        _currentStepIndex = 2;
+                        selectedLetter = lettersList[index];
+                        vehicleNumber1.text = selectedLetter?.letterNameArabic ?? '';
+                        title = _getTitleForIndex(_currentStepIndex - 1);
+                        _scrollToNextStep();
+                        setState(() {});
+                      },
+                    ),
+                    title: Text('${lettersList[index].letterNameArabic}'),
+                    subtitle: Text('${lettersList[index].letterNameEnglish}'),
+                    onTap: () {
+                      _currentStepIndex = 2;
+                      selectedLetter = lettersList[index];
+                      vehicleNumber1.text = selectedLetter?.letterNameArabic ?? '';
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+                      _scrollToNextStep();
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget textFieldView(
+      {required TextEditingController controller,
+      BorderRadius? borderRadius,
+      bool? readOnly,
+      bool? autofocus,
+      int? maxLength}) {
+    return TextField(
+      readOnly: readOnly ?? true,
+      textAlign: TextAlign.center,
+      cursorWidth: 0,
+      autofocus: autofocus ?? false,
+      cursorHeight: 0,
+      cursorOpacityAnimates: false,
+      maxLines: 1,
+      maxLength: maxLength ?? 8,
+      controller: controller,
+      keyboardType: TextInputType.number,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w900,
+      ),
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        counterText: '',
+        fillColor: Color(0xffffd500),
+        filled: true,
+        border: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+      ),
+    );
+  }
+
+  Widget VehicleNumberScreen() {
+    return ListView(
+      children: [
+        Column(
+          children: [
+            SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 36),
+              child: Container(
+                padding: EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xffff9900),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: textFieldView(
+                            controller: vehicleNumber,
+                            maxLength: 5,
+                            autofocus: true,
+                            readOnly: false,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)))),
+                    Expanded(
+                        child: textFieldView(
+                            controller: vehicleNumber1,
+                            borderRadius: BorderRadius.zero)),
+                    Expanded(
+                      child: textFieldView(
+                        controller: TextEditingController(text: 'عُمان'),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -370,141 +493,101 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
               fontsize: 18,
               fontweight: FontWeight.w500,
               onTap: () {
-                if (phone.text.isEmpty) {
-                  showSnackbar(context, "Enter phone number");
+                if (vehicleNumber.text.isEmpty) {
+                  showSnackbar(context, "Enter vehicle number");
                 } else {
-                  _currentStepIndex = 2;
+                  _currentStepIndex = 3;
                   title = _getTitleForIndex(_currentStepIndex - 1);
                   _scrollToNextStep();
                   setState(() {});
                 }
               },
             ),
+            SizedBox(height: 20),
           ],
         ),
-        /*ListView.builder(
-          shrinkWrap: true,
-          itemCount: lettersList.length,
-          itemBuilder: (context, index) => Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            margin: EdgeInsets.only(bottom: 15),
-            child: RadioListTile(
-              activeColor: MyColors.primaryColor,
-              value: lettersList[index],
-              title: Text('${lettersList[index].letterNameArabic}'),
-              subtitle: Text('${lettersList[index].letterNameEnglish}'),
-              groupValue: selectedLetter,
-              onChanged: (Letters? value) {
-                _currentStepIndex = 2;
-                selectedLetter = value;
-                title = _getTitleForIndex(_currentStepIndex - 1);
-                _scrollToNextStep();
-                setState(() {});
-              },
-            ),
-          ),
-        ),*/
       ],
-    );
-  }
-
-  Widget VehicleNumberScreen() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Text(
-                  "Vehicle Number",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                ),
-              ),
-              commonTextFormField(
-                controller: vehicleNumber,
-                hintText: 'Enter vehicle number',
-              ),
-              SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          RoundButton(
-            loading: loader,
-            height: 45,
-            borderRadius: 10,
-            title: 'Next',
-            fontsize: 18,
-            fontweight: FontWeight.w500,
-            onTap: () {
-              if (vehicleNumber.text.isEmpty) {
-                showSnackbar(context, "Enter vehicle number");
-              } else {
-                _currentStepIndex = 3;
-                title = _getTitleForIndex(_currentStepIndex - 1);
-                _scrollToNextStep();
-                setState(() {});
-              }
-            },
-          ),
-        ],
-      ),
     );
   }
 
   Widget PlateTypeScreen() {
     return ListView.builder(
-        itemCount: plateTypeList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: plateTypeList[index],
-                title: Text('${plateTypeList[index].plateTypeName}'),
-                groupValue: selectedPlateType,
-                onChanged: (PlateTypes? value) {
-                  _currentStepIndex = 4;
-                  selectedPlateType = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: plateTypeList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedPlateType == plateTypeList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: plateTypeList[index],
+              groupValue: selectedPlateType,
+              onChanged: (value) {
+                _currentStepIndex = 4;
+                selectedPlateType = plateTypeList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${plateTypeList[index].plateTypeName}'),
+            onTap: () {
+              _currentStepIndex = 4;
+              selectedPlateType = plateTypeList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Widget GovernateScreen() {
     return ListView.builder(
-        itemCount: governateList.length,
-        itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              margin: EdgeInsets.only(bottom: 15),
-              child: RadioListTile(
-                activeColor: MyColors.primaryColor,
-                value: governateList[index],
-                title: Text('${governateList[index].governorateName}'),
-                groupValue: selectedgovernate,
-                onChanged: (Governorate? value) {
-                  _currentStepIndex = 5;
-                  selectedgovernate = value;
-                  title = _getTitleForIndex(_currentStepIndex - 1);
-                  _scrollToNextStep();
-                  setState(() {});
-                },
-              ),
-            ));
+      itemCount: governateList.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                  color: selectedgovernate == governateList[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: ListTile(
+            leading: SquareRadio(
+              activeColor: MyColors.primaryColor,
+              value: governateList[index],
+              groupValue: selectedgovernate,
+              onChanged: (value) {
+                _currentStepIndex = 5;
+                selectedgovernate = governateList[index];
+                title = _getTitleForIndex(_currentStepIndex - 1);
+                _scrollToNextStep();
+                setState(() {});
+              },
+            ),
+            title: Text('${governateList[index].governorateName}'),
+            onTap: () {
+              _currentStepIndex = 5;
+              selectedgovernate = governateList[index];
+              title = _getTitleForIndex(_currentStepIndex - 1);
+              _scrollToNextStep();
+              setState(() {});
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Widget UploadPhotos() {
@@ -527,7 +610,7 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
           ),
         ),
         SizedBox(
-          height: 50,
+          height: 50
         ),
         RoundButton(
           height: 45,
@@ -558,15 +641,13 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Price",
+                "Price (OMR)",
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               commonTextFormField(
                 controller: price,
-                hintText: 'Enter Price',
+                hintText: 'Enter Price in (OMR)',
               ),
               SizedBox(
                 height: 10,
@@ -593,9 +674,9 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
                 height: 10,
               ),
               commonTextFormField(
-                maxLines: null,
+                maxLines: 4,
                 controller: description,
-                hintText: 'Enter Description',
+                hintText: 'Provide more information about your ad',
               ),
             ],
           ),
@@ -617,7 +698,7 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
               } else if (description.text.isEmpty) {
                 showSnackbar(context, "Enter phone number");
               } else {
-                PostRealStateAd();
+                VehicleNumbersAd();
               }
             },
           ),

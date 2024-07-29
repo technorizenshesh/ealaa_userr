@@ -1,32 +1,14 @@
 {
   "project_info": {
-    "project_number": "88812132661",
-    "project_id": "elaadriver",
-    "storage_bucket": "elaadriver.appspot.com"
+    "project_number": "195673986340",
+    "firebase_url": "https://wayflutter-8410d-default-rtdb.firebaseio.com",
+    "project_id": "wayflutter-8410d",
+    "storage_bucket": "wayflutter-8410d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:88812132661:android:9199047197dcea32c0147c",
-        "android_client_info": {
-          "package_name": "app.ealaa_driver.com.ealaa_driver"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBxzZKZAdsMyxPCB-Pp6La_KaphpEwiOEw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:88812132661:android:d78d8b49889753b9c0147c",
+        "mobilesdk_app_id": "1:195673986340:android:be254a19f6c7af2c7c0fb1",
         "android_client_info": {
           "package_name": "app.ealaa_user.com.ealaa_user"
         }
@@ -34,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBxzZKZAdsMyxPCB-Pp6La_KaphpEwiOEw"
+          "current_key": "AIzaSyD4HfgsTKFdzGMRshsYgBWimG8K9XtWrZw"
         }
       ],
       "services": {

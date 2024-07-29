@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ealaa_userr/firebase_options.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -45,7 +46,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if(Platform.isAndroid)
     {
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
       NS().initNotification();
       FirebaseMessaging.onBackgroundMessage(_backgroundNotificationHandler);
 

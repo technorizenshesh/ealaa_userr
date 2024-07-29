@@ -143,7 +143,7 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                           child: Text(
                             getAdsWithCategoryHomeResult[index].name ?? '',
                             style: TextStyle(
-                              fontSize: 14,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: selectedIndex == index
                                     ? Colors.orange
@@ -319,6 +319,18 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             imageUrl:
                 getAdsWithCategorySubCategoryResult[index].vehicleNumberImage ??
                     '',
+            imageUrlValue: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                        .vehicleNumberImage ??
+                    ''),
+            vehicleNumber: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                        .uploadVehiclesNumbers ??
+                    ''),
+            vehicleNumber1: TextEditingController(
+                text: getAdsWithCategorySubCategoryResult[index]
+                        .vehicleNumberImage ??
+                    ''),
             name: getAdsWithCategorySubCategoryResult[index]
                     .vehicleNumberDescription ??
                 '',
@@ -573,6 +585,8 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
   Widget dataContainer(
       {required String imageUrl,
       TextEditingController? imageUrlValue,
+      TextEditingController? vehicleNumber,
+      TextEditingController? vehicleNumber1,
       required String name,
       required String price,
       required String firstText,
@@ -607,60 +621,114 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                 borderRadius: BorderRadius.circular(20),
                 child: imageUrlValue != null &&
                         imageUrlValue.text.trim().isNotEmpty
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 36),
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              readOnly: true,
-                              maxLines: 1,
-                              maxLength: 8,
-                              autofocus: true,
-                              controller: imageUrlValue,
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: 8),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.zero,
-                                counterText: '',
-                                fillColor: Color(0xff067445),
-                                filled: true,
-                                border: OutlineInputBorder(
+                    ? ((vehicleNumber != null &&
+                                vehicleNumber.text.isNotEmpty) ||
+                            (vehicleNumber1 != null &&
+                                vehicleNumber1.text.isNotEmpty))
+                        ? Column(
+                            children: [
+                              SizedBox(height: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 36),
+                                child: Container(
+                                  padding: EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
-                                disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide:
-                                        BorderSide(color: Color(0xff067445))),
+                                    color: Color(0xffff9900),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: textFieldView(
+                                              controller: vehicleNumber!,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(10),
+                                                  bottomLeft:
+                                                      Radius.circular(10)))),
+                                      Expanded(
+                                          child: textFieldView(
+                                              controller: vehicleNumber1!,
+                                              borderRadius: BorderRadius.zero)),
+                                      Expanded(
+                                        child: textFieldView(
+                                          controller: TextEditingController(
+                                              text: 'عُمان'),
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20, right: 45),
-                            child: Image.asset(
-                              'assets/images/ic_number_plate_image_one.png',
-                              height: 40,
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      )
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 45),
+                                child: Image.asset(
+                                  'assets/images/ic_number_plate_image_one.png',
+                                  height: 40,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 36),
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  readOnly: true,
+                                  maxLines: 1,
+                                  maxLength: 8,
+                                  autofocus: true,
+                                  controller: imageUrlValue,
+                                  keyboardType: TextInputType.number,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 8),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.zero,
+                                    counterText: '',
+                                    fillColor: Color(0xff067445),
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff067445))),
+                                    disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff067445))),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff067445))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            color: Color(0xff067445))),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 45),
+                                child: Image.asset(
+                                  'assets/images/ic_number_plate_image_one.png',
+                                  height: 40,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                            ],
+                          )
                     : CachedNetworkImage(
                         imageUrl: imageUrl,
                         fit: BoxFit.contain,
@@ -932,6 +1000,48 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             ),*/
           ],
         ),
+      ),
+    );
+  }
+
+  Widget textFieldView(
+      {required TextEditingController controller,
+      BorderRadius? borderRadius,
+      bool? readOnly,
+      bool? autofocus,
+      int? maxLength}) {
+    return TextField(
+      readOnly: readOnly ?? true,
+      textAlign: TextAlign.center,
+      cursorWidth: 0,
+      autofocus: autofocus ?? false,
+      cursorHeight: 0,
+      cursorOpacityAnimates: false,
+      maxLines: 1,
+      maxLength: maxLength ?? 8,
+      controller: controller,
+      keyboardType: TextInputType.number,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w900,
+      ),
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.zero,
+        counterText: '',
+        fillColor: Color(0xffffd500),
+        filled: true,
+        border: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(10),
+            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
       ),
     );
   }

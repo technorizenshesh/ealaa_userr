@@ -219,7 +219,7 @@ commonTextFormField(
       onTap: onTap,
       controller: controller,
       cursorColor: Colors.orange,
-      cursorHeight: 16,
+      //cursorHeight: 16,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 16,vertical: 10),
         suffixIcon: suffixIcon
