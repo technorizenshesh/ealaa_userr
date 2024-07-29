@@ -652,7 +652,7 @@ class _UpdateVehiclesMakeState extends State<UpdateVehiclesMake> {
 
   Widget Make() {
     return GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
+     // physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           mainAxisExtent: 80,
@@ -1033,7 +1033,7 @@ class _UpdateVehiclesMakeState extends State<UpdateVehiclesMake> {
 
   Widget ExteriorColor() {
     return GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
+      //physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           mainAxisExtent: 80,
@@ -1164,7 +1164,7 @@ class _UpdateVehiclesMakeState extends State<UpdateVehiclesMake> {
 
   Widget InteriorColor() {
     return GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
+      //physics: NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           mainAxisExtent: 80,

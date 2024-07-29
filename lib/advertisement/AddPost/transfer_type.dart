@@ -50,7 +50,7 @@ class _TransferTypeState extends State<TransferType> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
         child: GridView.builder(
-             physics: NeverScrollableScrollPhysics(),
+             //physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3, mainAxisExtent: 130),
           itemCount: icons.length,

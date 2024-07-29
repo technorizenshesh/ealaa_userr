@@ -295,11 +295,12 @@ class _UserHomeState extends State<UserHome> {
                     child: Center(
                       child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
+                           /* Navigator.push(
                                 context,
                                 CupertinoPageRoute(
                                     builder: (context) =>
-                                        CompanyDetails(cId: "1")));
+                                        CompanyDetails(cId: "1")));*/
+                            showSnackbar(context, 'Coming soon...');
                           },
                           child: Image.asset(
                             "assets/images/CompanyIcon.png",

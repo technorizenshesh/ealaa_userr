@@ -98,7 +98,7 @@ class _ListAnythingFreeState extends State<ListAnythingFree> {
               clipBehavior: Clip.hardEdge,
             ))
         : GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            //physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, mainAxisExtent: 100, mainAxisSpacing: 5),
             itemCount: getAdsWithCategoryHomeResult.length,
