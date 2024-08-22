@@ -105,8 +105,8 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
       'vehicle_number_price': price.text.toString(),
       'vehicle_number_english_title': '',
       'vehicle_number_arabic_title': '',
-      'upload_vehicles_numbers': phone.text.toString(),
-      'vehicle_number_phone': vehicleNumber.text.toString(),
+      'vehicle_number_phone': phone.text.toString(),
+      'upload_vehicles_numbers': vehicleNumber.text.toString(),
       'vehicle_number_description': description.text.toString(),
     };
     Map<String, dynamic> files = {'vehicle_number_image': productPicture};
@@ -119,9 +119,9 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
         context: context,
         apiUrl: (widget.type == 'For Sale')
             ? upload_vehicles_numbers_for_sale
-            : (widget.type == 'For Rent')
+            : /*(widget.type == 'For Rent')
                 ? upload_vehicles_numbers_for_rent
-                : upload_vehicles_numbers_for_wanted);
+                :*/ upload_vehicles_numbers_for_wanted);
     loader = false;
     setState(() {});
     final resdata = GeneralModel.fromJson(res);

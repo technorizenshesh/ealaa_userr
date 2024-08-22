@@ -458,7 +458,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                             ),
                             ListTile(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(usersDetails: result!.usersDetails,userIdValue: (result != null &&
                                     result!.usersDetails != null &&
                                     result!.usersDetails!.id !=
                                         null &&
@@ -484,8 +484,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                                       fit: BoxFit.fill),
                                 ),
                               ),
-                              title:
-                              Text(
+                              title: Text(
                                 (result != null &&
                                     result!.usersDetails != null &&
                                     result!.usersDetails!.userName !=
@@ -500,8 +499,7 @@ class _AnimalsAndSuppliesDetailScreenState extends State<AnimalsAndSuppliesDetai
                                   fontSize: 16,
                                 ),
                               ),
-                              subtitle:
-                              Text(
+                              subtitle: Text(
                                 (result != null &&
                                     result!.usersDetails != null &&
                                     result!.usersDetails!.email !=

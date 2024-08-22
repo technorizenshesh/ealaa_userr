@@ -17,7 +17,7 @@ class TransferType extends StatefulWidget {
 class _TransferTypeState extends State<TransferType> {
   List<Map<String, String>> icons = [
     {"icon": "assets/images/SaleIcon.svg", "text": "For Sale"},
-    {"icon": "assets/images/RentIcon.svg", "text": "For Rent"},
+    //{"icon": "assets/images/RentIcon.svg", "text": "For Rent"},
     {"icon": "assets/images/WantedIcon.svg", "text": "Wanted"}
   ];
 

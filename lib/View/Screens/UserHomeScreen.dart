@@ -16,7 +16,6 @@ import '../Utils/ApiConstants.dart';
 import '../Utils/CustomSnackBar.dart';
 import '../Utils/GlobalData.dart';
 import '../Utils/webService.dart';
-import 'CompanyDetails.dart';
 
 class UserHome extends StatefulWidget {
   const UserHome({super.key});
@@ -276,17 +275,18 @@ class _UserHomeState extends State<UserHome> {
                     right: 10,
                     child: Center(
                       child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ShipmentDetailDriverScreen()));
-                          },
-                          child: Image.asset(
-                            "assets/images/IndividualIcon.png",
-                            height: 140,
-                          )),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ShipmentDetailDriverScreen()));
+                        },
+                        child: Image.asset(
+                          "assets/images/IndividualIcon.png",
+                          height: 140,
+                        ),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -295,7 +295,7 @@ class _UserHomeState extends State<UserHome> {
                     child: Center(
                       child: GestureDetector(
                           onTap: () {
-                           /* Navigator.push(
+                            /* Navigator.push(
                                 context,
                                 CupertinoPageRoute(
                                     builder: (context) =>

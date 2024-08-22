@@ -35,24 +35,12 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
     {'title': 'Model Year', 'Image': 'assets/icons_for_car/ic_model_year.png'},
     {'title': 'Condition', 'Image': 'assets/icons_for_car/ic_model_year.png'},
     {'title': 'Origin', 'Image': 'assets/icons_for_car/ic_model_year.png'},
-    {
-      'title': 'Transmission',
-      'Image': 'assets/icons_for_car/ic_transmission.png'
-    },
-    {
-      'title': 'Exterior Color',
-      'Image': 'assets/icons_for_car/ic_exterior_color.png'
-    },
+    {'title': 'Transmission', 'Image': 'assets/icons_for_car/ic_transmission.png'},
+    {'title': 'Exterior Color', 'Image': 'assets/icons_for_car/ic_exterior_color.png'},
     {'title': 'Door Count', 'Image': 'assets/icons_for_car/ic_door_count.png'},
     {'title': 'Seats', 'Image': 'assets/icons_for_car/ic_seats.png'},
-    {
-      'title': 'Interior Color',
-      'Image': 'assets/icons_for_car/ic_interior_color.png'
-    },
-    {
-      'title': 'Engine Size',
-      'Image': 'assets/icons_for_car/ic_engine_size.png'
-    },
+    {'title': 'Interior Color', 'Image': 'assets/icons_for_car/ic_interior_color.png'},
+    {'title': 'Engine Size', 'Image': 'assets/icons_for_car/ic_engine_size.png'},
     {'title': 'Cylinders', 'Image': 'assets/icons_for_car/ic_engine_size.png'},
     {'title': 'Fuel', 'Image': 'assets/icons_for_car/ic_fuel.png'},
     {'title': 'Drivetrain', 'Image': 'assets/icons_for_car/ic_drivetrain.png'},
@@ -480,13 +468,13 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                             ),
                             ListTile(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(usersDetails: result!.usersDetails,userIdValue: (result != null &&
                                     result!.usersDetails != null &&
                                     result!.usersDetails!.id !=
                                         null &&
                                     result!.usersDetails!.id!
                                         .isNotEmpty)
-                                    ?result!.usersDetails!.id!
+                                    ? result!.usersDetails!.id!
                                     :null,),));
                               },
                               leading: ClipRRect(
@@ -585,9 +573,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
       case 18:
         return result?.vehicleAdsDetailPlate ?? '';
       case 19:
-        return (DateFormat('yyyy-MM-dd')
-                .format(DateTime.parse(result?.adsCreatedAt ?? "")))
-            .toString();
+        return (DateFormat('yyyy-MM-dd').format(DateTime.parse(result?.adsCreatedAt ?? ""))).toString();
       default:
         return 'test';
     }

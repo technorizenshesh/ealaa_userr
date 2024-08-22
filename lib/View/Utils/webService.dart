@@ -70,14 +70,14 @@ class Webservices {
             showSnackbar(context, jsonResponse['message']);
           return jsonResponse;
         } else {
-          showSnackbar(context, jsonResponse['message']);
+         // showSnackbar(context, jsonResponse['message']);
         }
         return jsonResponse;
       } else if (response.statusCode == 500) {
         print('api response-------------${response.body}');
       }
     } catch (e) {
-      showSnackbar(context, e.toString());
+      //showSnackbar(context, e.toString());
       log('Error in $apiUrl : ------ $e');
     }
     print(

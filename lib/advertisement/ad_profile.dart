@@ -23,7 +23,10 @@ class _AdProfileState extends State<AdProfile> {
   clickOnMyAd() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  AdMyAdsPosts()),
+      MaterialPageRoute(
+          builder: (context) => AdMyAdsPosts(
+                userIdValue: userId,
+              )),
     );
   }
 
@@ -37,7 +40,11 @@ class _AdProfileState extends State<AdProfile> {
   clickOnMyFavorites() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  AdMyAdsPosts(FavValue: true,)),
+      MaterialPageRoute(
+          builder: (context) => AdMyAdsPosts(
+                FavValue: true,
+                userIdValue: userId,
+              )),
     );
   }
 
@@ -230,9 +237,7 @@ class _AdProfileState extends State<AdProfile> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               Material(
                 elevation: 2,
                 shape: RoundedRectangleBorder(
@@ -247,10 +252,14 @@ class _AdProfileState extends State<AdProfile> {
                       ListTile(
                         onTap: () {
                           // clickOnMyProfile();
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return EditProfile();
-                          }));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return EditProfile();
+                              },
+                            ),
+                          );
                         },
                         leading: const Icon(
                           Icons.person,

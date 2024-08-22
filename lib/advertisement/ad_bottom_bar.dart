@@ -1,3 +1,4 @@
+import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/advertisement/AddPost/List_anything_free.dart';
 import 'package:ealaa_userr/advertisement/ad_chats.dart';
 import 'package:ealaa_userr/advertisement/ad_home.dart';
@@ -28,7 +29,7 @@ class AdBottomBarState extends State<AdBottomBar> {
     const ListAnythingFree(),
     //const AdPostAds(),
     //const AdAds(),
-    AdMyAdsPosts(),
+    AdMyAdsPosts(userIdValue: userId,),
     const AdProfile(),
   ];
 

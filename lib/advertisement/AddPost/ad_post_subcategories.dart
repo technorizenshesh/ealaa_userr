@@ -67,7 +67,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
         centerTitle: true,
         title: Text(
           widget.title, // Your badge count here
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
           ),
@@ -77,7 +77,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
           child: showProgressBar
-              ? Center(
+              ? const Center(
                   child: CircularProgressIndicator(
                     color: MyColors.primaryColor,
                   ),
@@ -87,15 +87,12 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                   : Container(
                       height: MediaQuery.of(context).size.height,
                       child: GridView.builder(
-                        //    physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3, mainAxisExtent: 130),
                         itemCount: subcategoryList.length,
                         itemBuilder: (context, int index) {
-                          //  GetClubsResult item = controller.getClubsModel!.result![index];
                           return GestureDetector(
                             onTap: () {
-                              print(';;;;;;;;;;;;;;;;;;${subcategoryList[index].id??'8888888'}');
                               widget.advertisement_category_id=="1"||widget.advertisement_category_id=="2"?
                               Navigator.push(
                                 context,
@@ -152,7 +149,7 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                             child: Container(
                               height: 50,
                               width: 100,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                       color: Colors.grey, width: .25),
@@ -194,11 +191,11 @@ class _Ad_Post_SubcategoriesState extends State<Ad_Post_Subcategories> {
                                           ),
                                         )),
                                         errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                                            const Icon(Icons.error),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   Text(

@@ -1,4 +1,6 @@
 import 'package:ealaa_userr/Model/advertisement_model/get_ads_with_category_subcategory_model.dart';
+import 'package:ealaa_userr/advertisement/filters/phone_number_filter.dart';
+import 'package:ealaa_userr/advertisement/filters/vehicle_for_sale_and_rent_filter.dart';
 import 'package:ealaa_userr/advertisement/post_detail/AnimalsAndSuppliesDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/ElectronicsDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/PhoneNumberDetailScreen.dart';
@@ -7,9 +9,6 @@ import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehiclePartsAndAccessoriesDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,24 +18,33 @@ import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
 import '../View/Utils/webService.dart';
 import 'ad_chat_room.dart';
+import 'filters/animals_filter.dart';
+
+
+List<PostListDetails> getAdsWithCategorySubCategoryResult = [];
+List<PostListDetails> getAdsWithCategorySubCategoryResultGlobal = [];
+
+
 
 class CategoryPostsScreen extends StatefulWidget {
   String adsSubCategoryId = '';
   String adsPost = '';
   String adsCategoryId = '';
+  bool value = false;
 
   CategoryPostsScreen(
       {super.key,
       this.adsSubCategoryId = '',
       this.adsPost = '',
-      this.adsCategoryId = ''});
+      this.adsCategoryId = '',
+      this.value = false});
 
   @override
   State<CategoryPostsScreen> createState() => _CategoryPostsScreenState();
 }
 
 class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
-  List<PostListDetails> getAdsWithCategorySubCategoryResult = [];
+  List<PostListDetails> getAdsWithCategorySubCategoryResultTem = [];
 
   bool showProgressBar = true;
 
@@ -48,6 +56,8 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
         GetAdsWithCategorySubCategoryModel.fromJson(res);
     if (getAdsWithCategorySubCategoryModel.result != null &&
         getAdsWithCategorySubCategoryModel.result!.isNotEmpty) {
+      getAdsWithCategorySubCategoryResultGlobal =
+          getAdsWithCategorySubCategoryModel.result!;
       getAdsWithCategorySubCategoryResult =
           getAdsWithCategorySubCategoryModel.result!;
       setState(() {});
@@ -60,7 +70,12 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
 
   @override
   void initState() {
-    getAdSubcategory();
+    if(!widget.value) {
+      getAdSubcategory();
+    }else{
+      showProgressBar = false;
+      print('getAdsWithCategorySubCategoryResult:::::::::::::::${getAdsWithCategorySubCategoryResult.length}');
+    }
     super.initState();
   }
 
@@ -74,6 +89,15 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
         automaticallyImplyLeading: false,
         leading: GestureDetector(
           onTap: () {
+            selectedCategories = null;
+            selectedType = null;
+            selectedGender = null;
+            selectedAge = null;
+            selectedGovernrate = null;
+            selectedState = null;
+            selectedCity = null;
+            currentPointValue = 0.0;
+            setState(() {});
             Navigator.pop(context);
           },
           child: const Icon(
@@ -82,11 +106,336 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             color: Colors.white,
           ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              if (widget.adsCategoryId == '1' || widget.adsCategoryId == '2') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VehicleForSaleAndRentFilter(
+                      advertisement_category_id: widget.adsCategoryId,
+                    ),
+                  ),
+                );
+              }
+              if (widget.adsCategoryId == '9') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PhoneNumberFilter(
+                      advertisement_category_id: widget.adsCategoryId,
+                    ),
+                  ),
+                );
+              }
+              if (widget.adsCategoryId == '10') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AnimalsFilter(
+                      advertisement_category_id: widget.adsCategoryId,
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.orange, width: .2)),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.filter_alt_outlined,
+                      color: Colors.orange,
+                      size: 18,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'Filters',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          PopupMenuButton(
+            position: PopupMenuPosition.under,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Colors.orange, width: .2)),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Shorted by',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(
+                      Icons.short_text,
+                      color: Colors.orange,
+                      size: 18,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            itemBuilder: (ctx) => [
+              PopupMenuItem(
+                child: const Text('Date (Newest)'),
+                onTap: () {
+                  if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                    getAdsWithCategorySubCategoryResult.sort((a, b) {
+                      return b.adsCreatedAt!.compareTo(a.adsCreatedAt!);
+                    });
+                    setState(() {});
+                  }
+                },
+              ),
+              PopupMenuItem(
+                child: const Text('Date (Oldest)'),
+                onTap: () {
+                  if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                    getAdsWithCategorySubCategoryResult.sort((a, b) {
+                      return a.adsCreatedAt!.compareTo(b.adsCreatedAt!);
+                    });
+                    setState(() {});
+                  }
+                },
+              ),
+              PopupMenuItem(
+                child: const Text('Price (Lowest)'),
+                onTap: () {
+                  if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                    getAdsWithCategorySubCategoryResult.sort((a, b) {
+                      return int.parse(a.vehicleAdsAdditionalDetailPrice!)
+                          .compareTo(
+                              int.parse(b.vehicleAdsAdditionalDetailPrice!));
+                    });
+                    setState(() {});
+                  }
+                },
+              ),
+              PopupMenuItem(
+                child: const Text('Price (Highest)'),
+                onTap: () {
+                  if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                    getAdsWithCategorySubCategoryResult.sort((a, b) {
+                      return int.parse(b.vehicleAdsAdditionalDetailPrice!)
+                          .compareTo(
+                              int.parse(a.vehicleAdsAdditionalDetailPrice!));
+                    });
+                    setState(() {});
+                  }
+                },
+              ),
+
+              ///TODO FOR Vehicle for sell rent
+              if (widget.adsCategoryId == '1' || widget.adsCategoryId == '2')
+                PopupMenuItem(
+                  child: const Text('Killometerage (Lowest)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return int.parse(
+                                a.vehicleAdsAdditionalDetailDistanceTravelled!)
+                            .compareTo(int.parse(b
+                                .vehicleAdsAdditionalDetailDistanceTravelled!));
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              if (widget.adsCategoryId == '1' || widget.adsCategoryId == '2')
+                PopupMenuItem(
+                  child: const Text('Killometerage (Highest)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return int.parse(
+                                b.vehicleAdsAdditionalDetailDistanceTravelled!)
+                            .compareTo(int.parse(a
+                                .vehicleAdsAdditionalDetailDistanceTravelled!));
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              if (widget.adsCategoryId == '1' ||
+                  widget.adsCategoryId == '2' ||
+                  widget.adsCategoryId == '5' ||
+                  widget.adsCategoryId == '6')
+                PopupMenuItem(
+                  child: const Text('Year (Newest)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return int.parse(a.vehicleAdsDetailYear!)
+                            .compareTo(int.parse(b.vehicleAdsDetailYear!));
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              if (widget.adsCategoryId == '1' ||
+                  widget.adsCategoryId == '2' ||
+                  widget.adsCategoryId == '5' ||
+                  widget.adsCategoryId == '6')
+                PopupMenuItem(
+                  child: const Text('Year (Oldest)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return int.parse(b.vehicleAdsDetailYear!)
+                            .compareTo(int.parse(a.vehicleAdsDetailYear!));
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+
+              ///TODO FOR Real state
+              if (widget.adsCategoryId == '5' || widget.adsCategoryId == '6')
+                PopupMenuItem(
+                  child: const Text('Land Area (Smallest)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return int.parse(
+                                a.realStateAdsAdditionalDetailLandArea!)
+                            .compareTo(int.parse(
+                                b.realStateAdsAdditionalDetailLandArea!));
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              if (widget.adsCategoryId == '5' || widget.adsCategoryId == '6')
+                PopupMenuItem(
+                  child: const Text('Land Area (Highest)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return int.parse(
+                                b.realStateAdsAdditionalDetailLandArea!)
+                            .compareTo(int.parse(
+                                a.realStateAdsAdditionalDetailLandArea!));
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+
+              ///TODO FOR Vehicle Number
+              if (widget.adsCategoryId == '4')
+                PopupMenuItem(
+                  child: const Text('Number (Ascending)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return a.uploadVehiclesNumbers!
+                            .compareTo(b.uploadVehiclesNumbers!);
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              if (widget.adsCategoryId == '4')
+                PopupMenuItem(
+                  child: const Text('Number (Descending)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return int.parse(b.uploadVehiclesNumbers!)
+                            .compareTo(int.parse(a.uploadVehiclesNumbers!));
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              /*
+              if (widget.adsCategoryId == '4')
+                PopupMenuItem(
+                  child: const Text('Arabic Letter (Ascending)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return a.letterNameEnglish!
+                            .compareTo(b.letterNameEnglish!);
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              if (widget.adsCategoryId == '4')
+                PopupMenuItem(
+                  child: const Text('Arabic Letter (Descending)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return b.letterNameEnglish!
+                            .compareTo(a.letterNameEnglish!);
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),*/
+              if (widget.adsCategoryId == '4')
+                PopupMenuItem(
+                  child: const Text('English Letter (Ascending)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return b.letterNameEnglish!
+                            .compareTo(a.letterNameEnglish!);
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+              if (widget.adsCategoryId == '4')
+                PopupMenuItem(
+                  child: const Text('English Letter (Descending)'),
+                  onTap: () {
+                    if (getAdsWithCategorySubCategoryResult.isNotEmpty) {
+                      getAdsWithCategorySubCategoryResult.sort((a, b) {
+                        return a.letterNameEnglish!
+                            .compareTo(b.letterNameEnglish!);
+                      });
+                      setState(() {});
+                    }
+                  },
+                ),
+            ],
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: showProgressBar
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(
                   color: MyColors.primaryColor,
                 ),
@@ -224,22 +573,22 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
           },
           child: dataContainer(
             imageUrl:
-            getAdsWithCategorySubCategoryResult[index].vehicleNumberImage ??
-                '',
+                getAdsWithCategorySubCategoryResult[index].vehicleNumberImage ??
+                    '',
             imageUrlValue: TextEditingController(
                 text: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleNumberImage ??
+                        .vehicleNumberImage ??
                     ''),
             vehicleNumber: TextEditingController(
                 text: getAdsWithCategorySubCategoryResult[index]
-                    .vehicleNumberPhone ??
+                        .uploadVehiclesNumbers ??
                     ''),
             vehicleNumber1: TextEditingController(
                 text: getAdsWithCategorySubCategoryResult[index]
-                    .letterNameEnglish ??
+                        .letterNameEnglish ??
                     ''),
             name: getAdsWithCategorySubCategoryResult[index]
-                .vehicleNumberDescription ??
+                    .vehicleNumberDescription ??
                 '',
             price:
                 getAdsWithCategorySubCategoryResult[index].vehicleNumberPrice ??
@@ -480,16 +829,15 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
         );
       }
     }
-    return SizedBox();
+    return const SizedBox();
   }
 
   Widget dataContainer(
       {required String imageUrl,
-
-        TextEditingController? imageUrlValue,
-        TextEditingController? vehicleNumber,
-        TextEditingController? vehicleNumber1,
-        required String name,
+      TextEditingController? imageUrlValue,
+      TextEditingController? vehicleNumber,
+      TextEditingController? vehicleNumber1,
+      required String name,
       required String price,
       required String firstText,
       required String secondText,
@@ -507,7 +855,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
         width: double.infinity,
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(20.0)),
             border: Border.all(color: Colors.grey.shade100),
             color: Colors.white),
         child: Column(
@@ -522,137 +870,141 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: imageUrlValue != null &&
-                    imageUrlValue.text.trim().isNotEmpty
+                        imageUrlValue.text.trim().isNotEmpty
                     ? ((vehicleNumber != null &&
-                    vehicleNumber.text.isNotEmpty) ||
-                    (vehicleNumber1 != null &&
-                        vehicleNumber1.text.isNotEmpty))
-                    ? Column(
-                  children: [
-                    SizedBox(height: 20),
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 36),
-                      child: Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xffff9900),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: textFieldView(
-                                    controller: vehicleNumber!,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        bottomLeft:
-                                        Radius.circular(10)))),
-                            Expanded(
-                                child: textFieldView(
-                                    controller: vehicleNumber1!,
-                                    borderRadius: BorderRadius.zero)),
-                            Expanded(
-                              child: textFieldView(
-                                controller: TextEditingController(
-                                    text: 'عُمان'),
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
+                                vehicleNumber.text.isNotEmpty) ||
+                            (vehicleNumber1 != null &&
+                                vehicleNumber1.text.isNotEmpty))
+                        ? Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 36),
+                                child: Container(
+                                  padding: const EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color(0xffff9900),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                          child: textFieldView(
+                                              controller: vehicleNumber!,
+                                              borderRadius: const BorderRadius
+                                                  .only(
+                                                  topLeft: Radius.circular(10),
+                                                  bottomLeft:
+                                                      Radius.circular(10)))),
+                                      Expanded(
+                                          child: textFieldView(
+                                              controller: vehicleNumber1!,
+                                              borderRadius: BorderRadius.zero)),
+                                      Expanded(
+                                        child: textFieldView(
+                                          controller: TextEditingController(
+                                              text: 'عُمان'),
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, right: 45),
-                      child: Image.asset(
-                        'assets/images/ic_number_plate_image_one.png',
-                        height: 40,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                )
-                    : Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 20),
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 36),
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        readOnly: true,
-                        maxLines: 1,
-                        maxLength: 8,
-                        autofocus: true,
-                        controller: imageUrlValue,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 8),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
-                          counterText: '',
-                          fillColor: Color(0xff067445),
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                  color: Color(0xff067445))),
-                          disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                  color: Color(0xff067445))),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                  color: Color(0xff067445))),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                  color: Color(0xff067445))),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, right: 45),
-                      child: Image.asset(
-                        'assets/images/ic_number_plate_image_one.png',
-                        height: 40,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                )
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 45),
+                                child: Image.asset(
+                                  'assets/images/ic_number_plate_image_one.png',
+                                  height: 40,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 36),
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  readOnly: true,
+                                  maxLines: 1,
+                                  maxLength: 8,
+                                  autofocus: true,
+                                  controller: imageUrlValue,
+                                  keyboardType: TextInputType.number,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 8),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.zero,
+                                    counterText: '',
+                                    fillColor: const Color(0xff067445),
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xff067445))),
+                                    disabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xff067445))),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xff067445))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xff067445))),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 45),
+                                child: Image.asset(
+                                  'assets/images/ic_number_plate_image_one.png',
+                                  height: 40,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          )
                     : CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.contain,
-                  height: MediaQuery.of(context).size.height * .2,
-                  placeholder: (context, url) => Center(
-                    child: Shimmer.fromColors(
-                      baseColor: MyColors.onSecondary.withOpacity(0.4),
-                      highlightColor:
-                      Theme.of(context).colorScheme.onSecondary,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.25,
-                        color: MyColors.onSecondary.withOpacity(0.4),
+                        imageUrl: imageUrl,
+                        fit: BoxFit.contain,
+                        height: MediaQuery.of(context).size.height * .2,
+                        placeholder: (context, url) => Center(
+                          child: Shimmer.fromColors(
+                            baseColor: MyColors.onSecondary.withOpacity(0.4),
+                            highlightColor:
+                                Theme.of(context).colorScheme.onSecondary,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.25,
+                              color: MyColors.onSecondary.withOpacity(0.4),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -664,13 +1016,13 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                         color: Colors.black.withOpacity(0.7),
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "${price} OMR",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.green,
                             fontSize: 14,
                             fontWeight: FontWeight.bold),
@@ -689,8 +1041,8 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
                                   color: Colors.black.withOpacity(0.1))),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 2),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -699,7 +1051,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                                 color: Colors.black.withOpacity(0.5),
                                 size: 18,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 2,
                               ),
                               Text(
@@ -715,9 +1067,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 18.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
                     child: Row(
                       children: [
                         Image.asset(
@@ -726,10 +1078,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                           height: 14,
                           width: 14,
                         ),
-                        Expanded(
+                        const Expanded(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Divider(),
                           ),
                         ),
@@ -739,10 +1090,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                           height: 14,
                           width: 14,
                         ),
-                        Expanded(
+                        const Expanded(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Divider(),
                           ),
                         ),
@@ -755,9 +1105,9 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: Row(
                       children: [
                         Expanded(
@@ -795,7 +1145,10 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                 ],
               ),
             ),
-            Divider(color: Colors.grey.shade100,height: 0,),
+            Divider(
+              color: Colors.grey.shade100,
+              height: 0,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -908,10 +1261,10 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
 
   Widget textFieldView(
       {required TextEditingController controller,
-        BorderRadius? borderRadius,
-        bool? readOnly,
-        bool? autofocus,
-        int? maxLength}) {
+      BorderRadius? borderRadius,
+      bool? readOnly,
+      bool? autofocus,
+      int? maxLength}) {
     return TextField(
       readOnly: readOnly ?? true,
       textAlign: TextAlign.center,
@@ -923,27 +1276,27 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
       maxLength: maxLength ?? 8,
       controller: controller,
       keyboardType: TextInputType.number,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w900,
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.zero,
         counterText: '',
-        fillColor: Color(0xffffd500),
+        fillColor: const Color(0xffffd500),
         filled: true,
         border: OutlineInputBorder(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
-            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+            borderSide: const BorderSide(color: Color(0xff000000), width: .4)),
         disabledBorder: OutlineInputBorder(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
-            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+            borderSide: const BorderSide(color: Color(0xff000000), width: .4)),
         enabledBorder: OutlineInputBorder(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
-            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+            borderSide: const BorderSide(color: Color(0xff000000), width: .4)),
         focusedBorder: OutlineInputBorder(
             borderRadius: borderRadius ?? BorderRadius.circular(10),
-            borderSide: BorderSide(color: Color(0xff000000), width: .4)),
+            borderSide: const BorderSide(color: Color(0xff000000), width: .4)),
       ),
     );
   }

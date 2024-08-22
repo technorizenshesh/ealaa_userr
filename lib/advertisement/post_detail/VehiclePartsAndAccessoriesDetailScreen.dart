@@ -442,7 +442,7 @@ class _VehiclePartsAndAccessoriesDetailScreenState extends State<VehiclePartsAnd
                             ),
                             ListTile(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(usersDetails: result!.usersDetails,userIdValue: (result != null &&
                                     result!.usersDetails != null &&
                                     result!.usersDetails!.id !=
                                         null &&

@@ -1,7 +1,6 @@
 import 'package:ealaa_userr/advertisement/UpdatePosts/update_VehicleNumbers.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../Model/advertisement_model/get_ads_post_details_model.dart';
@@ -504,7 +503,7 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AdMyAdsPosts(
+                                      builder: (context) => AdMyAdsPosts(usersDetails: result!.usersDetails,
                                         userIdValue: (result != null &&
                                                 result!.usersDetails != null &&
                                                 result!.usersDetails!.id !=

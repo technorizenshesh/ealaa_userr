@@ -2,7 +2,6 @@ import 'package:ealaa_userr/View/Utils/GlobalData.dart';
 import 'package:ealaa_userr/advertisement/UpdatePosts/update_PhonenumbersAd.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../Model/advertisement_model/get_ads_post_details_model.dart';
@@ -499,7 +498,7 @@ class _PhoneNumberDetailScreenState extends State<PhoneNumberDetailScreen> {
                             ),
                             ListTile(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(userIdValue: (result != null &&
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(usersDetails: result!.usersDetails,userIdValue: (result != null &&
                                     result!.usersDetails != null &&
                                     result!.usersDetails!.id !=
                                         null &&

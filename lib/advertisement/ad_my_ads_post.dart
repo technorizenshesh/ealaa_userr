@@ -20,8 +20,10 @@ import '../View/Utils/webService.dart';
 class AdMyAdsPosts extends StatefulWidget {
   String? userIdValue;
   bool FavValue;
+  UsersDetails? usersDetails;
 
-  AdMyAdsPosts({super.key, this.userIdValue, this.FavValue = false});
+  AdMyAdsPosts(
+      {super.key, this.userIdValue, this.FavValue = false, this.usersDetails});
 
   @override
   State<AdMyAdsPosts> createState() => _AdMyAdsPostsState();
@@ -103,7 +105,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
         ),
         centerTitle: true,
         title: Text(
-          widget.FavValue ? 'My Favorites' : 'My Ads',
+          widget.userIdValue == userId
+              ? widget.FavValue
+                  ? 'My Favorites'
+                  : 'My Ads'
+              : widget.usersDetails?.userName ?? 'NA',
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -201,7 +207,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return VehicleDetailScreen(
-                  user_id_value: widget.FavValue ? "" : userId,
+                  user_id_value: widget.userIdValue == userId
+                      ? widget.FavValue
+                          ? ""
+                          : userId
+                      : widget.userIdValue,
                   ads_post:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
@@ -254,7 +264,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return VehiclePartsAndAccessoriesDetailScreen(
-                  user_id_value: widget.FavValue ? "" : userId,
+                  user_id_value: widget.userIdValue == userId
+                      ? widget.FavValue
+                          ? ""
+                          : userId
+                      : widget.userIdValue,
                   ads_post:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
@@ -306,7 +320,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return VehicleNumberDetailScreen(
-                  user_id_value: widget.FavValue ? "" : userId,
+                  user_id_value: widget.userIdValue == userId
+                      ? widget.FavValue
+                          ? ""
+                          : userId
+                      : widget.userIdValue,
                   ads_post:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
@@ -371,7 +389,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return RealEstateDetailScreen(
-                  user_id_value: widget.FavValue ? "" : userId,
+                  user_id_value: widget.userIdValue == userId
+                      ? widget.FavValue
+                          ? ""
+                          : userId
+                      : widget.userIdValue,
                   ads_post:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
@@ -423,7 +445,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return ElectronicsDetailScreen(
-                  user_id_value: widget.FavValue ? "" : userId,
+                  user_id_value: widget.userIdValue == userId
+                      ? widget.FavValue
+                          ? ""
+                          : userId
+                      : widget.userIdValue,
                   ads_post:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
@@ -476,7 +502,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return PhoneNumberDetailScreen(
-                  user_id_value: widget.FavValue ? "" : userId,
+                  user_id_value: widget.userIdValue == userId
+                      ? widget.FavValue
+                          ? ""
+                          : userId
+                      : widget.userIdValue,
                   ads_post:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
@@ -532,7 +562,11 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
                 return AnimalsAndSuppliesDetailScreen(
-                  user_id_value: widget.FavValue ? "" : userId,
+                  user_id_value: widget.userIdValue == userId
+                      ? widget.FavValue
+                          ? ""
+                          : userId
+                      : widget.userIdValue,
                   ads_post:
                       getAdsWithCategorySubCategoryResult[index].adsType ?? '',
                   ads_post_id:
