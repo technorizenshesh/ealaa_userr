@@ -1,4 +1,5 @@
 import 'package:ealaa_userr/Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_condition_filter_model.dart';
+import 'package:ealaa_userr/Model/advertisement_model/advertisement_models_for_realstate_for_sale_and_rent/get_use_types_filter_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
 import '../../../Model/advertisement_model/AnimalTypeModel.dart';
@@ -12,6 +13,7 @@ import '../../Model/advertisement_model/advertisement_model_for_electronics_for_
 import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_operators_model.dart';
 import '../../Model/advertisement_model/advertisement_model_vehicle_number_models/get_letters_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_model_vehicle_number_models/get_plate_types_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_realstate_for_sale_and_rent/gat_land_type_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_condition_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_cylinders_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_door_count_filter_model.dart';
@@ -40,6 +42,8 @@ String? selectedGovernrate;
 String? selectedState;
 String? selectedCity;
 double currentPointValue = 0.0;
+double currentBuildingArea = 0.0;
+double currentLandArea = 0.0;
 
 
 
@@ -72,6 +76,11 @@ GetNumberTypeResult? selectedGetNumberTypeResultForPhoneNumberFilter;
 GetOperatorsResult? selectedGetOperatorsResultForPhoneNumberFilter;
 GetGovernorateFilterResult? selectedGovernateForPhoneNumberFilter;
 GetStatesFilterResult? selectedStateForPhoneNumberFilter;
+
+GetUseTypesFilterResult? selectedUseTypeFilterForRealState;
+GetLandTypesFilterResult? selectedLandTypeFilterForRealState;
+GetGovernorateFilterResult? selectedGovernateFilterForRealState;
+GetStatesFilterResult? selectedStateFilterForRealState;
 
 
 

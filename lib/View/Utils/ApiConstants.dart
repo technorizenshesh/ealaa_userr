@@ -142,6 +142,9 @@ const get_vehicles_numbers_for_sell = baseUrl+'get_vehicles_numbers_for_sell';
 const get_vehicles_numbers_for_rent = baseUrl+'get_vehicles_numbers_for_rent';
 const get_vehicles_numbers_for_wanted = baseUrl+'get_vehicles_numbers_for_wanted';
 
+//real state filter
+const get_use_types_filter = baseUrl+'get_use_types_filter';
+const get_land_types_filter = baseUrl+'get_land_types_filter';
 
 
 
