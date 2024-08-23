@@ -206,6 +206,7 @@ class PostListDetails {
   String? letterNameEnglish;
   String? plateTypeName;
   String? uploadVehiclesNumbers;
+  String? letterType;
 
   PostListDetails(
       {this.adsId,
@@ -362,6 +363,7 @@ class PostListDetails {
         this.letterNameEnglish,
         this.plateTypeName,
         this.uploadVehiclesNumbers,
+        this.letterType,
       });
 
   PostListDetails.fromJson(Map<String, dynamic> json) {
@@ -529,6 +531,7 @@ class PostListDetails {
     letterNameEnglish = json['letter_name_english'];
     plateTypeName = json['plate_type_name'];
     uploadVehiclesNumbers = json['upload_vehicles_numbers'];
+    letterType = json['letter_type'];
   }
 
 }

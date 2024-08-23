@@ -10,6 +10,8 @@ import '../../Model/advertisement_model/ad_subcategory_model.dart';
 import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_brand_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_number_type_model.dart';
 import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_operators_model.dart';
+import '../../Model/advertisement_model/advertisement_model_vehicle_number_models/get_letters_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_model_vehicle_number_models/get_plate_types_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_condition_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_cylinders_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_door_count_filter_model.dart';
@@ -70,6 +72,15 @@ GetNumberTypeResult? selectedGetNumberTypeResultForPhoneNumberFilter;
 GetOperatorsResult? selectedGetOperatorsResultForPhoneNumberFilter;
 GetGovernorateFilterResult? selectedGovernateForPhoneNumberFilter;
 GetStatesFilterResult? selectedStateForPhoneNumberFilter;
+
+
+
+GetNumberTypeResult? selectedGetNumberTypeResultForVehicleNumberFilter;
+GetGovernorateFilterResult? selectedGetGovernorateFilterResultForVehicleNumberFilter;
+GetLettersFilterResult? selectedGetLettersFilterResultForVehicleNumberFilter;
+GetPlateTypesFilterResult? selectedGetPlateTypesFilterResultForVehicleNumberFilter;
+String? selectedLetterCountListForVehicleNumberFilter;
+Map<String, dynamic>? selectedTransferTypeForVehicleNumberFilter;
 
 
 class AnimalsFilter extends StatefulWidget {

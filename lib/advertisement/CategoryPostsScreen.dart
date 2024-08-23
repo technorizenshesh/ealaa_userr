@@ -23,6 +23,7 @@ import 'AddPost/Vehicles/VehiclesMake.dart';
 import 'ad_chat_room.dart';
 import 'filters/animals_filter.dart';
 import 'filters/electronics_for_sale_and_rent_filter.dart';
+import 'filters/vehicle_number_filter.dart';
 
 
 List<PostListDetails> getAdsWithCategorySubCategoryResult = [];
@@ -210,6 +211,16 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PhoneNumberFilter(
+                      advertisement_category_id: widget.adsCategoryId,
+                    ),
+                  ),
+                );
+              }
+              if (widget.adsCategoryId == '4') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VehicleNumberFilter(
                       advertisement_category_id: widget.adsCategoryId,
                     ),
                   ),
