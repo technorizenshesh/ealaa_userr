@@ -1,11 +1,12 @@
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CustomSnackBar.dart';
 import '../../../View/Utils/webService.dart';
 import '../../Model/advertisement_model/ad_subcategory_model.dart';
-import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_number_type_model.dart';
-import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_operators_model.dart';
+import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_brand_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_condition_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_governate_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_states_filter_model.dart';
 import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
@@ -13,28 +14,31 @@ import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../CategoryPostsScreen.dart';
 import 'animals_filter.dart';
 
-class PhoneNumberFilter extends StatefulWidget {
+class ElectronicsForSaleAndRentFilter extends StatefulWidget {
   final String advertisement_category_id;
 
-  const PhoneNumberFilter({super.key, required this.advertisement_category_id});
+  const ElectronicsForSaleAndRentFilter(
+      {super.key, required this.advertisement_category_id});
 
   @override
-  State<PhoneNumberFilter> createState() => _PhoneNumberFilterState();
+  State<ElectronicsForSaleAndRentFilter> createState() =>
+      _ElectronicsForSaleAndRentFilterState();
 }
 
-class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
+class _ElectronicsForSaleAndRentFilterState
+    extends State<ElectronicsForSaleAndRentFilter> {
   bool showProgressBar = true;
   List<String> topList = [
-    'Types',
-    'Operators',
+    'Brand',
+    'Condition',
     'Governorate',
     'State',
     'Price',
   ];
 
   List<SubcategoryResult> subcategoryList = [];
-  List<GetOperatorsResult> getOperatorsResult = [];
-  List<GetNumberTypeResult> getNumberTypeResult = [];
+  List<GetElectronicsConditionFilterResult> getElectronicsConditionFilterResult = [];
+  List<GetElectronicsBrandFilterResult> getElectronicsBrandFilterResult = [];
   List<GetGovernorateFilterResult> governateList = [];
   List<GetStatesFilterResult> stateList = [];
 
@@ -42,26 +46,30 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
 
   int _currentStepIndex = 0;
 
-  getNumberType() async {
-    var res = await Webservices.getMap(get_number_type);
+  getListData() async {
+    var res = await Webservices.getMap(get_electronics_brand_filter);
+    print("status from api ${res}");
     showProgressBar = false;
-    final resdata = GetNumberTypeModel.fromJson(res);
+    setState(() {});
+    final resdata = GetElectronicsBrandFilterModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
-      getNumberTypeResult = resdata.result!;
+      getElectronicsBrandFilterResult = resdata.result!;
       setState(() {});
     } else {
       showSnackbar(context, resdata.message ?? '');
     }
   }
 
-  getOperators() async {
-    var res = await Webservices.getMap(get_operators);
+  getElectronicsConditionFilter() async {
+    var res = await Webservices.getMap(get_electronics_condition_filter);
+    print("status from api ${res}");
     showProgressBar = false;
-    final resdata = GetOperatorsModel.fromJson(res);
+    setState(() {});
+    final resdata = GetElectronicsConditionFilterModel.fromJson(res);
     print(resdata);
     if (resdata.result != null && resdata.status == '1') {
-      getOperatorsResult = resdata.result!;
+      getElectronicsConditionFilterResult = resdata.result!;
       setState(() {});
     } else {
       showSnackbar(context, resdata.message ?? '');
@@ -116,7 +124,7 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
   @override
   void initState() {
     getAdSubcategory();
-    getNumberType();
+    getListData();
     super.initState();
   }
 
@@ -169,10 +177,9 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                 child: GestureDetector(
                   onTap: () async {
                     selectedCategories = null;
-                    selectedGetNumberTypeResultForPhoneNumberFilter = null;
-                    selectedGetOperatorsResultForPhoneNumberFilter = null;
-                    selectedGovernateForPhoneNumberFilter = null;
-                    selectedStateForPhoneNumberFilter = null;
+                    selectedBrandForElectronicsForSaleAndRentFilter = null;
+                    selectedGovernateForElectronicsForSaleAndRentFilter = null;
+                    selectedStateForElectronicsForSaleAndRentFilter = null;
                     setState(() {});
                   },
                   child: Container(
@@ -197,10 +204,10 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                 child: GestureDetector(
                   onTap: () {
                     if (selectedCategories == null &&
-                        selectedGetNumberTypeResultForPhoneNumberFilter == null &&
-                        selectedGetOperatorsResultForPhoneNumberFilter == null &&
-                        selectedGovernateForPhoneNumberFilter == null &&
-                        selectedStateForPhoneNumberFilter == null &&
+                        selectedGovernateForElectronicsForSaleAndRentFilter ==
+                            null &&
+                        selectedStateForElectronicsForSaleAndRentFilter ==
+                            null &&
                         currentPointValue == 0.0) {
                       getAdsWithCategorySubCategoryResult =
                           getAdsWithCategorySubCategoryResultGlobal;
@@ -224,92 +231,77 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                           filteredAds.add(element);
                           setState(() {});
                         }
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${selectedGetNumberTypeResultForPhoneNumberFilter}');
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName}');
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${element.numberType}');
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName == element.numberType}');
-                        if (selectedGetNumberTypeResultForPhoneNumberFilter != null &&
-                            selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName !=
-                                null &&
-                            selectedGetNumberTypeResultForPhoneNumberFilter!
-                                .vehiclesNumberTypeName!.isNotEmpty &&
-                            selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName ==
-                                element.numberType) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedGetNumberTypeResultForPhoneNumberFilter != null &&
-                              selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName !=
-                                  null &&
-                              selectedGetNumberTypeResultForPhoneNumberFilter!
-                                  .vehiclesNumberTypeName!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
 
-                        if (selectedGetOperatorsResultForPhoneNumberFilter != null &&
-                            selectedGetOperatorsResultForPhoneNumberFilter!.operatorsName !=
+                        if (selectedBrandForElectronicsForSaleAndRentFilter != null &&
+                            selectedBrandForElectronicsForSaleAndRentFilter!
+                                    .name !=
                                 null &&
-                            selectedGetOperatorsResultForPhoneNumberFilter!
-                                .operatorsName!.isNotEmpty &&
-                            selectedGetOperatorsResultForPhoneNumberFilter!.operatorsName ==
-                                element.phoneNumberAdsOperators) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedGetOperatorsResultForPhoneNumberFilter != null &&
-                              selectedGetOperatorsResultForPhoneNumberFilter!.operatorsName !=
-                                  null &&
-                              selectedGetOperatorsResultForPhoneNumberFilter!
-                                  .operatorsName!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedGovernateForPhoneNumberFilter != null &&
-                            selectedGovernateForPhoneNumberFilter!.name !=
-                                null &&
-                            selectedGovernateForPhoneNumberFilter!
+                            selectedBrandForElectronicsForSaleAndRentFilter!
                                 .name!.isNotEmpty &&
-                            selectedGovernateForPhoneNumberFilter!.name ==
-                                element.phoneNumberAdsGovernorate) {
+                            selectedBrandForElectronicsForSaleAndRentFilter!
+                                    .name ==
+                                element.electronicsAdsBrandModelName) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                             setState(() {});
                           }
                         } else {
-                          if (selectedGovernateForPhoneNumberFilter != null &&
-                              selectedGovernateForPhoneNumberFilter!.name !=
+                          if (selectedBrandForElectronicsForSaleAndRentFilter != null &&
+                              selectedBrandForElectronicsForSaleAndRentFilter!
+                                      .name !=
                                   null &&
-                              selectedGovernateForPhoneNumberFilter!
+                              selectedBrandForElectronicsForSaleAndRentFilter!
                                   .name!.isNotEmpty) {
                             filteredAds.remove(element);
                             setState(() {});
                           }
                         }
 
-                        if (selectedStateForPhoneNumberFilter != null &&
-                            selectedStateForPhoneNumberFilter!.stateName !=
+                        if (selectedGovernateForElectronicsForSaleAndRentFilter != null &&
+                            selectedGovernateForElectronicsForSaleAndRentFilter!
+                                    .name !=
                                 null &&
-                            selectedStateForPhoneNumberFilter!
-                                .stateName!.isNotEmpty &&
-                            selectedStateForPhoneNumberFilter!.stateName ==
-                                element.phoneNumberAdsState) {
+                            selectedGovernateForElectronicsForSaleAndRentFilter!
+                                .name!.isNotEmpty &&
+                            selectedGovernateForElectronicsForSaleAndRentFilter!
+                                    .name ==
+                                element.vehicleAdsDetailGovernate) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                             setState(() {});
                           }
                         } else {
-                          if (selectedStateForPhoneNumberFilter != null &&
-                              selectedStateForPhoneNumberFilter!.stateName !=
+                          if (selectedGovernateForElectronicsForSaleAndRentFilter != null &&
+                              selectedGovernateForElectronicsForSaleAndRentFilter!
+                                      .name !=
                                   null &&
-                              selectedStateForPhoneNumberFilter!
+                              selectedGovernateForElectronicsForSaleAndRentFilter!
+                                  .name!.isNotEmpty) {
+                            filteredAds.remove(element);
+                            setState(() {});
+                          }
+                        }
+
+                        if (selectedStateForElectronicsForSaleAndRentFilter !=
+                                null &&
+                            selectedStateForElectronicsForSaleAndRentFilter!
+                                    .stateName !=
+                                null &&
+                            selectedStateForElectronicsForSaleAndRentFilter!
+                                .stateName!.isNotEmpty &&
+                            selectedStateForElectronicsForSaleAndRentFilter!
+                                    .stateName ==
+                                element.vehicleAdsDetailState) {
+                          if (!filteredAds.contains(element)) {
+                            filteredAds.add(element);
+                            setState(() {});
+                          }
+                        } else {
+                          if (selectedStateForElectronicsForSaleAndRentFilter != null &&
+                              selectedStateForElectronicsForSaleAndRentFilter!
+                                      .stateName !=
+                                  null &&
+                              selectedStateForElectronicsForSaleAndRentFilter!
                                   .stateName!.isNotEmpty) {
                             filteredAds.remove(element);
                             setState(() {});
@@ -317,7 +309,7 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                         }
 
                         if (currentPointValue >=
-                            double.parse(element.phoneNumberAdsPrice ?? '0')) {
+                            double.parse(element.electronicsAdsPrice ?? '0')) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                           }
@@ -328,17 +320,17 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                           }
                         }
                       });
+
                       setState(() {
                         getAdsWithCategorySubCategoryResult = filteredAds;
                       });
-                      Navigator.pushReplacement(
+                         Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CategoryPostsScreen(
                               value: true,
                               adsCategoryId: widget.advertisement_category_id,
-                              adsSubCategoryId: selectedCategories.toString(),
-                          ),
+                              adsSubCategoryId: selectedCategories.toString()),
                         ),
                       );
                     }
@@ -383,7 +375,7 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                 color: MyColors.primaryColor,
               ),
             )
-          : subcategoryList.isNotEmpty
+          : subcategoryList == null
               ? Image.asset("assets/images/NoDataFound.png")
               : Container(
                   color: const Color(0xfff8f2ee),
@@ -404,7 +396,7 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                                   onTap: () {
                                     _currentStepIndex = index;
                                     if (_currentStepIndex == 1) {
-                                      getOperators();
+                                      getElectronicsConditionFilter();
                                     } else if (_currentStepIndex == 2) {
                                       getGovernorateFilter();
                                     } else if (_currentStepIndex == 3) {
@@ -468,9 +460,9 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
   Widget tabsScreens(int index) {
     switch (index) {
       case 0:
-        return TypeView();
+        return BrandView();
       case 1:
-        return OperatorsView();
+        return ConditionView();
       case 2:
         return Governate();
       case 3:
@@ -480,36 +472,33 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
     }
   }
 
-  Widget TypeView() {
+  Widget BrandView() {
     return ListView.builder(
-      itemCount: getNumberTypeResult.length,
+      itemCount: getElectronicsBrandFilterResult.length,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Container(
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
-                  color:
-                      selectedGetNumberTypeResultForPhoneNumberFilter == getNumberTypeResult[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
+                  color: selectedCategories == getElectronicsBrandFilterResult[index].brandId
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
           child: ListTile(
             leading: SquareRadio(
               activeColor: MyColors.primaryColor,
-              value: getNumberTypeResult[index],
-              groupValue: selectedGetNumberTypeResultForPhoneNumberFilter,
+              value: getElectronicsBrandFilterResult[index].brandId,
+              groupValue: selectedCategories,
               onChanged: (value) {
-                setState(() {
-                  selectedGetNumberTypeResultForPhoneNumberFilter = value;
-                });
+                selectedCategories = getElectronicsBrandFilterResult[index].brandId;
+                setState(() {});
               },
             ),
-            title: Text('${getNumberTypeResult[index].vehiclesNumberTypeName}'),
+            title: Text('${getElectronicsBrandFilterResult[index].name}'),
             onTap: () {
-              setState(() {
-                selectedGetNumberTypeResultForPhoneNumberFilter = getNumberTypeResult[index];
-              });
+              selectedCategories = getElectronicsBrandFilterResult[index].brandId;
+              setState(() {});
             },
           ),
         ),
@@ -517,36 +506,33 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
     );
   }
 
-  Widget OperatorsView() {
+  Widget ConditionView() {
     return ListView.builder(
-      itemCount: getOperatorsResult.length,
+      itemCount: getElectronicsConditionFilterResult.length,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Container(
           decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
-                  color:
-                      selectedGetOperatorsResultForPhoneNumberFilter == getOperatorsResult[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
+                  color: selectedConditionForElectronicsForSaleAndRentFilter == getElectronicsConditionFilterResult[index]
+                      ? MyColors.primaryColor
+                      : Colors.grey.withOpacity(0.5)),
+              borderRadius: const BorderRadius.all(Radius.circular(10))),
           child: ListTile(
             leading: SquareRadio(
               activeColor: MyColors.primaryColor,
-              value: getOperatorsResult[index],
-              groupValue: selectedGetOperatorsResultForPhoneNumberFilter,
+              value: getElectronicsConditionFilterResult[index],
+              groupValue: selectedConditionForElectronicsForSaleAndRentFilter,
               onChanged: (value) {
-                setState(() {
-                  selectedGetOperatorsResultForPhoneNumberFilter = value;
-                });
+                selectedConditionForElectronicsForSaleAndRentFilter = getElectronicsConditionFilterResult[index];
+                setState(() {});
               },
             ),
-            title: Text('${getOperatorsResult[index].operatorsName}'),
+            title: Text('${getElectronicsConditionFilterResult[index].conditionName}'),
             onTap: () {
-              setState(() {
-                selectedGetOperatorsResultForPhoneNumberFilter = getOperatorsResult[index];
-              });
+              selectedConditionForElectronicsForSaleAndRentFilter = getElectronicsConditionFilterResult[index];
+              setState(() {});
             },
           ),
         ),
@@ -563,26 +549,29 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
-                          color: selectedGovernateForPhoneNumberFilter ==
-                                  governateList[index]
-                              ? MyColors.primaryColor
-                              : Colors.grey.withOpacity(0.5)),
+                          color:
+                              selectedGovernateForElectronicsForSaleAndRentFilter ==
+                                      governateList[index]
+                                  ? MyColors.primaryColor
+                                  : Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: ListTile(
                     leading: SquareRadio(
                       activeColor: MyColors.primaryColor,
                       value: governateList[index],
-                      groupValue: selectedGovernateForPhoneNumberFilter,
+                      groupValue:
+                          selectedGovernateForElectronicsForSaleAndRentFilter,
                       onChanged: (value) {
                         setState(() {
-                          selectedGovernateForPhoneNumberFilter = value;
+                          selectedGovernateForElectronicsForSaleAndRentFilter =
+                              value;
                         });
                       },
                     ),
                     title: Text('${governateList[index].name}'),
                     onTap: () {
                       setState(() {
-                        selectedGovernateForPhoneNumberFilter =
+                        selectedGovernateForElectronicsForSaleAndRentFilter =
                             governateList[index];
                       });
                     },
@@ -599,26 +588,30 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(
-                          color: selectedStateForPhoneNumberFilter ==
-                                  stateList[index]
-                              ? MyColors.primaryColor
-                              : Colors.grey.withOpacity(0.5)),
+                          color:
+                              selectedStateForElectronicsForSaleAndRentFilter ==
+                                      stateList[index]
+                                  ? MyColors.primaryColor
+                                  : Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: ListTile(
                     leading: SquareRadio(
                       activeColor: MyColors.primaryColor,
                       value: stateList[index],
-                      groupValue: selectedStateForPhoneNumberFilter,
+                      groupValue:
+                          selectedStateForElectronicsForSaleAndRentFilter,
                       onChanged: (value) {
                         setState(() {
-                          selectedStateForPhoneNumberFilter = value;
+                          selectedStateForElectronicsForSaleAndRentFilter =
+                              value;
                         });
                       },
                     ),
                     title: Text('${stateList[index].stateName}'),
                     onTap: () {
                       setState(() {
-                        selectedStateForPhoneNumberFilter = stateList[index];
+                        selectedStateForElectronicsForSaleAndRentFilter =
+                            stateList[index];
                       });
                     },
                   )),
@@ -655,5 +648,4 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
       ],
     );
   }
-
 }

@@ -1,10 +1,31 @@
+import 'package:ealaa_userr/Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_condition_filter_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 
 import '../../../Model/advertisement_model/AnimalTypeModel.dart';
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CustomSnackBar.dart';
 import '../../../View/Utils/webService.dart';
+import '../../Model/advertisement_model/VehiclesMakeModel.dart';
 import '../../Model/advertisement_model/ad_subcategory_model.dart';
+import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_brand_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_number_type_model.dart';
+import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_operators_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_condition_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_cylinders_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_door_count_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_drivetrain_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_engine_size_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_exterior_color_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_fuel_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_governate_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_model_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_model_trim_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_origin_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_plate_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_seats_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_states_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_transmission_filter_model.dart';
+import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_year_filter_model.dart';
 import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../CategoryPostsScreen.dart';
@@ -17,6 +38,39 @@ String? selectedGovernrate;
 String? selectedState;
 String? selectedCity;
 double currentPointValue = 0.0;
+
+
+
+VehiclesMakeResult? selectedMakeForVehicleForSaleAndRentFilter;
+GetModelFilterResult? selectedModelForVehicleForSaleAndRentFilter;
+GetModelTrimFilterResult? selectedTrimForVehicleForSaleAndRentFilter;
+GetYearFilterResult? selectedYearForVehicleForSaleAndRentFilter;
+GetConditionFilterResult? selectedConditionForVehicleForSaleAndRentFilter;
+GetEngineSizeFilterResult? selectedEngineForVehicleForSaleAndRentFilter;
+GetDoorCountFilterResult? selectedDoorForVehicleForSaleAndRentFilter;
+GetExteriorColorFilterResult? selectedExteriorColorForVehicleForSaleAndRentFilter;
+GetExteriorColorFilterResult? selectedInteriorColorForVehicleForSaleAndRentFilter;
+GetCylindersFilterResult? selectedCylinderForVehicleForSaleAndRentFilter;
+GetFuelFilterResult? selectedFuelForVehicleForSaleAndRentFilter;
+GetTransmissionFilterResult? selectedTransmissionForVehicleForSaleAndRentFilter;
+GetDrivetrainFilterResult? selectedDriverTrainForVehicleForSaleAndRentFilter;
+GetSeatsFilterResult? selectedSeatForVehicleForSaleAndRentFilter;
+GetPlateFilterResult? selectedPlateForVehicleForSaleAndRentFilter;
+GetOriginFilterResult? selectedOriginForVehicleForSaleAndRentFilter;
+GetGovernorateFilterResult? selectedGovernateForVehicleForSaleAndRentFilter;
+GetStatesFilterResult? selectedStateForVehicleForSaleAndRentFilter;
+
+
+GetElectronicsBrandFilterResult?   selectedBrandForElectronicsForSaleAndRentFilter;
+GetElectronicsConditionFilterResult?   selectedConditionForElectronicsForSaleAndRentFilter;
+GetGovernorateFilterResult? selectedGovernateForElectronicsForSaleAndRentFilter;
+GetStatesFilterResult? selectedStateForElectronicsForSaleAndRentFilter;
+
+GetNumberTypeResult? selectedGetNumberTypeResultForPhoneNumberFilter;
+GetOperatorsResult? selectedGetOperatorsResultForPhoneNumberFilter;
+GetGovernorateFilterResult? selectedGovernateForPhoneNumberFilter;
+GetStatesFilterResult? selectedStateForPhoneNumberFilter;
+
 
 class AnimalsFilter extends StatefulWidget {
   final String advertisement_category_id;
@@ -54,7 +108,7 @@ class _AnimalsFilterState extends State<AnimalsFilter> {
   List<SubcategoryResult> subcategoryList = [];
 
   getListData() async {
-    var res = await Webservices.getMap("$get_animals");
+    var res = await Webservices.getMap(get_animals);
     print("status from api $res");
     showProgressBar = false;
     final resdata = AnimalTypeModel.fromJson(res);
@@ -125,7 +179,7 @@ class _AnimalsFilterState extends State<AnimalsFilter> {
                 MaterialPageRoute(
                   builder: (context) => CategoryPostsScreen(
                       value: true,
-                      adsCategoryId: '10',
+                      adsCategoryId: widget.advertisement_category_id,
                       adsSubCategoryId: selectedCategories.toString()),
                 ),
               );
@@ -197,7 +251,7 @@ class _AnimalsFilterState extends State<AnimalsFilter> {
                         MaterialPageRoute(
                           builder: (context) => CategoryPostsScreen(
                               value: true,
-                              adsCategoryId: '10',
+                              adsCategoryId: widget.advertisement_category_id,
                               adsSubCategoryId: selectedCategories.toString()),
                         ),
                       );
@@ -322,7 +376,7 @@ class _AnimalsFilterState extends State<AnimalsFilter> {
                         MaterialPageRoute(
                           builder: (context) => CategoryPostsScreen(
                               value: true,
-                              adsCategoryId: '10',
+                              adsCategoryId: widget.advertisement_category_id,
                               adsSubCategoryId: selectedCategories.toString()),
                         ),
                       );

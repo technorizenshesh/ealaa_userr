@@ -160,6 +160,7 @@ class PostListDetails {
   String? phoneNumberAdsId;
   String? phoneNumberAdsUserId;
   String? phoneNumberAdsOperators;
+  String? numberType;
   String? phoneNumberAdsGovernorate;
   String? phoneNumberAdsState;
   String? phoneNumberAdsCity;
@@ -315,6 +316,7 @@ class PostListDetails {
         this.phoneNumberAdsId,
         this.phoneNumberAdsUserId,
         this.phoneNumberAdsOperators,
+        this.numberType,
         this.phoneNumberAdsGovernorate,
         this.phoneNumberAdsState,
         this.phoneNumberAdsCity,
@@ -479,6 +481,7 @@ class PostListDetails {
     phoneNumberAdsId = json['phone_number_ads_id'];
     phoneNumberAdsUserId = json['phone_number_ads_user_id'];
     phoneNumberAdsOperators = json['phone_number_ads_operators'];
+    numberType = json['number_type'];
     phoneNumberAdsGovernorate = json['phone_number_ads_governorate'];
     phoneNumberAdsState = json['phone_number_ads_state'];
     phoneNumberAdsCity = json['phone_number_ads_city'];

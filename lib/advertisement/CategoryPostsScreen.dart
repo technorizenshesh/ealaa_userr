@@ -9,16 +9,20 @@ import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehiclePartsAndAccessoriesDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../Model/advertisement_model/VehiclePartsModel.dart';
 import '../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../View/Utils/ApiConstants.dart';
 import '../View/Utils/CustomSnackBar.dart';
 import '../View/Utils/webService.dart';
+import 'AddPost/Vehicles/VehiclesMake.dart';
 import 'ad_chat_room.dart';
 import 'filters/animals_filter.dart';
+import 'filters/electronics_for_sale_and_rent_filter.dart';
 
 
 List<PostListDetails> getAdsWithCategorySubCategoryResult = [];
@@ -48,6 +52,36 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
 
   bool showProgressBar = true;
 
+  int selectedIndex = -1;
+  VehiclePartsResult? vehiclePartsResult;
+  int _currentStepIndex = 1;
+  String title = "Part";
+
+  List<Part> partsList = [];
+  List<SubPartName> subPartList = [];
+  List<Maker> makerList = [];
+  List<Model> modelList = [];
+  List<ModelYear> yearList = [];
+  List<ModelTrim> trimList = [];
+  List<EngineSize> enginesizeList = [];
+
+  Part? selectedPart;
+  SubPartName? selectedSubpart;
+  Maker? selectedMaker;
+  Model? selectedModel;
+  ModelYear? selectedModelyear;
+  ModelTrim? selectedModeltrim;
+  EngineSize? selectedEnginesize;
+
+  List<String> topList = [
+    'Part',
+    'Makes',
+    'Vehicle Models',
+    'Model Years',
+    'Model Trim',
+    'Engine Size',
+  ];
+
   getAdSubcategory() async {
     var res = await Webservices.getMap(
         "$baseUrl$get_ads_with_category_subcategory?ads_category_id=${widget.adsCategoryId}&ads_post=${widget.adsPost}&ads_sub_category_id=${widget.adsSubCategoryId}");
@@ -76,7 +110,28 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
       showProgressBar = false;
       print('getAdsWithCategorySubCategoryResult:::::::::::::::${getAdsWithCategorySubCategoryResult.length}');
     }
+    getListData();
     super.initState();
+  }
+
+
+  getListData() async {
+    var res =
+    await Webservices.getMap("$get_vehicles_parts_accessories_wanted");
+    print("status from api ${res}");
+    showProgressBar = false;
+    final resdata = VehiclePartsModel.fromJson(res);
+    print(resdata);
+    if (resdata.result != null && resdata.status == '1') {
+      vehiclePartsResult = resdata.result!;
+      partsList = vehiclePartsResult!.part ?? [];
+      makerList = vehiclePartsResult!.maker ?? [];
+      enginesizeList = vehiclePartsResult!.engineSize ?? [];
+
+      setState(() {});
+    } else {
+      showSnackbar(context, resdata.message ?? '');
+    }
   }
 
   @override
@@ -90,12 +145,33 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
         leading: GestureDetector(
           onTap: () {
             selectedCategories = null;
+
             selectedType = null;
             selectedGender = null;
             selectedAge = null;
             selectedGovernrate = null;
             selectedState = null;
             selectedCity = null;
+
+            selectedMakeForVehicleForSaleAndRentFilter = null;
+            selectedModelForVehicleForSaleAndRentFilter = null;
+            selectedTrimForVehicleForSaleAndRentFilter = null;
+            selectedYearForVehicleForSaleAndRentFilter = null;
+            selectedConditionForVehicleForSaleAndRentFilter = null;
+            selectedEngineForVehicleForSaleAndRentFilter = null;
+            selectedDoorForVehicleForSaleAndRentFilter = null;
+            selectedExteriorColorForVehicleForSaleAndRentFilter = null;
+            selectedInteriorColorForVehicleForSaleAndRentFilter = null;
+            selectedCylinderForVehicleForSaleAndRentFilter = null;
+            selectedFuelForVehicleForSaleAndRentFilter = null;
+            selectedTransmissionForVehicleForSaleAndRentFilter = null;
+            selectedDriverTrainForVehicleForSaleAndRentFilter = null;
+            selectedSeatForVehicleForSaleAndRentFilter = null;
+            selectedPlateForVehicleForSaleAndRentFilter = null;
+            selectedOriginForVehicleForSaleAndRentFilter = null;
+            selectedGovernateForVehicleForSaleAndRentFilter = null;
+            selectedStateForVehicleForSaleAndRentFilter = null;
+
             currentPointValue = 0.0;
             setState(() {});
             Navigator.pop(context);
@@ -114,6 +190,16 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => VehicleForSaleAndRentFilter(
+                      advertisement_category_id: widget.adsCategoryId,
+                    ),
+                  ),
+                );
+              }
+              if (widget.adsCategoryId == '7' || widget.adsCategoryId == '8') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ElectronicsForSaleAndRentFilter(
                       advertisement_category_id: widget.adsCategoryId,
                     ),
                   ),
@@ -442,12 +528,57 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               )
             : getAdsWithCategorySubCategoryResult.isEmpty
                 ? Image.asset("assets/images/NoDataFound.png")
-                : ListView.builder(
-                    itemCount: getAdsWithCategorySubCategoryResult.length,
-                    itemBuilder: (context, index) {
-                      return listOfData(index: index);
-                    },
-                  ),
+                : Column(
+                  children: [
+                    if (widget.adsCategoryId == '3')
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            specificVehicleBottomSheet(context);
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10),
+                          width: width,
+                          decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                  color: Colors.orange, width: .5)),
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons_for_car/CarIcon.svg',
+                                  height: 30,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Find for Specific Vehicle',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: getAdsWithCategorySubCategoryResult.length,
+                          itemBuilder: (context, index) {
+                            return listOfData(index: index);
+                          },
+                        ),
+                    ),
+                  ],
+                ),
       ),
     );
   }
@@ -1299,5 +1430,414 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             borderSide: const BorderSide(color: Color(0xff000000), width: .4)),
       ),
     );
+  }
+
+  specificVehicleBottomSheet(context) {
+    return CustomBottomSheet(
+      context: context,
+      isScroll: true,
+      body: StatefulBuilder(
+        builder: (context, setState) {
+          return SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height - 30,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                children: [
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: InkWell(
+                      onTap: () {
+                        if (_currentStepIndex > 1) {
+                          _currentStepIndex--;
+                          title = _getTitleForIndex(_currentStepIndex - 1);
+                          setState(() {});
+                        } else {
+                          selectedPart = null;
+                          selectedSubpart = null;
+                          selectedMaker = null;
+                          selectedModel = null;
+                          selectedModelyear = null;
+                          selectedModeltrim = null;
+                          selectedEnginesize = null;
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    title: MainHeadingText(
+                      text: title,
+                      fontSize: 18,
+                    ),
+                  ),
+                  tabsScreens(_currentStepIndex),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget tabsScreens(int index) {
+    switch (index) {
+      case 1:
+        return PartView();
+      case 2:
+        return MakesView();
+      case 3:
+        return ModelsView();
+      case 4:
+        return YearsView();
+      case 5:
+        return TrimView();
+      case 6:
+        return SizeView();
+      default:
+        return PartView();
+    }
+  }
+
+  Widget PartView() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Expanded(
+          child: ListView.builder(
+              itemCount: partsList.length,
+              itemBuilder: (context, index) => Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      subPartList = partsList[index].subPartName ?? [];
+                      setState(() {});
+                      if (selectedIndex != index) {
+                        selectedIndex = index;
+                        setState(() {});
+                      } else {
+                        selectedIndex = -1;
+                        setState(() {});
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.grey.withOpacity(0.5)),
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(10))),
+                      margin: EdgeInsets.only(bottom: 15),
+                      child: ListTile(
+                        leading: Icon(
+                          selectedIndex == index
+                              ? Icons.expand_less
+                              : Icons.expand_more,
+                          color: MyColors.primaryColor,
+                          size: 30,
+                        ),
+                        title: Text('${partsList[index].partName}'),
+                        trailing: SvgPicture.asset(
+                          "assets/images/EngineIcon.svg",
+                          height: 30,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (selectedIndex == index) const SizedBox(height: 10),
+                  if (selectedIndex == index)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: subPartList.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, i) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: selectedSubpart == subPartList[i]
+                                    ? MyColors.primaryColor
+                                    : Colors.grey.withOpacity(0.5),
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                  Radius.circular(10))),
+                          child: ListTile(
+                            leading: SquareRadio(
+                              activeColor: MyColors.primaryColor,
+                              value: subPartList[i],
+                              groupValue: selectedSubpart,
+                              onChanged: (value) {
+                                _currentStepIndex = 2;
+                                selectedSubpart = subPartList[i];
+                                title = _getTitleForIndex(
+                                    _currentStepIndex - 1);
+                                print('on Changed...$_currentStepIndex');
+                                setState(() {});
+                              },
+                            ),
+                            title: Text('${subPartList[i].subPartName}'),
+                            onTap: () {
+                              _currentStepIndex = 2;
+                              selectedSubpart = subPartList[i];
+                              print('on Tap...$_currentStepIndex');
+                              title =
+                                  _getTitleForIndex(_currentStepIndex - 1);
+                              setState(() {});
+                              setState;
+                            },
+                          ),
+                        ),
+                      ),
+                    )
+                ],
+              )),
+        );
+      },
+    );
+  }
+
+  Widget MakesView() {
+    return StatefulBuilder(builder: (context, setState) {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: makerList.length,
+          itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                      color: selectedMaker == makerList[index]
+                          ? MyColors.primaryColor
+                          : Colors.grey.withOpacity(0.5)),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                leading: SquareRadio(
+                  activeColor: MyColors.primaryColor,
+                  value: makerList[index],
+                  groupValue: selectedMaker,
+                  onChanged: (value) {
+                    _currentStepIndex = 3;
+                    selectedMaker = makerList[index];
+                    modelList = selectedMaker?.model ?? [];
+                    title = _getTitleForIndex(_currentStepIndex - 1);
+                    setState(() {});
+                  },
+                ),
+                title: Text('${makerList[index].name}'),
+                onTap: () {
+                  _currentStepIndex = 3;
+                  selectedMaker = makerList[index];
+                  modelList = selectedMaker?.model ?? [];
+                  title = _getTitleForIndex(_currentStepIndex - 1);
+                  setState(() {});
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget ModelsView() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: modelList.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: selectedModel == modelList[index]
+                            ? MyColors.primaryColor
+                            : Colors.grey.withOpacity(0.5),
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(10),
+                    ),
+                ),
+                child: ListTile(
+                  leading: SquareRadio(
+                    activeColor: MyColors.primaryColor,
+                    value: modelList[index],
+                    groupValue: selectedModel,
+                    onChanged: (value) {
+                      _currentStepIndex = 4;
+                      selectedModel = modelList[index];
+                      yearList = selectedModel?.modelYear ?? [];
+                      trimList = selectedModel?.modelTrim ?? [];
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+                      setState(() {});
+                    },
+                  ),
+                  title: Text('${modelList[index].name}'),
+                  onTap: () {
+                    _currentStepIndex = 4;
+                    selectedModel = modelList[index];
+                    yearList = selectedModel?.modelYear ?? [];
+                    trimList = selectedModel?.modelTrim ?? [];
+                    title = _getTitleForIndex(_currentStepIndex - 1);
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget YearsView() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: yearList.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: selectedModelyear == yearList[index]
+                            ? MyColors.primaryColor
+                            : Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: ListTile(
+                  leading: SquareRadio(
+                    activeColor: MyColors.primaryColor,
+                    value: yearList[index],
+                    groupValue: selectedModelyear,
+                    onChanged: (value) {
+                      _currentStepIndex = 5;
+                      selectedModelyear = yearList[index];
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+
+                      setState(() {});
+                    },
+                  ),
+                  title: Text('${yearList[index].yearName}'),
+                  onTap: () {
+                    _currentStepIndex = 5;
+                    selectedModelyear = yearList[index];
+                    title = _getTitleForIndex(_currentStepIndex - 1);
+
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget TrimView() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: trimList.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: selectedModeltrim == trimList[index]
+                            ? MyColors.primaryColor
+                            : Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: ListTile(
+                  leading: SquareRadio(
+                    activeColor: MyColors.primaryColor,
+                    value: trimList[index],
+                    groupValue: selectedModeltrim,
+                    onChanged: (value) {
+                      _currentStepIndex = 6;
+                      selectedModeltrim = trimList[index];
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+
+                      setState(() {});
+                    },
+                  ),
+                  title: Text('${trimList[index].name}'),
+                  onTap: () {
+                    _currentStepIndex = 6;
+                    selectedModeltrim = trimList[index];
+                    title = _getTitleForIndex(_currentStepIndex - 1);
+
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget SizeView() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: enginesizeList.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                        color: selectedEnginesize == enginesizeList[index]
+                            ? MyColors.primaryColor
+                            : Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: ListTile(
+                  leading: SquareRadio(
+                    activeColor: MyColors.primaryColor,
+                    value: enginesizeList[index],
+                    groupValue: selectedEnginesize,
+                    onChanged: (value) {
+                      Navigator.pop(context);
+                      selectedEnginesize = enginesizeList[index];
+                      _currentStepIndex = 1;
+                      title = _getTitleForIndex(_currentStepIndex - 1);
+
+                      setState(() {});
+                    },
+                  ),
+                  title: Text('${enginesizeList[index].engineValue}'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    selectedEnginesize = enginesizeList[index];
+                    _currentStepIndex = 1;
+                    title = _getTitleForIndex(_currentStepIndex - 1);
+                    setState(() {});
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  String _getTitleForIndex(int index) {
+    if (index == 1 || index < topList.length) {
+      return topList[index];
+    } else {
+      return ""; // Handle out of bounds index gracefully
+    }
   }
 }

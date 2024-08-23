@@ -282,17 +282,17 @@ class _VehicleNumbersState extends State<VehicleNumbers> {
 
   Widget tabsScreens(int index) {
     switch (index) {
-      case 1:
+      case 0:
         return LetterScreen();
-      case 2:
+      case 1:
         return VehicleNumberScreen();
-      case 3:
+      case 2:
         return PlateTypeScreen();
-      case 4:
+      case 3:
         return GovernateScreen();
-      case 5:
+      case 4:
         return UploadPhotos();
-      case 6:
+      case 5:
         return AdditionalDetails();
       default:
         return LetterScreen();
