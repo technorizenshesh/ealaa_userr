@@ -9,7 +9,6 @@ import 'package:ealaa_userr/advertisement/post_detail/VehicleDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehicleNumberDetailScreen.dart';
 import 'package:ealaa_userr/advertisement/post_detail/VehiclePartsAndAccessoriesDetailScreen.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,12 +22,10 @@ import 'AddPost/Vehicles/VehiclesMake.dart';
 import 'ad_chat_room.dart';
 import 'filters/animals_filter.dart';
 import 'filters/electronics_for_sale_and_rent_filter.dart';
-
+import 'filters/realstate_for_sale_and_rent_filter.dart';
 
 List<PostListDetails> getAdsWithCategorySubCategoryResult = [];
 List<PostListDetails> getAdsWithCategorySubCategoryResultGlobal = [];
-
-
 
 class CategoryPostsScreen extends StatefulWidget {
   String adsSubCategoryId = '';
@@ -104,20 +101,20 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
 
   @override
   void initState() {
-    if(!widget.value) {
+    if (!widget.value) {
       getAdSubcategory();
-    }else{
+    } else {
       showProgressBar = false;
-      print('getAdsWithCategorySubCategoryResult:::::::::::::::${getAdsWithCategorySubCategoryResult.length}');
+      print(
+          'getAdsWithCategorySubCategoryResult:::::::::::::::${getAdsWithCategorySubCategoryResult.length}');
     }
     getListData();
     super.initState();
   }
 
-
   getListData() async {
     var res =
-    await Webservices.getMap("$get_vehicles_parts_accessories_wanted");
+        await Webservices.getMap("$get_vehicles_parts_accessories_wanted");
     print("status from api ${res}");
     showProgressBar = false;
     final resdata = VehiclePartsModel.fromJson(res);
@@ -190,6 +187,17 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => VehicleForSaleAndRentFilter(
+                      advertisement_category_id: widget.adsCategoryId,
+                    ),
+                  ),
+                );
+              }
+
+              if (widget.adsCategoryId == '5' || widget.adsCategoryId == '6') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RealstateForSaleAndRentFilter(
                       advertisement_category_id: widget.adsCategoryId,
                     ),
                   ),
@@ -529,56 +537,56 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
             : getAdsWithCategorySubCategoryResult.isEmpty
                 ? Image.asset("assets/images/NoDataFound.png")
                 : Column(
-                  children: [
-                    if (widget.adsCategoryId == '3')
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            specificVehicleBottomSheet(context);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10),
-                          width: width,
-                          decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                  color: Colors.orange, width: .5)),
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons_for_car/CarIcon.svg',
-                                  height: 30,
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Find for Specific Vehicle',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.orange,
+                    children: [
+                      if (widget.adsCategoryId == '3')
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              specificVehicleBottomSheet(context);
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(top: 10),
+                            width: width,
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                    color: Colors.orange, width: .5)),
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons_for_car/CarIcon.svg',
+                                    height: 30,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Find for Specific Vehicle',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.orange,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    Expanded(
-                      child: ListView.builder(
+                      Expanded(
+                        child: ListView.builder(
                           itemCount: getAdsWithCategorySubCategoryResult.length,
                           itemBuilder: (context, index) {
                             return listOfData(index: index);
                           },
                         ),
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
       ),
     );
   }
@@ -1510,90 +1518,90 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
           child: ListView.builder(
               itemCount: partsList.length,
               itemBuilder: (context, index) => Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      subPartList = partsList[index].subPartName ?? [];
-                      setState(() {});
-                      if (selectedIndex != index) {
-                        selectedIndex = index;
-                        setState(() {});
-                      } else {
-                        selectedIndex = -1;
-                        setState(() {});
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.grey.withOpacity(0.5)),
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10))),
-                      margin: EdgeInsets.only(bottom: 15),
-                      child: ListTile(
-                        leading: Icon(
-                          selectedIndex == index
-                              ? Icons.expand_less
-                              : Icons.expand_more,
-                          color: MyColors.primaryColor,
-                          size: 30,
-                        ),
-                        title: Text('${partsList[index].partName}'),
-                        trailing: SvgPicture.asset(
-                          "assets/images/EngineIcon.svg",
-                          height: 30,
-                        ),
-                      ),
-                    ),
-                  ),
-                  if (selectedIndex == index) const SizedBox(height: 10),
-                  if (selectedIndex == index)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: subPartList.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, i) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          subPartList = partsList[index].subPartName ?? [];
+                          setState(() {});
+                          if (selectedIndex != index) {
+                            selectedIndex = index;
+                            setState(() {});
+                          } else {
+                            selectedIndex = -1;
+                            setState(() {});
+                          }
+                        },
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Colors.white,
                               border: Border.all(
-                                color: selectedSubpart == subPartList[i]
-                                    ? MyColors.primaryColor
-                                    : Colors.grey.withOpacity(0.5),
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                  Radius.circular(10))),
+                                  color: Colors.grey.withOpacity(0.5)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          margin: EdgeInsets.only(bottom: 15),
                           child: ListTile(
-                            leading: SquareRadio(
-                              activeColor: MyColors.primaryColor,
-                              value: subPartList[i],
-                              groupValue: selectedSubpart,
-                              onChanged: (value) {
-                                _currentStepIndex = 2;
-                                selectedSubpart = subPartList[i];
-                                title = _getTitleForIndex(
-                                    _currentStepIndex - 1);
-                                print('on Changed...$_currentStepIndex');
-                                setState(() {});
-                              },
+                            leading: Icon(
+                              selectedIndex == index
+                                  ? Icons.expand_less
+                                  : Icons.expand_more,
+                              color: MyColors.primaryColor,
+                              size: 30,
                             ),
-                            title: Text('${subPartList[i].subPartName}'),
-                            onTap: () {
-                              _currentStepIndex = 2;
-                              selectedSubpart = subPartList[i];
-                              print('on Tap...$_currentStepIndex');
-                              title =
-                                  _getTitleForIndex(_currentStepIndex - 1);
-                              setState(() {});
-                              setState;
-                            },
+                            title: Text('${partsList[index].partName}'),
+                            trailing: SvgPicture.asset(
+                              "assets/images/EngineIcon.svg",
+                              height: 30,
+                            ),
                           ),
                         ),
                       ),
-                    )
-                ],
-              )),
+                      if (selectedIndex == index) const SizedBox(height: 10),
+                      if (selectedIndex == index)
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: subPartList.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, i) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: selectedSubpart == subPartList[i]
+                                        ? MyColors.primaryColor
+                                        : Colors.grey.withOpacity(0.5),
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
+                              child: ListTile(
+                                leading: SquareRadio(
+                                  activeColor: MyColors.primaryColor,
+                                  value: subPartList[i],
+                                  groupValue: selectedSubpart,
+                                  onChanged: (value) {
+                                    _currentStepIndex = 2;
+                                    selectedSubpart = subPartList[i];
+                                    title = _getTitleForIndex(
+                                        _currentStepIndex - 1);
+                                    print('on Changed...$_currentStepIndex');
+                                    setState(() {});
+                                  },
+                                ),
+                                title: Text('${subPartList[i].subPartName}'),
+                                onTap: () {
+                                  _currentStepIndex = 2;
+                                  selectedSubpart = subPartList[i];
+                                  print('on Tap...$_currentStepIndex');
+                                  title =
+                                      _getTitleForIndex(_currentStepIndex - 1);
+                                  setState(() {});
+                                  setState;
+                                },
+                              ),
+                            ),
+                          ),
+                        )
+                    ],
+                  )),
         );
       },
     );
@@ -1653,14 +1661,15 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                        color: selectedModel == modelList[index]
-                            ? MyColors.primaryColor
-                            : Colors.grey.withOpacity(0.5),
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(10),
-                    ),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: selectedModel == modelList[index]
+                        ? MyColors.primaryColor
+                        : Colors.grey.withOpacity(0.5),
+                  ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
                 child: ListTile(
                   leading: SquareRadio(
