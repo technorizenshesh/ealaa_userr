@@ -535,7 +535,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
   String getTextMethod({required int index}) {
     switch (index) {
       case 0:
-        return result?.vehicleAdsDetailGovernate ?? '';
+        return result?.subCategoryName ?? '';
       case 1:
         return result?.vehicleAdsDetailYear ?? '';
       case 2:
