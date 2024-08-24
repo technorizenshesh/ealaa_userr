@@ -161,7 +161,8 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                             decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.orange,width: .2)),
+                                border: Border.all(
+                                    color: Colors.orange, width: .2)),
                             child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Row(
@@ -219,7 +220,8 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                             decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.orange,width: .2)),
+                                border: Border.all(
+                                    color: Colors.orange, width: .2)),
                             child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Row(
@@ -268,8 +270,7 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                         children: [
                           SizedBox(height: 40),
                           Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 36),
+                            padding: const EdgeInsets.symmetric(horizontal: 36),
                             child: Container(
                               padding: EdgeInsets.all(1),
                               decoration: BoxDecoration(
@@ -279,20 +280,26 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                               child: Row(
                                 children: [
                                   Expanded(
-                                      child: textFieldView(
-                                          controller: TextEditingController(text: result?.vehicleNumberPhone ?? ''),
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              bottomLeft:
-                                              Radius.circular(10)))),
+                                    child: textFieldView(
+                                      controller: TextEditingController(
+                                          text:
+                                              result?.uploadVehiclesNumbers ?? ''),
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                      ),
+                                    ),
+                                  ),
                                   Expanded(
                                       child: textFieldView(
-                                          controller: TextEditingController(text: result?.letterNameEnglish ?? ''),
+                                          controller: TextEditingController(
+                                              text: result?.letterNameEnglish ??
+                                                  ''),
                                           borderRadius: BorderRadius.zero)),
                                   Expanded(
                                     child: textFieldView(
-                                      controller: TextEditingController(
-                                          text: 'عُمان'),
+                                      controller:
+                                          TextEditingController(text: 'عُمان'),
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(10),
                                         bottomRight: Radius.circular(10),
@@ -470,106 +477,136 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      widget.user_id_value == userId ?
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: RoundButton(
-                          height: 45,
-                          borderRadius: 10,
-                          title: 'Update your post',
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateVehicleNumbers(adType: result?.adsType ?? '', advertisement_category_id: result?.adsCategoryId ?? '', advertisement_sub_category_id: result?.adsSubCategoryId ?? '', ads_post_id: widget.ads_post_id ?? '')));
-                          },
-                          fontsize: 18,
-                          fontweight: FontWeight.w500,
-                        ),
-                      ):
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Contact the seller",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            ListTile(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AdMyAdsPosts(usersDetails: result!.usersDetails,
-                                        userIdValue: (result != null &&
-                                                result!.usersDetails != null &&
-                                                result!.usersDetails!.id !=
-                                                    null &&
-                                                result!.usersDetails!.id!
-                                                    .isNotEmpty)
-                                            ? result!.usersDetails!.id!
-                                            : null,
-                                      ),
-                                    ));
-                              },
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(40),
-                                child: SizedBox(
-                                  width: 44,
-                                  height: 44,
-                                  child: Image.network(
-                                      (result != null &&
-                                              result!.usersDetails != null &&
-                                              result!.usersDetails!.image !=
-                                                  null &&
-                                              result!.usersDetails!.image!
-                                                  .isNotEmpty)
-                                          ? result!.usersDetails!.image!
-                                          : 'https://avatar.iran.liara.run/public/37',
-                                      fit: BoxFit.fill),
-                                ),
+                      widget.user_id_value == userId
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: RoundButton(
+                                height: 45,
+                                borderRadius: 10,
+                                title: 'Update your post',
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              UpdateVehicleNumbers(
+                                                  adType: result?.adsType ?? '',
+                                                  advertisement_category_id:
+                                                      result?.adsCategoryId ??
+                                                          '',
+                                                  advertisement_sub_category_id:
+                                                      result
+                                                              ?.adsSubCategoryId ??
+                                                          '',
+                                                  ads_post_id: widget
+                                                          .ads_post_id ??
+                                                      '')));
+                                },
+                                fontsize: 18,
+                                fontweight: FontWeight.w500,
                               ),
-                              title: Column(
+                            )
+                          : Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    (result != null &&
-                                            result!.usersDetails != null &&
-                                            result!.usersDetails!.fullName !=
-                                                null &&
-                                            result!.usersDetails!.fullName!
-                                                .isNotEmpty)
-                                        ? result?.usersDetails?.fullName ?? ''
-                                        : 'Unnamed',
+                                    "Contact the seller",
                                     style: TextStyle(
-                                      color: Colors.black.withOpacity(0.7),
-                                      fontSize: 16,
-                                    ),
+                                        color: Colors.black.withOpacity(0.5),
+                                        fontSize: 18),
                                   ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    (result != null &&
-                                            result!.usersDetails != null &&
-                                            result!.usersDetails!.email !=
-                                                null &&
-                                            result!.usersDetails!.email!
-                                                .isNotEmpty)
-                                        ? result?.usersDetails?.email ?? ''
-                                        : 'Unnamed',
-                                    style: TextStyle(
-                                      color: Colors.black.withOpacity(0.5),
-                                      fontSize: 12,
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => AdMyAdsPosts(
+                                              usersDetails:
+                                                  result!.usersDetails,
+                                              userIdValue: (result != null &&
+                                                      result!.usersDetails !=
+                                                          null &&
+                                                      result!.usersDetails!
+                                                              .id !=
+                                                          null &&
+                                                      result!.usersDetails!.id!
+                                                          .isNotEmpty)
+                                                  ? result!.usersDetails!.id!
+                                                  : null,
+                                            ),
+                                          ));
+                                    },
+                                    leading: ClipRRect(
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: SizedBox(
+                                        width: 44,
+                                        height: 44,
+                                        child: Image.network(
+                                            (result != null &&
+                                                    result!.usersDetails !=
+                                                        null &&
+                                                    result!.usersDetails!
+                                                            .image !=
+                                                        null &&
+                                                    result!.usersDetails!.image!
+                                                        .isNotEmpty)
+                                                ? result!.usersDetails!.image!
+                                                : 'https://avatar.iran.liara.run/public/37',
+                                            fit: BoxFit.fill),
+                                      ),
+                                    ),
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          (result != null &&
+                                                  result!.usersDetails !=
+                                                      null &&
+                                                  result!.usersDetails!
+                                                          .fullName !=
+                                                      null &&
+                                                  result!.usersDetails!
+                                                      .fullName!.isNotEmpty)
+                                              ? result?.usersDetails
+                                                      ?.fullName ??
+                                                  ''
+                                              : 'Unnamed',
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.7),
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          (result != null &&
+                                                  result!.usersDetails !=
+                                                      null &&
+                                                  result!.usersDetails!.email !=
+                                                      null &&
+                                                  result!.usersDetails!.email!
+                                                      .isNotEmpty)
+                                              ? result?.usersDetails?.email ??
+                                                  ''
+                                              : 'Unnamed',
+                                          style: TextStyle(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -600,10 +637,10 @@ class _VehicleNumberDetailScreenState extends State<VehicleNumberDetailScreen> {
 
   Widget textFieldView(
       {required TextEditingController controller,
-        BorderRadius? borderRadius,
-        bool? readOnly,
-        bool? autofocus,
-        int? maxLength}) {
+      BorderRadius? borderRadius,
+      bool? readOnly,
+      bool? autofocus,
+      int? maxLength}) {
     return TextField(
       readOnly: readOnly ?? true,
       textAlign: TextAlign.center,

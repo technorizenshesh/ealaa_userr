@@ -359,6 +359,8 @@ class _AdHomeState extends State<AdHome> {
                       getAdsWithCategoryHomeResult[index].id == "7" ||
                       getAdsWithCategoryHomeResult[index].id == "8" ||
                       getAdsWithCategoryHomeResult[index].id == "10") {
+                    getAdsWithCategorySubCategoryResult = [];
+                    getAdsWithCategorySubCategoryResultGlobal = [];
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -375,6 +377,8 @@ class _AdHomeState extends State<AdHome> {
                   } else if (getAdsWithCategoryHomeResult[index].id == "3" ||
                       getAdsWithCategoryHomeResult[index].id == "4" ||
                       getAdsWithCategoryHomeResult[index].id == "9") {
+                    getAdsWithCategorySubCategoryResult = [];
+                    getAdsWithCategorySubCategoryResultGlobal = [];
                     Navigator.push(
                         context,
                         MaterialPageRoute(

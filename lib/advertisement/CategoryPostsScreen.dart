@@ -57,8 +57,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
     showProgressBar = false;
     GetAdsWithCategorySubCategoryModel getAdsWithCategorySubCategoryModel =
         GetAdsWithCategorySubCategoryModel.fromJson(res);
-    if (getAdsWithCategorySubCategoryModel.result != null &&
-        getAdsWithCategorySubCategoryModel.result!.isNotEmpty) {
+    if (getAdsWithCategorySubCategoryModel.result != null) {
       getAdsWithCategorySubCategoryResultGlobal =
           getAdsWithCategorySubCategoryModel.result!;
       getAdsWithCategorySubCategoryResult =

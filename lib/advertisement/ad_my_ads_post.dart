@@ -343,7 +343,7 @@ class _AdMyAdsPostsState extends State<AdMyAdsPosts> {
                     ''),
             vehicleNumber: TextEditingController(
                 text: getAdsWithCategorySubCategoryResult[index]
-                        .vehicleNumberPhone ??
+                        .uploadVehiclesNumbers ??
                     ''),
             vehicleNumber1: TextEditingController(
                 text: getAdsWithCategorySubCategoryResult[index]
