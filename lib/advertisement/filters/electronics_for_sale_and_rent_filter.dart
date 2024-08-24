@@ -176,11 +176,8 @@ class _ElectronicsForSaleAndRentFilterState
                 flex: 1,
                 child: GestureDetector(
                   onTap: () async {
-                    selectedCategories = null;
-                    selectedBrandForElectronicsForSaleAndRentFilter = null;
-                    selectedGovernateForElectronicsForSaleAndRentFilter = null;
-                    selectedStateForElectronicsForSaleAndRentFilter = null;
-                    setState(() {});
+                    clearValues();
+
                   },
                   child: Container(
                     height: 40,
@@ -303,6 +300,32 @@ class _ElectronicsForSaleAndRentFilterState
                                   null &&
                               selectedStateForElectronicsForSaleAndRentFilter!
                                   .stateName!.isNotEmpty) {
+                            filteredAds.remove(element);
+                            setState(() {});
+                          }
+                        }
+
+                        if (selectedConditionForElectronicsForSaleAndRentFilter !=
+                                null &&
+                            selectedConditionForElectronicsForSaleAndRentFilter!
+                                    .conditionName !=
+                                null &&
+                            selectedConditionForElectronicsForSaleAndRentFilter!
+                                .conditionName!.isNotEmpty &&
+                            selectedConditionForElectronicsForSaleAndRentFilter!
+                                    .conditionName ==
+                                element.conditionName) {
+                          if (!filteredAds.contains(element)) {
+                            filteredAds.add(element);
+                            setState(() {});
+                          }
+                        } else {
+                          if (selectedConditionForElectronicsForSaleAndRentFilter != null &&
+                              selectedConditionForElectronicsForSaleAndRentFilter!
+                                      .conditionName !=
+                                  null &&
+                              selectedConditionForElectronicsForSaleAndRentFilter!
+                                  .conditionName!.isNotEmpty) {
                             filteredAds.remove(element);
                             setState(() {});
                           }

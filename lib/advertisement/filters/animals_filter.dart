@@ -31,9 +31,22 @@ import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sal
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_transmission_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_year_filter_model.dart';
 import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_governorates_filter_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_model_engines_filter_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_model_year_filter_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_parts_filter_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_sub_parts_filter_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_vehicles_parts_make_filter_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_vehicles_parts_model_filter_model.dart';
+import '../../Model/advertisement_model/vehicles_part_and_accessories_models/get_vehicles_parts_model_trim_filter_model.dart';
 import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../CategoryPostsScreen.dart';
 
+
+
+double currentBuildingArea = 0.0;
+double currentLandArea = 0.0;
+double currentPointValue = 0.0;
 String? selectedCategories;
 String? selectedType;
 String? selectedGender;
@@ -41,10 +54,6 @@ String? selectedAge;
 String? selectedGovernrate;
 String? selectedState;
 String? selectedCity;
-double currentPointValue = 0.0;
-
-
-
 VehiclesMakeResult? selectedMakeForVehicleForSaleAndRentFilter;
 GetModelFilterResult? selectedModelForVehicleForSaleAndRentFilter;
 GetModelTrimFilterResult? selectedTrimForVehicleForSaleAndRentFilter;
@@ -63,44 +72,101 @@ GetPlateFilterResult? selectedPlateForVehicleForSaleAndRentFilter;
 GetOriginFilterResult? selectedOriginForVehicleForSaleAndRentFilter;
 GetGovernorateFilterResult? selectedGovernateForVehicleForSaleAndRentFilter;
 GetStatesFilterResult? selectedStateForVehicleForSaleAndRentFilter;
-
-
 GetElectronicsBrandFilterResult?   selectedBrandForElectronicsForSaleAndRentFilter;
 GetElectronicsConditionFilterResult?   selectedConditionForElectronicsForSaleAndRentFilter;
 GetGovernorateFilterResult? selectedGovernateForElectronicsForSaleAndRentFilter;
 GetStatesFilterResult? selectedStateForElectronicsForSaleAndRentFilter;
-
 GetNumberTypeResult? selectedGetNumberTypeResultForPhoneNumberFilter;
 GetOperatorsResult? selectedGetOperatorsResultForPhoneNumberFilter;
 GetGovernorateFilterResult? selectedGovernateForPhoneNumberFilter;
 GetStatesFilterResult? selectedStateForPhoneNumberFilter;
-
 GetUseTypesFilterResult? selectedUseTypeFilterForRealState;
 GetLandTypesFilterResult? selectedLandTypeFilterForRealState;
 GetGovernorateFilterResult? selectedGovernateFilterForRealState;
 GetStatesFilterResult? selectedStateFilterForRealState;
-
-
-
 GetNumberTypeResult? selectedGetNumberTypeResultForVehicleNumberFilter;
 GetGovernorateFilterResult? selectedGetGovernorateFilterResultForVehicleNumberFilter;
 GetLettersFilterResult? selectedGetLettersFilterResultForVehicleNumberFilter;
 GetPlateTypesFilterResult? selectedGetPlateTypesFilterResultForVehicleNumberFilter;
 String? selectedLetterCountListForVehicleNumberFilter;
 Map<String, dynamic>? selectedTransferTypeForVehicleNumberFilter;
-
-
-
-
 GetUseTypesFilterResult? selectedUseListForRealEstatesForSaleAndRentFilter;
 GetLandTypesFilterResult? selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter;
 GetGovernorateFilterResult? selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter;
 GetStatesFilterResult? selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter;
-double currentBuildingArea = 0.0;
-double currentLandArea = 0.0;
+Map<String, dynamic>? selectedAdsTypesListForVehicleAPartsAndAccessoriesFilter;
+GetPartsFilterResult? selectedGetPartsFilterResultForVehicleAPartsAndAccessoriesFilter;
+GetSubPartsFilterResult? selectedGetSubPartsFilterResultForVehicleAPartsAndAccessoriesFilter;
+GetVehiclesPartsMakeFilterResult? selectedGetVehiclesPartsMakeFilterResultForVehicleAPartsAndAccessoriesFilter;
+GetVehiclesPartsModelFilterResult? selectedGetVehiclesPartsModelFilterResultForVehicleAPartsAndAccessoriesFilter;
+GetVehiclesPartsModelTrimFilterResult? selectedGetVehiclesPartsModelTrimFilterResultForVehicleAPartsAndAccessoriesFilter;
+GetModelYearFilterResult? selectedGetModelYearFilterResultForVehicleAPartsAndAccessoriesFilter;
+GetModelEnginesFilterResult? selectedGetModelEnginesFilterResultForVehicleAPartsAndAccessoriesFilter;
+GetGovernoratesFilterResult? selectedGetGovernoratesFilterResultForVehicleAPartsAndAccessoriesFilter;
 
 
 
+clearValues(){
+  currentBuildingArea = 0.0;
+  currentLandArea = 0.0;
+  currentPointValue = 0.0;
+  selectedCategories = null;
+  selectedType = null;
+  selectedGender = null;
+  selectedAge = null;
+  selectedGovernrate = null;
+  selectedState = null;
+  selectedCity = null;
+  selectedMakeForVehicleForSaleAndRentFilter = null;
+  selectedModelForVehicleForSaleAndRentFilter = null;
+  selectedTrimForVehicleForSaleAndRentFilter = null;
+  selectedYearForVehicleForSaleAndRentFilter = null;
+  selectedConditionForVehicleForSaleAndRentFilter = null;
+  selectedEngineForVehicleForSaleAndRentFilter = null;
+  selectedDoorForVehicleForSaleAndRentFilter = null;
+  selectedExteriorColorForVehicleForSaleAndRentFilter = null;
+  selectedInteriorColorForVehicleForSaleAndRentFilter = null;
+  selectedCylinderForVehicleForSaleAndRentFilter = null;
+  selectedFuelForVehicleForSaleAndRentFilter = null;
+  selectedTransmissionForVehicleForSaleAndRentFilter = null;
+  selectedDriverTrainForVehicleForSaleAndRentFilter = null;
+  selectedSeatForVehicleForSaleAndRentFilter = null;
+  selectedPlateForVehicleForSaleAndRentFilter = null;
+  selectedOriginForVehicleForSaleAndRentFilter = null;
+  selectedGovernateForVehicleForSaleAndRentFilter = null;
+  selectedStateForVehicleForSaleAndRentFilter = null;
+  selectedBrandForElectronicsForSaleAndRentFilter = null;
+  selectedConditionForElectronicsForSaleAndRentFilter = null;
+  selectedGovernateForElectronicsForSaleAndRentFilter = null;
+  selectedStateForElectronicsForSaleAndRentFilter = null;
+  selectedGetNumberTypeResultForPhoneNumberFilter = null;
+  selectedGetOperatorsResultForPhoneNumberFilter = null;
+  selectedGovernateForPhoneNumberFilter = null;
+  selectedStateForPhoneNumberFilter = null;
+  selectedUseTypeFilterForRealState = null;
+  selectedLandTypeFilterForRealState = null;
+  selectedGovernateFilterForRealState = null;
+  selectedStateFilterForRealState = null;
+  selectedGetNumberTypeResultForVehicleNumberFilter = null;
+  selectedGetGovernorateFilterResultForVehicleNumberFilter = null;
+  selectedGetLettersFilterResultForVehicleNumberFilter = null;
+  selectedGetPlateTypesFilterResultForVehicleNumberFilter = null;
+  selectedLetterCountListForVehicleNumberFilter = null;
+  selectedTransferTypeForVehicleNumberFilter = null;
+  selectedUseListForRealEstatesForSaleAndRentFilter = null;
+  selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter = null;
+  selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter = null;
+  selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter = null;
+  selectedAdsTypesListForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetPartsFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetSubPartsFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetVehiclesPartsMakeFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetVehiclesPartsModelFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetVehiclesPartsModelTrimFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetModelYearFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetModelEnginesFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+  selectedGetGovernoratesFilterResultForVehicleAPartsAndAccessoriesFilter = null;
+}
 
 
 
@@ -237,15 +303,7 @@ class _AnimalsFilterState extends State<AnimalsFilter> {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () async {
-                    selectedCategories = null;
-                    selectedType = null;
-                    selectedGender = null;
-                    selectedAge = null;
-                    selectedGovernrate = null;
-                    selectedState = null;
-                    selectedCity = null;
-                    currentPointValue = 0.0;
-                    setState(() {});
+                    clearValues();
                   },
                   child: Container(
                     height: 40,

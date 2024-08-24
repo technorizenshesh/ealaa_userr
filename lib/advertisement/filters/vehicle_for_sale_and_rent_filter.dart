@@ -442,28 +442,8 @@ class _VehicleForSaleAndRentFilterState
               Expanded(
                 flex: 1,
                 child: GestureDetector(
-                  onTap: () async {
-                    selectedCategories = null;
-                    selectedMakeForVehicleForSaleAndRentFilter = null;
-                    selectedMakeForVehicleForSaleAndRentFilter = null;
-                    selectedModelForVehicleForSaleAndRentFilter = null;
-                    selectedTrimForVehicleForSaleAndRentFilter = null;
-                    selectedYearForVehicleForSaleAndRentFilter = null;
-                    selectedConditionForVehicleForSaleAndRentFilter = null;
-                    selectedEngineForVehicleForSaleAndRentFilter = null;
-                    selectedDoorForVehicleForSaleAndRentFilter = null;
-                    selectedExteriorColorForVehicleForSaleAndRentFilter = null;
-                    selectedInteriorColorForVehicleForSaleAndRentFilter = null;
-                    selectedCylinderForVehicleForSaleAndRentFilter = null;
-                    selectedFuelForVehicleForSaleAndRentFilter = null;
-                    selectedTransmissionForVehicleForSaleAndRentFilter = null;
-                    selectedDriverTrainForVehicleForSaleAndRentFilter = null;
-                    selectedSeatForVehicleForSaleAndRentFilter = null;
-                    selectedPlateForVehicleForSaleAndRentFilter = null;
-                    selectedOriginForVehicleForSaleAndRentFilter = null;
-                    selectedGovernateForVehicleForSaleAndRentFilter = null;
-                    selectedStateForVehicleForSaleAndRentFilter = null;
-                    setState(() {});
+                  onTap: () {
+                    clearValues();
                   },
                   child: Container(
                     height: 40,

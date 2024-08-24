@@ -208,8 +208,8 @@ class _VehicleNumberFilterState extends State<VehicleNumberFilter> {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () async {
-                    selectedCategories = null;
-                    setState(() {});
+                    clearValues();
+
                   },
                   child: Container(
                     height: 40,

@@ -178,8 +178,8 @@ class _RealstateForSaleAndRentFilterState
                 flex: 1,
                 child: GestureDetector(
                   onTap: () async {
-                    selectedCategories = null;
-                    setState(() {});
+                    clearValues();
+
                   },
                   child: Container(
                     height: 40,

@@ -168,12 +168,7 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                 flex: 1,
                 child: GestureDetector(
                   onTap: () async {
-                    selectedCategories = null;
-                    selectedGetNumberTypeResultForPhoneNumberFilter = null;
-                    selectedGetOperatorsResultForPhoneNumberFilter = null;
-                    selectedGovernateForPhoneNumberFilter = null;
-                    selectedStateForPhoneNumberFilter = null;
-                    setState(() {});
+                    clearValues();
                   },
                   child: Container(
                     height: 40,
@@ -224,11 +219,7 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                           filteredAds.add(element);
                           setState(() {});
                         }
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${selectedGetNumberTypeResultForPhoneNumberFilter}');
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName}');
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${element.numberType}');
-                        print('selectedGetNumberTypeResultForPhoneNumberFilter:::::::::::::::::::::::::${selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName == element.numberType}');
-                        if (selectedGetNumberTypeResultForPhoneNumberFilter != null &&
+                       if (selectedGetNumberTypeResultForPhoneNumberFilter != null &&
                             selectedGetNumberTypeResultForPhoneNumberFilter!.vehiclesNumberTypeName !=
                                 null &&
                             selectedGetNumberTypeResultForPhoneNumberFilter!
@@ -256,7 +247,7 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                             selectedGetOperatorsResultForPhoneNumberFilter!
                                 .operatorsName!.isNotEmpty &&
                             selectedGetOperatorsResultForPhoneNumberFilter!.operatorsName ==
-                                element.phoneNumberAdsOperators) {
+                                element.operatorsName) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                             setState(() {});
@@ -272,13 +263,13 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                           }
                         }
 
-                        if (selectedGovernateForPhoneNumberFilter != null &&
+                                         if (selectedGovernateForPhoneNumberFilter != null &&
                             selectedGovernateForPhoneNumberFilter!.name !=
                                 null &&
                             selectedGovernateForPhoneNumberFilter!
                                 .name!.isNotEmpty &&
                             selectedGovernateForPhoneNumberFilter!.name ==
-                                element.phoneNumberAdsGovernorate) {
+                                element.governorateName) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                             setState(() {});
@@ -294,13 +285,13 @@ class _PhoneNumberFilterState extends State<PhoneNumberFilter> {
                           }
                         }
 
-                        if (selectedStateForPhoneNumberFilter != null &&
+                                if (selectedStateForPhoneNumberFilter != null &&
                             selectedStateForPhoneNumberFilter!.stateName !=
                                 null &&
                             selectedStateForPhoneNumberFilter!
                                 .stateName!.isNotEmpty &&
                             selectedStateForPhoneNumberFilter!.stateName ==
-                                element.phoneNumberAdsState) {
+                                element.stateName) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                             setState(() {});
