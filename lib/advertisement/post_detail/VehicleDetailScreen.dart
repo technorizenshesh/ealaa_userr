@@ -35,12 +35,24 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
     {'title': 'Model Year', 'Image': 'assets/icons_for_car/ic_model_year.png'},
     {'title': 'Condition', 'Image': 'assets/icons_for_car/ic_model_year.png'},
     {'title': 'Origin', 'Image': 'assets/icons_for_car/ic_model_year.png'},
-    {'title': 'Transmission', 'Image': 'assets/icons_for_car/ic_transmission.png'},
-    {'title': 'Exterior Color', 'Image': 'assets/icons_for_car/ic_exterior_color.png'},
+    {
+      'title': 'Transmission',
+      'Image': 'assets/icons_for_car/ic_transmission.png'
+    },
+    {
+      'title': 'Exterior Color',
+      'Image': 'assets/icons_for_car/ic_exterior_color.png'
+    },
     {'title': 'Door Count', 'Image': 'assets/icons_for_car/ic_door_count.png'},
     {'title': 'Seats', 'Image': 'assets/icons_for_car/ic_seats.png'},
-    {'title': 'Interior Color', 'Image': 'assets/icons_for_car/ic_interior_color.png'},
-    {'title': 'Engine Size', 'Image': 'assets/icons_for_car/ic_engine_size.png'},
+    {
+      'title': 'Interior Color',
+      'Image': 'assets/icons_for_car/ic_interior_color.png'
+    },
+    {
+      'title': 'Engine Size',
+      'Image': 'assets/icons_for_car/ic_engine_size.png'
+    },
     {'title': 'Cylinders', 'Image': 'assets/icons_for_car/ic_engine_size.png'},
     {'title': 'Fuel', 'Image': 'assets/icons_for_car/ic_fuel.png'},
     {'title': 'Drivetrain', 'Image': 'assets/icons_for_car/ic_drivetrain.png'},
@@ -175,7 +187,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                             decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.orange,width: .2)),
+                                border: Border.all(
+                                    color: Colors.orange, width: .2)),
                             child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Row(
@@ -232,7 +245,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                             decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.8),
                                 borderRadius: BorderRadius.circular(6),
-                                border: Border.all(color: Colors.orange,width: .2)),
+                                border: Border.all(
+                                    color: Colors.orange, width: .2)),
                             child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Row(
@@ -347,7 +361,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                             ),
                             GridView.builder(
                                 gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    const SliverGridDelegateWithMaxCrossAxisExtent(
                                   childAspectRatio: 100,
                                   maxCrossAxisExtent: 200,
                                   mainAxisExtent: 60,
@@ -364,16 +378,16 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                     decoration: BoxDecoration(
                                         border: Border.all(
                                             color:
-                                            Colors.grey.withOpacity(0.3)),
+                                                Colors.grey.withOpacity(0.3)),
                                         borderRadius:
-                                        BorderRadius.circular(10)),
+                                            BorderRadius.circular(10)),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               "${detailElements[index]['title']}",
@@ -385,7 +399,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                             Image.asset(
                                               "${detailElements[index]['Image']}",
                                               color:
-                                              Colors.black.withOpacity(0.5),
+                                                  Colors.black.withOpacity(0.5),
                                               height: 14,
                                               width: 14,
                                             )
@@ -396,14 +410,15 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                                           maxLines: 1,
                                           style: TextStyle(
                                             color:
-                                            Colors.black.withOpacity(0.7),
+                                                Colors.black.withOpacity(0.7),
                                             fontSize: 12,
                                           ),
                                         )
                                       ],
                                     ),
                                   );
-                                })                          ],
+                                })
+                          ],
                         ),
                       ),
                       SizedBox(height: 10),
@@ -433,98 +448,126 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10
-                      ),
+                      SizedBox(height: 10),
                       Divider(color: Colors.grey.withOpacity(0.3)),
                       SizedBox(height: 10),
-                      widget.user_id_value == userId ?
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: RoundButton(
-                          height: 45,
-                          borderRadius: 10,
-                          title: 'Update your post',
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateVehiclesMake(adType: result?.adsType ?? '', advertisement_category_id: result?.adsCategoryId ?? '', advertisement_sub_category_id: result?.adsSubCategoryId ?? '', ads_post_id: widget.ads_post_id ?? '')));
-                          },
-                          fontsize: 18,
-                          fontweight: FontWeight.w500,
-                        ),
-                      ):Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Contact the seller",
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.5),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            ListTile(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdMyAdsPosts(usersDetails: result!.usersDetails,userIdValue: (result != null &&
-                                    result!.usersDetails != null &&
-                                    result!.usersDetails!.id !=
-                                        null &&
-                                    result!.usersDetails!.id!
-                                        .isNotEmpty)
-                                    ? result!.usersDetails!.id!
-                                    :null,),));
-                              },
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(40),
-                                child: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Image.network(
+                      widget.user_id_value == userId
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: RoundButton(
+                                height: 45,
+                                borderRadius: 10,
+                                title: 'Update your post',
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              UpdateVehiclesMake(
+                                                  adType: result?.adsType ?? '',
+                                                  advertisement_category_id:
+                                                      result?.adsCategoryId ??
+                                                          '',
+                                                  advertisement_sub_category_id:
+                                                      result?.adsSubCategoryId ??
+                                                          '',
+                                                  ads_post_id: widget
+                                                          .ads_post_id ??
+                                                      '')));
+                                },
+                                fontsize: 18,
+                                fontweight: FontWeight.w500,
+                              ),
+                            )
+                          : Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Contact the seller",
+                                    style: TextStyle(
+                                        color: Colors.black.withOpacity(0.5),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  ListTile(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => AdMyAdsPosts(
+                                              usersDetails:
+                                                  result!.usersDetails,
+                                              userIdValue: (result != null &&
+                                                      result!.usersDetails !=
+                                                          null &&
+                                                      result!.usersDetails!
+                                                              .id !=
+                                                          null &&
+                                                      result!.usersDetails!.id!
+                                                          .isNotEmpty)
+                                                  ? result!.usersDetails!.id!
+                                                  : null,
+                                            ),
+                                          ));
+                                    },
+                                    leading: ClipRRect(
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: Image.network(
+                                            (result != null &&
+                                                    result!.usersDetails !=
+                                                        null &&
+                                                    result!.usersDetails!
+                                                            .image !=
+                                                        null &&
+                                                    result!.usersDetails!.image!
+                                                        .isNotEmpty)
+                                                ? result!.usersDetails!.image!
+                                                : 'https://avatar.iran.liara.run/public/37',
+                                            fit: BoxFit.fill),
+                                      ),
+                                    ),
+                                    title: Text(
                                       (result != null &&
                                               result!.usersDetails != null &&
-                                              result!.usersDetails!.image !=
+                                              result!.usersDetails!.userName !=
                                                   null &&
-                                              result!.usersDetails!.image!
+                                              result!.usersDetails!.userName!
                                                   .isNotEmpty)
-                                          ? result!.usersDetails!.image!
-                                          : 'https://avatar.iran.liara.run/public/37',
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
-                              title: Text(
-                                (result != null &&
-                                        result!.usersDetails != null &&
-                                        result!.usersDetails!.userName !=
-                                            null &&
-                                        result!
-                                            .usersDetails!.userName!.isNotEmpty)
-                                    ? result?.usersDetails?.userName ?? ''
-                                    : 'Unnamed',
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.8),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              subtitle: Text(
-                                (result != null &&
-                                        result!.usersDetails != null &&
-                                        result!.usersDetails!.email != null &&
-                                        result!.usersDetails!.email!.isNotEmpty)
-                                    ? result?.usersDetails?.email ?? ''
-                                    : 'Unnamed',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14),
+                                          ? result?.usersDetails?.userName ?? ''
+                                          : 'Unnamed',
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.8),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      (result != null &&
+                                              result!.usersDetails != null &&
+                                              result!.usersDetails!.email !=
+                                                  null &&
+                                              result!.usersDetails!.email!
+                                                  .isNotEmpty)
+                                          ? result?.usersDetails?.email ?? ''
+                                          : 'Unnamed',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
                       SizedBox(height: 30)
                     ],
                   ),
@@ -535,7 +578,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
   String getTextMethod({required int index}) {
     switch (index) {
       case 0:
-        return result?.vehicleAdsDetailGovernate ?? '';
+        return result?.subCategoryName ?? '';
       case 1:
         return result?.vehicleAdsDetailYear ?? '';
       case 2:
@@ -573,7 +616,9 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
       case 18:
         return result?.vehicleAdsDetailPlate ?? '';
       case 19:
-        return (DateFormat('yyyy-MM-dd').format(DateTime.parse(result?.adsCreatedAt ?? ""))).toString();
+        return (DateFormat('yyyy-MM-dd')
+                .format(DateTime.parse(result?.adsCreatedAt ?? "")))
+            .toString();
       default:
         return 'test';
     }

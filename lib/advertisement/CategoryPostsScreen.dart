@@ -592,6 +592,7 @@ class _CategoryPostsScreenState extends State<CategoryPostsScreen> {
                       Expanded(
                         child: ListView.builder(
                           itemCount: getAdsWithCategorySubCategoryResult.length,
+                          reverse: true,
                           itemBuilder: (context, index) {
                             return listOfData(index: index);
                           },

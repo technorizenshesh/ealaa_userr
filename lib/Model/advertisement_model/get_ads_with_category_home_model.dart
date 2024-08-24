@@ -208,6 +208,7 @@ class PostListDetails {
   String? uploadVehiclesNumbers;
   String? letterType;
 
+
   PostListDetails(
       {this.adsId,
         this.adsType,
