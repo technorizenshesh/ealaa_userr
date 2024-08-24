@@ -1,25 +1,11 @@
-import 'package:ealaa_userr/Model/advertisement_model/RealStateUseModel.dart';
 import 'package:ealaa_userr/Model/advertisement_model/advertisement_models_for_realstate_for_sale_and_rent/gat_land_type_filter_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../Model/advertisement_model/ad_subcategory_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_realstate_for_sale_and_rent/get_use_types_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_condition_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_cylinders_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_door_count_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_drivetrain_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_engine_size_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_exterior_color_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_fuel_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_governate_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_model_trim_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_origin_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_plate_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_seats_filter_model.dart';
 import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_states_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_transmission_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_year_filter_model.dart';
 import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../../View/Utils/ApiConstants.dart';
 import '../../View/Utils/CustomSnackBar.dart';
@@ -31,13 +17,16 @@ import 'animals_filter.dart';
 class RealstateForSaleAndRentFilter extends StatefulWidget {
   final String advertisement_category_id;
 
-  const RealstateForSaleAndRentFilter({super.key,required this.advertisement_category_id});
+  const RealstateForSaleAndRentFilter(
+      {super.key, required this.advertisement_category_id});
 
   @override
-  State<RealstateForSaleAndRentFilter> createState() => _RealstateForSaleAndRentFilterState();
+  State<RealstateForSaleAndRentFilter> createState() =>
+      _RealstateForSaleAndRentFilterState();
 }
 
-class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentFilter> {
+class _RealstateForSaleAndRentFilterState
+    extends State<RealstateForSaleAndRentFilter> {
   bool showProgressBar = true;
   List<String> topList = [
     'Property Type',
@@ -55,21 +44,6 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
   List<GetLandTypesFilterResult> landTypeList = [];
   List<GetGovernorateFilterResult> governateList = [];
   List<GetStatesFilterResult> stateList = [];
-  List<GetModelTrimFilterResult> trimList = [];
-  List<GetYearFilterResult> yearList = [];
-  List<GetConditionFilterResult> conditionList = [];
-  List<GetEngineSizeFilterResult> engineList = [];
-  List<GetDoorCountFilterResult> doorList = [];
-  List<GetExteriorColorFilterResult> exteriorColorList = [];
-  List<GetExteriorColorFilterResult> interiorColorList = [];
-  List<GetCylindersFilterResult> cylindersList = [];
-  List<GetFuelFilterResult> fuelList = [];
-  List<GetTransmissionFilterResult> transmissionList = [];
-  List<GetDrivetrainFilterResult> driverTrainList = [];
-  List<GetSeatsFilterResult> seatsList = [];
-  List<GetPlateFilterResult> plateList = [];
-  List<GetOriginFilterResult> originList = [];
-
 
   bool loader = false;
 
@@ -205,25 +179,6 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
                 child: GestureDetector(
                   onTap: () async {
                     selectedCategories = null;
-                    selectedMakeForVehicleForSaleAndRentFilter = null;
-                    selectedMakeForVehicleForSaleAndRentFilter = null;
-                    selectedModelForVehicleForSaleAndRentFilter = null;
-                    selectedTrimForVehicleForSaleAndRentFilter = null;
-                    selectedYearForVehicleForSaleAndRentFilter = null;
-                    selectedConditionForVehicleForSaleAndRentFilter = null;
-                    selectedEngineForVehicleForSaleAndRentFilter = null;
-                    selectedDoorForVehicleForSaleAndRentFilter = null;
-                    selectedExteriorColorForVehicleForSaleAndRentFilter = null;
-                    selectedInteriorColorForVehicleForSaleAndRentFilter = null;
-                    selectedCylinderForVehicleForSaleAndRentFilter = null;
-                    selectedFuelForVehicleForSaleAndRentFilter = null;
-                    selectedTransmissionForVehicleForSaleAndRentFilter = null;
-                    selectedDriverTrainForVehicleForSaleAndRentFilter = null;
-                    selectedSeatForVehicleForSaleAndRentFilter = null;
-                    selectedPlateForVehicleForSaleAndRentFilter = null;
-                    selectedOriginForVehicleForSaleAndRentFilter = null;
-                    selectedGovernateForVehicleForSaleAndRentFilter = null;
-                    selectedStateForVehicleForSaleAndRentFilter = null;
                     setState(() {});
                   },
                   child: Container(
@@ -248,32 +203,17 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
                 child: GestureDetector(
                   onTap: () {
                     if (selectedCategories == null &&
-                        selectedMakeForVehicleForSaleAndRentFilter == null &&
-                        selectedModelForVehicleForSaleAndRentFilter == null &&
-                        selectedTrimForVehicleForSaleAndRentFilter == null &&
-                        selectedYearForVehicleForSaleAndRentFilter == null &&
-                        selectedConditionForVehicleForSaleAndRentFilter ==
+                        selectedUseListForRealEstatesForSaleAndRentFilter ==
                             null &&
-                        selectedEngineForVehicleForSaleAndRentFilter == null &&
-                        selectedDoorForVehicleForSaleAndRentFilter == null &&
-                        selectedExteriorColorForVehicleForSaleAndRentFilter ==
+                        selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter ==
                             null &&
-                        selectedInteriorColorForVehicleForSaleAndRentFilter ==
+                        selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter ==
                             null &&
-                        selectedCylinderForVehicleForSaleAndRentFilter ==
+                        selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter ==
                             null &&
-                        selectedFuelForVehicleForSaleAndRentFilter == null &&
-                        selectedTransmissionForVehicleForSaleAndRentFilter ==
-                            null &&
-                        selectedDriverTrainForVehicleForSaleAndRentFilter ==
-                            null &&
-                        selectedSeatForVehicleForSaleAndRentFilter == null &&
-                        selectedPlateForVehicleForSaleAndRentFilter == null &&
-                        selectedOriginForVehicleForSaleAndRentFilter == null &&
-                        selectedGovernateForVehicleForSaleAndRentFilter ==
-                            null &&
-                        selectedStateForVehicleForSaleAndRentFilter == null &&
-                        currentPointValue == 0.0) {
+                        currentPointValue == 0.0 &&
+                        currentBuildingArea == 0.0 &&
+                        currentLandArea == 0.0) {
                       getAdsWithCategorySubCategoryResult =
                           getAdsWithCategorySubCategoryResultGlobal;
                       setState(() {});
@@ -297,457 +237,127 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
                           setState(() {});
                         }
 
-                        if (selectedMakeForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedMakeForVehicleForSaleAndRentFilter!.id !=
+                        if (selectedUseListForRealEstatesForSaleAndRentFilter != null &&
+                            selectedUseListForRealEstatesForSaleAndRentFilter!
+                                    .useId !=
                                 null &&
-                            selectedMakeForVehicleForSaleAndRentFilter!
-                                .id!.isNotEmpty &&
-                            selectedMakeForVehicleForSaleAndRentFilter!.id ==
-                                element.vehicleAdsDetailMakerId) {
+                            selectedUseListForRealEstatesForSaleAndRentFilter!
+                                .useId!.isNotEmpty &&
+                            selectedUseListForRealEstatesForSaleAndRentFilter!
+                                    .useId ==
+                                element.realStateAdsDetailUseId) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                             setState(() {});
                           }
                         } else {
-                          if (selectedMakeForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedMakeForVehicleForSaleAndRentFilter!.id !=
+                          if (selectedUseListForRealEstatesForSaleAndRentFilter != null &&
+                              selectedUseListForRealEstatesForSaleAndRentFilter!
+                                      .useId !=
                                   null &&
-                              selectedMakeForVehicleForSaleAndRentFilter!
+                              selectedUseListForRealEstatesForSaleAndRentFilter!
+                                  .useId!.isNotEmpty) {
+                            filteredAds.remove(element);
+                            setState(() {});
+                          }
+                        }
+
+                        if (selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter != null &&
+                            selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter!.landtypeId !=
+                                null &&
+                            selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter!
+                                .landtypeId!.isNotEmpty &&
+                            selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter!
+                                    .landtypeId ==
+                                element.realStateAdsDetailLandtypeId) {
+                          if (!filteredAds.contains(element)) {
+                            filteredAds.add(element);
+                            setState(() {});
+                          }
+                        } else {
+                          if (selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter != null &&
+                              selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter!
+                                      .landtypeId !=
+                                  null &&
+                              selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter!
+                                  .landtypeId!.isNotEmpty) {
+                            filteredAds.remove(element);
+                            setState(() {});
+                          }
+                        }
+
+                        if (selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter != null &&
+                            selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter!
+                                    .id !=
+                                null &&
+                            selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter!
+                                .id!.isNotEmpty &&
+                            selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter!
+                                    .id ==
+                                element.realStateAdsDetailGovernateId) {
+                          if (!filteredAds.contains(element)) {
+                            filteredAds.add(element);
+                            setState(() {});
+                          }
+                        } else {
+                          if (selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter != null &&
+                              selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter!
+                                      .id !=
+                                  null &&
+                              selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter!
                                   .id!.isNotEmpty) {
                             filteredAds.remove(element);
                             setState(() {});
                           }
                         }
 
-                        if (selectedModelForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedModelForVehicleForSaleAndRentFilter!.id !=
+                        if (selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter != null &&
+                            selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter!
+                                    .stateId !=
                                 null &&
-                            selectedModelForVehicleForSaleAndRentFilter!
-                                .id!.isNotEmpty &&
-                            selectedModelForVehicleForSaleAndRentFilter!.id ==
-                                element.vehicleAdsDetailModelId) {
+                            selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter!
+                                .stateId!.isNotEmpty &&
+                            selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter!
+                                    .stateId ==
+                                element.realStateAdsDetailStateId) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
                             setState(() {});
                           }
                         } else {
-                          if (selectedModelForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedModelForVehicleForSaleAndRentFilter!.id !=
+                          if (selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter != null &&
+                              selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter!
+                                      .stateId !=
                                   null &&
-                              selectedModelForVehicleForSaleAndRentFilter!
-                                  .id!.isNotEmpty) {
+                              selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter!
+                                  .stateId!.isNotEmpty) {
                             filteredAds.remove(element);
                             setState(() {});
                           }
                         }
 
-                        if (selectedTrimForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedTrimForVehicleForSaleAndRentFilter!.id !=
-                                null &&
-                            selectedTrimForVehicleForSaleAndRentFilter!
-                                .id!.isNotEmpty &&
-                            selectedTrimForVehicleForSaleAndRentFilter!.id ==
-                                element.vehicleAdsDetailModelTrimId) {
+                        if (currentBuildingArea >=
+                            double.parse(
+                                element.realStateAdsAdditionalDetailLandArea ??
+                                    '0')) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
-                            setState(() {});
                           }
                         } else {
-                          if (selectedTrimForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedTrimForVehicleForSaleAndRentFilter!.id !=
-                                  null &&
-                              selectedTrimForVehicleForSaleAndRentFilter!
-                                  .id!.isNotEmpty) {
+                          if (currentBuildingArea != 0.0) {
                             filteredAds.remove(element);
                             setState(() {});
                           }
                         }
-
-                        if (selectedYearForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedYearForVehicleForSaleAndRentFilter!.year !=
-                                null &&
-                            selectedYearForVehicleForSaleAndRentFilter!
-                                .year!.isNotEmpty &&
-                            selectedYearForVehicleForSaleAndRentFilter!.year ==
-                                element.vehicleAdsDetailYear) {
+                        if (currentLandArea >=
+                            double.parse(
+                                element.realStateAdsAdditionalDetailLandArea ??
+                                    '0')) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
-                            setState(() {});
                           }
                         } else {
-                          if (selectedYearForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedYearForVehicleForSaleAndRentFilter!
-                                  .year !=
-                                  null &&
-                              selectedYearForVehicleForSaleAndRentFilter!
-                                  .year!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedConditionForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedConditionForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedConditionForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedConditionForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailCondition) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedConditionForVehicleForSaleAndRentFilter != null &&
-                              selectedConditionForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedConditionForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedEngineForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedEngineForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedEngineForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedEngineForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailEngineSize) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedEngineForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedEngineForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedEngineForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedDoorForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedDoorForVehicleForSaleAndRentFilter!.name !=
-                                null &&
-                            selectedDoorForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedDoorForVehicleForSaleAndRentFilter!.name ==
-                                element.vehicleAdsDetailDoors) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedDoorForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedDoorForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedDoorForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedExteriorColorForVehicleForSaleAndRentFilter != null &&
-                            selectedExteriorColorForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedExteriorColorForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedExteriorColorForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailExteriorColor) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedExteriorColorForVehicleForSaleAndRentFilter != null &&
-                              selectedExteriorColorForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedExteriorColorForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedInteriorColorForVehicleForSaleAndRentFilter != null &&
-                            selectedInteriorColorForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedInteriorColorForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedInteriorColorForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailInteriorColor) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedInteriorColorForVehicleForSaleAndRentFilter != null &&
-                              selectedInteriorColorForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedInteriorColorForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedCylinderForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedCylinderForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedCylinderForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedCylinderForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailCylinders) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedCylinderForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedCylinderForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedCylinderForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedFuelForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedFuelForVehicleForSaleAndRentFilter!.name !=
-                                null &&
-                            selectedFuelForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedFuelForVehicleForSaleAndRentFilter!.name ==
-                                element.vehicleAdsDetailFuel) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedFuelForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedFuelForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedFuelForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-                        if (selectedTransmissionForVehicleForSaleAndRentFilter != null &&
-                            selectedTransmissionForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedTransmissionForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedTransmissionForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailTransmission) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedTransmissionForVehicleForSaleAndRentFilter != null &&
-                              selectedTransmissionForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedTransmissionForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedDriverTrainForVehicleForSaleAndRentFilter != null &&
-                            selectedDriverTrainForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedDriverTrainForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedDriverTrainForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailDriveTrain) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedDriverTrainForVehicleForSaleAndRentFilter != null &&
-                              selectedDriverTrainForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedDriverTrainForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedSeatForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedSeatForVehicleForSaleAndRentFilter!.name !=
-                                null &&
-                            selectedSeatForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedSeatForVehicleForSaleAndRentFilter!.name ==
-                                element.vehicleAdsDetailSeats) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedSeatForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedSeatForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedSeatForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedPlateForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedPlateForVehicleForSaleAndRentFilter!.name !=
-                                null &&
-                            selectedPlateForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedPlateForVehicleForSaleAndRentFilter!.name ==
-                                element.vehicleAdsDetailPlate) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedPlateForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedPlateForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedPlateForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedOriginForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedOriginForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedOriginForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedOriginForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailOrigin) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedOriginForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedOriginForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedOriginForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedGovernateForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedGovernateForVehicleForSaleAndRentFilter!
-                                .name !=
-                                null &&
-                            selectedGovernateForVehicleForSaleAndRentFilter!
-                                .name!.isNotEmpty &&
-                            selectedGovernateForVehicleForSaleAndRentFilter!
-                                .name ==
-                                element.vehicleAdsDetailGovernate) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedGovernateForVehicleForSaleAndRentFilter != null &&
-                              selectedGovernateForVehicleForSaleAndRentFilter!
-                                  .name !=
-                                  null &&
-                              selectedGovernateForVehicleForSaleAndRentFilter!
-                                  .name!.isNotEmpty) {
-                            filteredAds.remove(element);
-                            setState(() {});
-                          }
-                        }
-
-                        if (selectedStateForVehicleForSaleAndRentFilter !=
-                            null &&
-                            selectedStateForVehicleForSaleAndRentFilter!
-                                .stateName !=
-                                null &&
-                            selectedStateForVehicleForSaleAndRentFilter!
-                                .stateName!.isNotEmpty &&
-                            selectedStateForVehicleForSaleAndRentFilter!
-                                .stateName ==
-                                element.vehicleAdsDetailState) {
-                          if (!filteredAds.contains(element)) {
-                            filteredAds.add(element);
-                            setState(() {});
-                          }
-                        } else {
-                          if (selectedStateForVehicleForSaleAndRentFilter !=
-                              null &&
-                              selectedStateForVehicleForSaleAndRentFilter!
-                                  .stateName !=
-                                  null &&
-                              selectedStateForVehicleForSaleAndRentFilter!
-                                  .stateName!.isNotEmpty) {
+                          if (currentLandArea != 0.0) {
                             filteredAds.remove(element);
                             setState(() {});
                           }
@@ -755,7 +365,7 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
 
                         if (currentPointValue >=
                             double.parse(
-                                element.vehicleAdsAdditionalDetailPrice ??
+                                element.realStateAdsAdditionalDetailPrice ??
                                     '0')) {
                           if (!filteredAds.contains(element)) {
                             filteredAds.add(element);
@@ -771,11 +381,7 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
                       setState(() {
                         getAdsWithCategorySubCategoryResult = filteredAds;
                       });
-                      print(
-                          'getAdsWithCategorySubCategoryResult::::::::::::::::${getAdsWithCategorySubCategoryResult}');
-                      print(
-                          'getAdsWithCategorySubCategoryResult::::::::::::::::${getAdsWithCategorySubCategoryResult.length}');
-                      print('filteredAds::::::::::::::::${filteredAds.length}');
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -823,91 +429,91 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
       ),
       body: showProgressBar
           ? const Center(
-        child: CircularProgressIndicator(
-          color: MyColors.primaryColor,
-        ),
-      )
+              child: CircularProgressIndicator(
+                color: MyColors.primaryColor,
+              ),
+            )
           : subcategoryList == null
-          ? Image.asset("assets/images/NoDataFound.png")
-          : Container(
-        color: const Color(0xfff8f2ee),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                color: Colors.white,
-                child: SingleChildScrollView(
-                  child: Column(
+              ? Image.asset("assets/images/NoDataFound.png")
+              : Container(
+                  color: const Color(0xfff8f2ee),
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(topList.length, (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          _currentStepIndex = index;
-                          if (_currentStepIndex == 1) {
-                            getUseFilter();
-                          } else if (_currentStepIndex == 2) {
-                            getLandTypeFilter();
-                          } else if (_currentStepIndex == 3) {
-                            getGovernorateFilter();
-                          } else if (_currentStepIndex == 4) {
-                            getStatesFilter();
-                          }
-                          setState(() {});
-                        },
-                        child: Column(
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: _currentStepIndex == index
-                                      ? const Color(0xfff8f2ee)
-                                      : null),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: 20,
-                                ),
-                                child: Text(
-                                  topList[index],
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color:
-                                      _currentStepIndex != index
-                                          ? Colors.grey
-                                          : Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.white,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(topList.length, (index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    _currentStepIndex = index;
+                                    if (_currentStepIndex == 1) {
+                                      getUseFilter();
+                                    } else if (_currentStepIndex == 2) {
+                                      getLandTypeFilter();
+                                    } else if (_currentStepIndex == 3) {
+                                      getGovernorateFilter();
+                                    } else if (_currentStepIndex == 4) {
+                                      getStatesFilter();
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            color: _currentStepIndex == index
+                                                ? const Color(0xfff8f2ee)
+                                                : null),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 14,
+                                            vertical: 20,
+                                          ),
+                                          child: Text(
+                                            topList[index],
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color:
+                                                    _currentStepIndex != index
+                                                        ? Colors.grey
+                                                        : Colors.black,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ),
+                                      const Divider(height: 0),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                            const Divider(height: 0),
-                          ],
+                          ),
                         ),
-                      );
-                    }).toList(),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Color(0xfff8f2ee),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: tabsScreens(_currentStepIndex),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xfff8f2ee),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: tabsScreens(_currentStepIndex),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -978,17 +584,17 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
                           fit: BoxFit.contain,
                           placeholder: (context, url) => Center(
                               child: Shimmer.fromColors(
-                                baseColor: MyColors.onSecondary.withOpacity(0.4),
-                                highlightColor:
+                            baseColor: MyColors.onSecondary.withOpacity(0.4),
+                            highlightColor:
                                 Theme.of(context).colorScheme.onSecondary,
-                                child: Container(
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: MyColors.onSecondary.withOpacity(0.4),
-                                  ),
-                                ),
-                              )),
+                            child: Container(
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: MyColors.onSecondary.withOpacity(0.4),
+                              ),
+                            ),
+                          )),
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
                         ),
@@ -1020,10 +626,10 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
                           borderRadius: BorderRadius.circular(10)),
                       child: Center(
                           child: Icon(
-                            Icons.done,
-                            color: Colors.white,
-                            size: 14,
-                          ))),
+                        Icons.done,
+                        color: Colors.white,
+                        size: 14,
+                      ))),
                 )
             ],
           ),
@@ -1068,777 +674,157 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
     return ListView.builder(
         itemCount: useList.length,
         itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedModelForVehicleForSaleAndRentFilter ==
-                          useList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: useList[index],
-                  groupValue: selectedUseTypeFilterForRealState,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedUseTypeFilterForRealState = value;
-                    });
-                  },
-                ),
-                title: Text('${useList[index].useName}'),
-                onTap: () {
-                  setState(() {
-                    selectedUseTypeFilterForRealState =
-                    useList[index];
-                  });
-                },
-              )),
-        ));
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color:
+                              selectedUseListForRealEstatesForSaleAndRentFilter ==
+                                      useList[index]
+                                  ? MyColors.primaryColor
+                                  : Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: ListTile(
+                    leading: SquareRadio(
+                      activeColor: MyColors.primaryColor,
+                      value: useList[index],
+                      groupValue:
+                          selectedUseListForRealEstatesForSaleAndRentFilter,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedUseListForRealEstatesForSaleAndRentFilter =
+                              value;
+                        });
+                      },
+                    ),
+                    title: Text('${useList[index].useName}'),
+                    onTap: () {
+                      setState(() {
+                        selectedUseListForRealEstatesForSaleAndRentFilter =
+                            useList[index];
+                      });
+                    },
+                  )),
+            ));
   }
 
   Widget LandType() {
     return ListView.builder(
         itemCount: landTypeList.length,
         itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedModelForVehicleForSaleAndRentFilter ==
-                          landTypeList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: landTypeList[index],
-                  groupValue: selectedLandTypeFilterForRealState,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedLandTypeFilterForRealState = value;
-                    });
-                  },
-                ),
-                title: Text('${landTypeList[index].landtypeName}'),
-                onTap: () {
-                  setState(() {
-                    selectedLandTypeFilterForRealState =
-                    landTypeList[index];
-                  });
-                },
-              )),
-        ));
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color:
+                              selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter ==
+                                      landTypeList[index]
+                                  ? MyColors.primaryColor
+                                  : Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: ListTile(
+                    leading: SquareRadio(
+                      activeColor: MyColors.primaryColor,
+                      value: landTypeList[index],
+                      groupValue:
+                          selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter =
+                              value;
+                        });
+                      },
+                    ),
+                    title: Text('${landTypeList[index].landtypeName}'),
+                    onTap: () {
+                      setState(() {
+                        selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter =
+                            landTypeList[index];
+                      });
+                    },
+                  )),
+            ));
   }
 
   Widget Governate() {
     return ListView.builder(
         itemCount: governateList.length,
         itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color:
-                      selectedGovernateForVehicleForSaleAndRentFilter ==
-                          governateList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: governateList[index],
-                  groupValue:
-                  selectedGovernateFilterForRealState,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedGovernateFilterForRealState =
-                          value;
-                    });
-                  },
-                ),
-                title: Text('${governateList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedGovernateFilterForRealState =
-                    governateList[index];
-                  });
-                },
-              )),
-        ));
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color:
+                              selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter ==
+                                      governateList[index]
+                                  ? MyColors.primaryColor
+                                  : Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: ListTile(
+                    leading: SquareRadio(
+                      activeColor: MyColors.primaryColor,
+                      value: governateList[index],
+                      groupValue:
+                          selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter =
+                              value;
+                        });
+                      },
+                    ),
+                    title: Text('${governateList[index].name}'),
+                    onTap: () {
+                      setState(() {
+                        selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter =
+                            governateList[index];
+                      });
+                    },
+                  )),
+            ));
   }
 
   Widget State() {
     return ListView.builder(
         itemCount: stateList.length,
         itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedStateForVehicleForSaleAndRentFilter ==
-                          stateList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: stateList[index],
-                  groupValue: selectedStateFilterForRealState,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedStateFilterForRealState = value;
-                    });
-                  },
-                ),
-                title: Text('${stateList[index].stateName}'),
-                onTap: () {
-                  setState(() {
-                    selectedStateFilterForRealState =
-                    stateList[index];
-                  });
-                },
-              )),
-        ));
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                          color:
+                              selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter ==
+                                      stateList[index]
+                                  ? MyColors.primaryColor
+                                  : Colors.grey.withOpacity(0.5)),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: ListTile(
+                    leading: SquareRadio(
+                      activeColor: MyColors.primaryColor,
+                      value: stateList[index],
+                      groupValue:
+                          selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter =
+                              value;
+                        });
+                      },
+                    ),
+                    title: Text('${stateList[index].stateName}'),
+                    onTap: () {
+                      setState(() {
+                        selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter =
+                            stateList[index];
+                      });
+                    },
+                  )),
+            ));
   }
-
-  Widget Trim() {
-    return ListView.builder(
-      itemCount: trimList.length,
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                  color: selectedTrimForVehicleForSaleAndRentFilter ==
-                      trimList[index]
-                      ? MyColors.primaryColor
-                      : Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: ListTile(
-            leading: SquareRadio(
-              activeColor: MyColors.primaryColor,
-              value: trimList[index],
-              groupValue: selectedTrimForVehicleForSaleAndRentFilter,
-              onChanged: (value) {
-                setState(() {
-                  selectedTrimForVehicleForSaleAndRentFilter = value;
-                });
-              },
-            ),
-            title: Text('${trimList[index].name}'),
-            onTap: () {
-              setState(() {
-                selectedTrimForVehicleForSaleAndRentFilter = trimList[index];
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget Year() {
-    return ListView.builder(
-        itemCount: yearList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedYearForVehicleForSaleAndRentFilter ==
-                          yearList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: yearList[index],
-                  groupValue: selectedYearForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedYearForVehicleForSaleAndRentFilter = value;
-                    });
-                  },
-                ),
-                title: Text('${yearList[index].year}'),
-                onTap: () {
-                  setState(() {
-                    selectedYearForVehicleForSaleAndRentFilter =
-                    yearList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget Condition() {
-    return ListView.builder(
-        itemCount: conditionList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color:
-                      selectedConditionForVehicleForSaleAndRentFilter ==
-                          conditionList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: conditionList[index],
-                  groupValue:
-                  selectedConditionForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedConditionForVehicleForSaleAndRentFilter =
-                          value;
-                    });
-                  },
-                ),
-                title: Text('${conditionList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedConditionForVehicleForSaleAndRentFilter =
-                    conditionList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget EngineSize() {
-    return ListView.builder(
-        itemCount: engineList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedEngineForVehicleForSaleAndRentFilter ==
-                          engineList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: engineList[index],
-                  groupValue: selectedEngineForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedEngineForVehicleForSaleAndRentFilter = value;
-                    });
-                  },
-                ),
-                title: Text('${engineList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedEngineForVehicleForSaleAndRentFilter =
-                    engineList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget Door() {
-    return ListView.builder(
-      itemCount: doorList.length,
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                    color: selectedDoorForVehicleForSaleAndRentFilter ==
-                        doorList[index]
-                        ? MyColors.primaryColor
-                        : Colors.grey.withOpacity(0.5)),
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: ListTile(
-              leading: SquareRadio(
-                activeColor: MyColors.primaryColor,
-                value: doorList[index],
-                groupValue: selectedDoorForVehicleForSaleAndRentFilter,
-                onChanged: (value) {
-                  setState(() {
-                    selectedDoorForVehicleForSaleAndRentFilter = value;
-                  });
-                },
-              ),
-              title: Text('${doorList[index].name}'),
-              onTap: () {
-                setState(() {
-                  selectedDoorForVehicleForSaleAndRentFilter = doorList[index];
-                });
-              },
-            )),
-      ),
-    );
-  }
-
-  Widget ExteriorColor() {
-    return GridView.builder(
-      //physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisExtent: 80,
-          mainAxisSpacing: 5,
-          crossAxisSpacing: 10),
-      itemCount: exteriorColorList.length,
-      itemBuilder: (context, int index) {
-        return GestureDetector(
-          onTap: () {
-            selectedExteriorColorForVehicleForSaleAndRentFilter =
-            exteriorColorList[index];
-            setState(() {});
-          },
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.whiteColor,
-                  border: Border.all(
-                    width: .4,
-                    color:
-                    selectedExteriorColorForVehicleForSaleAndRentFilter ==
-                        exteriorColorList[index]
-                        ? Colors.orange
-                        : AppColors.grey.withOpacity(.5),
-                  ),
-                ),
-                height: 60,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: hexToColor(
-                                exteriorColorList[index].code ?? '#000000'),
-                            borderRadius: BorderRadius.circular(6)),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        exteriorColorList[index].name ?? '',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color:
-                            selectedExteriorColorForVehicleForSaleAndRentFilter ==
-                                exteriorColorList[index]
-                                ? Colors.orange
-                                : Colors.black),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              if (selectedExteriorColorForVehicleForSaleAndRentFilter ==
-                  exteriorColorList[index])
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                          child: Icon(
-                            Icons.done,
-                            color: Colors.white,
-                            size: 14,
-                          ))),
-                )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Color hexToColor(String hexString) {
-    hexString = hexString.toUpperCase().replaceAll('#', '');
-    if (hexString.length == 6) {
-      hexString = 'FF$hexString';
-    }
-    return Color(int.parse(hexString, radix: 16));
-  }
-
-  Widget InteriorColor() {
-    return GridView.builder(
-      // physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisExtent: 80,
-          mainAxisSpacing: 5,
-          crossAxisSpacing: 10),
-      itemCount: interiorColorList.length,
-      itemBuilder: (context, int index) {
-        return GestureDetector(
-          onTap: () {
-            selectedInteriorColorForVehicleForSaleAndRentFilter =
-            interiorColorList[index];
-            setState(() {});
-          },
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.whiteColor,
-                  border: Border.all(
-                    width: .4,
-                    color:
-                    selectedInteriorColorForVehicleForSaleAndRentFilter ==
-                        interiorColorList[index]
-                        ? Colors.orange
-                        : AppColors.grey.withOpacity(.5),
-                  ),
-                ),
-                height: 60,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: hexToColor(
-                                interiorColorList[index].code ?? '#000000'),
-                            borderRadius: BorderRadius.circular(6)),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        interiorColorList[index].name ?? '',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color:
-                            selectedInteriorColorForVehicleForSaleAndRentFilter ==
-                                interiorColorList[index]
-                                ? Colors.orange
-                                : Colors.black),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              if (selectedInteriorColorForVehicleForSaleAndRentFilter ==
-                  interiorColorList[index])
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Center(
-                          child: Icon(
-                            Icons.done,
-                            color: Colors.white,
-                            size: 14,
-                          ))),
-                )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget Cylinders() {
-    return ListView.builder(
-      itemCount: cylindersList.length,
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                  color: selectedCylinderForVehicleForSaleAndRentFilter ==
-                      cylindersList[index]
-                      ? MyColors.primaryColor
-                      : Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: ListTile(
-            leading: SquareRadio(
-              activeColor: MyColors.primaryColor,
-              value: cylindersList[index],
-              groupValue: selectedCylinderForVehicleForSaleAndRentFilter,
-              onChanged: (value) {
-                setState(() {
-                  selectedCylinderForVehicleForSaleAndRentFilter = value;
-                });
-              },
-            ),
-            title: Text('${cylindersList[index].name}'),
-            onTap: () {
-              setState(() {
-                selectedCylinderForVehicleForSaleAndRentFilter =
-                cylindersList[index];
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget Fuel() {
-    return ListView.builder(
-        itemCount: fuelList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                    color: selectedFuelForVehicleForSaleAndRentFilter ==
-                        fuelList[index]
-                        ? MyColors.primaryColor
-                        : Colors.grey.withOpacity(0.5)),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: fuelList[index],
-                  groupValue: selectedFuelForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedFuelForVehicleForSaleAndRentFilter = value;
-                    });
-                  },
-                ),
-                title: Text('${fuelList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedFuelForVehicleForSaleAndRentFilter =
-                    fuelList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget Transmission() {
-    return ListView.builder(
-        itemCount: transmissionList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color:
-                      selectedTransmissionForVehicleForSaleAndRentFilter ==
-                          transmissionList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: transmissionList[index],
-                  groupValue:
-                  selectedTransmissionForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedTransmissionForVehicleForSaleAndRentFilter =
-                          value;
-                    });
-                  },
-                ),
-                title: Text('${transmissionList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedTransmissionForVehicleForSaleAndRentFilter =
-                    transmissionList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget DriverTrain() {
-    return ListView.builder(
-        itemCount: driverTrainList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color:
-                      selectedDriverTrainForVehicleForSaleAndRentFilter ==
-                          driverTrainList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: driverTrainList[index],
-                  groupValue:
-                  selectedDriverTrainForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedDriverTrainForVehicleForSaleAndRentFilter =
-                          value;
-                    });
-                  },
-                ),
-                title: Text('${driverTrainList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedDriverTrainForVehicleForSaleAndRentFilter =
-                    driverTrainList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget Seats() {
-    return ListView.builder(
-        itemCount: seatsList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedSeatForVehicleForSaleAndRentFilter ==
-                          seatsList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: seatsList[index],
-                  groupValue: selectedSeatForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedSeatForVehicleForSaleAndRentFilter = value;
-                    });
-                  },
-                ),
-                title: Text('${seatsList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedSeatForVehicleForSaleAndRentFilter =
-                    seatsList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget Plate() {
-    return ListView.builder(
-        itemCount: plateList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedPlateForVehicleForSaleAndRentFilter ==
-                          plateList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: plateList[index],
-                  groupValue: selectedPlateForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPlateForVehicleForSaleAndRentFilter = value;
-                    });
-                  },
-                ),
-                title: Text('${plateList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedPlateForVehicleForSaleAndRentFilter =
-                    plateList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-  Widget Origin() {
-    return ListView.builder(
-        itemCount: originList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: selectedOriginForVehicleForSaleAndRentFilter ==
-                          originList[index]
-                          ? MyColors.primaryColor
-                          : Colors.grey.withOpacity(0.5)),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                leading: SquareRadio(
-                  activeColor: MyColors.primaryColor,
-                  value: originList[index],
-                  groupValue: selectedOriginForVehicleForSaleAndRentFilter,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedOriginForVehicleForSaleAndRentFilter = value;
-                    });
-                  },
-                ),
-                title: Text('${originList[index].name}'),
-                onTap: () {
-                  setState(() {
-                    selectedOriginForVehicleForSaleAndRentFilter =
-                    originList[index];
-                  });
-                },
-              )),
-        ));
-  }
-
-
 
   Widget PriceView() {
     return Column(
@@ -1901,6 +887,7 @@ class _RealstateForSaleAndRentFilterState extends State<RealstateForSaleAndRentF
       ],
     );
   }
+
   Widget LandAreaView() {
     return Column(
       children: [

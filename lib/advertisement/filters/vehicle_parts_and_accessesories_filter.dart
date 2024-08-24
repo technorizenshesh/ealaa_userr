@@ -1,3 +1,4 @@
+/*
 import 'package:ealaa_userr/Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_condition_filter_model.dart';
 import 'package:ealaa_userr/Model/advertisement_model/advertisement_models_for_realstate_for_sale_and_rent/get_use_types_filter_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
@@ -34,87 +35,17 @@ import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../CategoryPostsScreen.dart';
 
-String? selectedCategories;
-String? selectedType;
-String? selectedGender;
-String? selectedAge;
-String? selectedGovernrate;
-String? selectedState;
-String? selectedCity;
-double currentPointValue = 0.0;
 
-
-
-VehiclesMakeResult? selectedMakeForVehicleForSaleAndRentFilter;
-GetModelFilterResult? selectedModelForVehicleForSaleAndRentFilter;
-GetModelTrimFilterResult? selectedTrimForVehicleForSaleAndRentFilter;
-GetYearFilterResult? selectedYearForVehicleForSaleAndRentFilter;
-GetConditionFilterResult? selectedConditionForVehicleForSaleAndRentFilter;
-GetEngineSizeFilterResult? selectedEngineForVehicleForSaleAndRentFilter;
-GetDoorCountFilterResult? selectedDoorForVehicleForSaleAndRentFilter;
-GetExteriorColorFilterResult? selectedExteriorColorForVehicleForSaleAndRentFilter;
-GetExteriorColorFilterResult? selectedInteriorColorForVehicleForSaleAndRentFilter;
-GetCylindersFilterResult? selectedCylinderForVehicleForSaleAndRentFilter;
-GetFuelFilterResult? selectedFuelForVehicleForSaleAndRentFilter;
-GetTransmissionFilterResult? selectedTransmissionForVehicleForSaleAndRentFilter;
-GetDrivetrainFilterResult? selectedDriverTrainForVehicleForSaleAndRentFilter;
-GetSeatsFilterResult? selectedSeatForVehicleForSaleAndRentFilter;
-GetPlateFilterResult? selectedPlateForVehicleForSaleAndRentFilter;
-GetOriginFilterResult? selectedOriginForVehicleForSaleAndRentFilter;
-GetGovernorateFilterResult? selectedGovernateForVehicleForSaleAndRentFilter;
-GetStatesFilterResult? selectedStateForVehicleForSaleAndRentFilter;
-
-
-GetElectronicsBrandFilterResult?   selectedBrandForElectronicsForSaleAndRentFilter;
-GetElectronicsConditionFilterResult?   selectedConditionForElectronicsForSaleAndRentFilter;
-GetGovernorateFilterResult? selectedGovernateForElectronicsForSaleAndRentFilter;
-GetStatesFilterResult? selectedStateForElectronicsForSaleAndRentFilter;
-
-GetNumberTypeResult? selectedGetNumberTypeResultForPhoneNumberFilter;
-GetOperatorsResult? selectedGetOperatorsResultForPhoneNumberFilter;
-GetGovernorateFilterResult? selectedGovernateForPhoneNumberFilter;
-GetStatesFilterResult? selectedStateForPhoneNumberFilter;
-
-GetUseTypesFilterResult? selectedUseTypeFilterForRealState;
-GetLandTypesFilterResult? selectedLandTypeFilterForRealState;
-GetGovernorateFilterResult? selectedGovernateFilterForRealState;
-GetStatesFilterResult? selectedStateFilterForRealState;
-
-
-
-GetNumberTypeResult? selectedGetNumberTypeResultForVehicleNumberFilter;
-GetGovernorateFilterResult? selectedGetGovernorateFilterResultForVehicleNumberFilter;
-GetLettersFilterResult? selectedGetLettersFilterResultForVehicleNumberFilter;
-GetPlateTypesFilterResult? selectedGetPlateTypesFilterResultForVehicleNumberFilter;
-String? selectedLetterCountListForVehicleNumberFilter;
-Map<String, dynamic>? selectedTransferTypeForVehicleNumberFilter;
-
-
-
-
-GetUseTypesFilterResult? selectedUseListForRealEstatesForSaleAndRentFilter;
-GetLandTypesFilterResult? selectedGetLandTypesFilterResultForRealEstatesForSaleAndRentFilter;
-GetGovernorateFilterResult? selectedGetGovernorateFilterResultForRealEstatesForSaleAndRentFilter;
-GetStatesFilterResult? selectedGetStatesFilterResultForRealEstatesForSaleAndRentFilter;
-double currentBuildingArea = 0.0;
-double currentLandArea = 0.0;
-
-
-
-
-
-
-
-class AnimalsFilter extends StatefulWidget {
+class VehiclePartsAndAccessesoriesFilter extends StatefulWidget {
   final String advertisement_category_id;
 
-  const AnimalsFilter({super.key, required this.advertisement_category_id});
+  const VehiclePartsAndAccessesoriesFilter({super.key, required this.advertisement_category_id});
 
   @override
-  State<AnimalsFilter> createState() => _AnimalsFilterState();
+  State<VehiclePartsAndAccessesoriesFilter> createState() => _VehiclePartsAndAccessesoriesFilterState();
 }
 
-class _AnimalsFilterState extends State<AnimalsFilter> {
+class _VehiclePartsAndAccessesoriesFilterState extends State<VehiclePartsAndAccessesoriesFilter> {
   bool showProgressBar = true;
   int _currentStepIndex = 0;
   List<String> topList = [
@@ -864,3 +795,4 @@ class _AnimalsFilterState extends State<AnimalsFilter> {
     );
   }
 }
+*/
