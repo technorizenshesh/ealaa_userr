@@ -1,39 +1,13 @@
-/*
-import 'package:ealaa_userr/Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_condition_filter_model.dart';
-import 'package:ealaa_userr/Model/advertisement_model/advertisement_models_for_realstate_for_sale_and_rent/get_use_types_filter_model.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
-
 import '../../../Model/advertisement_model/AnimalTypeModel.dart';
 import '../../../View/Utils/ApiConstants.dart';
 import '../../../View/Utils/CustomSnackBar.dart';
 import '../../../View/Utils/webService.dart';
-import '../../Model/advertisement_model/VehiclesMakeModel.dart';
 import '../../Model/advertisement_model/ad_subcategory_model.dart';
-import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_electronics_brand_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_number_type_model.dart';
-import '../../Model/advertisement_model/advertisement_model_for_electronics_for_sale_and_rent/get_operators_model.dart';
-import '../../Model/advertisement_model/advertisement_model_vehicle_number_models/get_letters_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_model_vehicle_number_models/get_plate_types_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_realstate_for_sale_and_rent/gat_land_type_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_condition_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_cylinders_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_door_count_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_drivetrain_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_engine_size_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_exterior_color_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_fuel_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_governate_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_model_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_model_trim_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_origin_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_plate_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_seats_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_states_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_transmission_filter_model.dart';
-import '../../Model/advertisement_model/advertisement_models_for_vehicle_for_sale_and_rent/get_year_filter_model.dart';
 import '../../Model/advertisement_model/get_ads_with_category_home_model.dart';
 import '../AddPost/Vehicles/VehiclesMake.dart';
 import '../CategoryPostsScreen.dart';
+import 'animals_filter.dart';
 
 
 class VehiclePartsAndAccessesoriesFilter extends StatefulWidget {
@@ -49,10 +23,10 @@ class _VehiclePartsAndAccessesoriesFilterState extends State<VehiclePartsAndAcce
   bool showProgressBar = true;
   int _currentStepIndex = 0;
   List<String> topList = [
-    'Categories',
     'Ads Types',
-    'Gender',
-    'Age',
+    'Categories',
+    'Brands',
+    'Condition',
     'Governorate',
     'State',
     'Price',
@@ -169,12 +143,6 @@ class _VehiclePartsAndAccessesoriesFilterState extends State<VehiclePartsAndAcce
                 child: GestureDetector(
                   onTap: () async {
                     selectedCategories = null;
-                    selectedType = null;
-                    selectedGender = null;
-                    selectedAge = null;
-                    selectedGovernrate = null;
-                    selectedState = null;
-                    selectedCity = null;
                     currentPointValue = 0.0;
                     setState(() {});
                   },
@@ -461,9 +429,9 @@ class _VehiclePartsAndAccessesoriesFilterState extends State<VehiclePartsAndAcce
   Widget tabsScreens(int index) {
     switch (index) {
       case 0:
-        return CategoriesView();
-      case 1:
         return TypeView();
+      case 1:
+        return CategoriesView();
       case 2:
         return GenderView();
       case 3:
@@ -795,4 +763,3 @@ class _VehiclePartsAndAccessesoriesFilterState extends State<VehiclePartsAndAcce
     );
   }
 }
-*/
