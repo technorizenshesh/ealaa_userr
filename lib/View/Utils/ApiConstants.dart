@@ -3,6 +3,7 @@ const baseUrl = 'https://11way.solutions/webservice/';
 const baseUrlDriver = 'https://11way.solutions/driver/';
 const signup = 'signup';
 const login = 'login';
+const social_login = 'social_login';
 const insertChatMessage = 'insertChatMessage';
 const get_conversation = 'get_conversation';
 const get_profile = 'get_profile';
