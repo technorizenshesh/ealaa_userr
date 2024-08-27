@@ -8,9 +8,10 @@ class GetAdsPostDetailsModel {
   GetAdsPostDetailsModel({this.result, this.message, this.status});
 
   GetAdsPostDetailsModel.fromJson(Map<String, dynamic> json) {
-    result = json['result'] != null || json['result'].toString() != '[]' ? PostListDetails.fromJson(json['result']) : null;
+    result = json['result'] != null || json['result'].toString() != '[]'
+        ? PostListDetails.fromJson(json['result'])
+        : null;
     message = json['message'];
     status = json['status'];
   }
 }
-

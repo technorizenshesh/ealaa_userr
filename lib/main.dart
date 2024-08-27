@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:ealaa_userr/View/Auth/FaceRecognization.dart';
 import 'package:ealaa_userr/firebase_options.dart';
 import 'package:ealaa_userr/import_ealaa_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'View/Utils/notification_services.dart';
@@ -63,7 +65,12 @@ void main() async {
         sound: true,
       );
     }
-
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
   runApp(const MyApp());
 }
 
@@ -87,7 +94,8 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Splash(),
+    //  home: Splash(),
+      home: FaceRecognization(),
     );
   }
 }
